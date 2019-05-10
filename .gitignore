@@ -1,0 +1,10 @@
+.idea
+app.yaml
+build_info.json
+yordle
+yordle.iml
+
+bower_components/
+build/
+dist/
+node_modules/
