@@ -17,8 +17,10 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "@material/mwc-button": "^0.5.0",
-    "@material/mwc-icon": "^0.5.0",
+    "@material/mwc-button": "^0.6.0",
+    "@material/mwc-icon": "^0.6.0",
+    "@material/mwc-icon-button": "^0.6.0",
+    "@material/mwc-top-app-bar": "^0.6.0",
     "@polymer/app-layout": "^3.0.2",
     "@polymer/paper-dialog": "^3.0.1",
     "@polymer/paper-input": "^3.0.2",
@@ -32,8 +34,7 @@
     "clean": "pm2 stop all",
     "test": "yarn run emulator && gulp test && yarn run clean",
     "emulator": "pm2 start 'gulp datastoreEmulator'",
-    "debug": "yarn run emulator && gulp",
+    "start": "yarn run emulator && gulp",
     "deploy": "yarn run test && gulp deploy && yarn run clean"
-  },
-  "jest": {}
+  }
 }

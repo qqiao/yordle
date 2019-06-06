@@ -21,13 +21,8 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { html, LitElement, customElement, property, css } from 'lit-element';
 
 import '@material/mwc-icon';
-
-import '@material/mwc-icon';
-
-import '@polymer/app-layout/app-header/app-header';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects';
-import '@polymer/app-layout/app-toolbar/app-toolbar';
-import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings';
+import '@material/mwc-icon-button';
+import '@material/mwc-top-app-bar';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 import { installRouter } from 'pwa-helpers/router';
@@ -53,9 +48,6 @@ export class YordleApp extends connect(store)(LitElement) {
     constructor() {
         super();
         this._messages = MESSAGES;
-        // To force all event listeners for gestures to be passive.
-        // See https://www.polymer-project.org/2.0/docs/devguide/gesture-events#use-passive-gesture-listeners
-        setPassiveTouchGestures(true);
     }
 
     static styles = css`
@@ -122,19 +114,16 @@ export class YordleApp extends connect(store)(LitElement) {
 
     protected render() {
         return html`
-        <app-header slot="header" condenses reveals effects="waterfall">
-            <app-toolbar>
-                <a href="/">
-                    <mwc-icon ?active="${'home' !== this._page}">
-                        arrow_back
-                    </mwc-icon>
-                </a>
-                <div main-title>${this.appName}</div>
-                <div class="top-navigation">
-                    <a href="#/help">${this._messages.help}</a>
-                </div>
-            </app-toolbar>
-        </app-header>
+        <mwc-top-app-bar>
+            <a href="/">
+                <mwc-icon-button ?active="${'home' !== this._page}"
+                    icon="arrow_back"></mwc-icon-button>
+            </a>
+            <div slot="title">${this.appName}</div>
+            <div slot="actionItems" class="top-navigation">
+                <a href="#/help">${this._messages.help}</a>
+            </div>
+        </mwc-top-app-bar>
 
         <yordle-home class="page" ?active="${'home' === this._page}"></yordle-home>
         <yordle-help class="page" ?active="${'help' === this._page}"></yordle-help>
