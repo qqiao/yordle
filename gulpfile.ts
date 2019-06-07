@@ -75,11 +75,15 @@ export const copy = gulp.series(buildInfo, () => {
     return gulp.src([
         'app.yaml',
         'build_info.json',
-        '*.go',
         'go.sum',
         'go.mod',
+        'manifest.json',
+        'robots.txt',
+        '*.go',
         '**/*.go',
-        '!**/*_test.go',
+        '!dist/**',
+        '!node_modules/**',
+        '!**/*_test.go'
     ], {base: '.'}).pipe(gulp.dest(BUILD_DIR));
 });
 
@@ -87,7 +91,6 @@ export const test = gulp.parallel(datastoreEmulator, (cb) => {
     const cmd = [
         `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
         `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
-        'SERVER_ENV=dev',
         'go test ./...',
     ].join(' ');
     return execCommand(cmd, cb, {
