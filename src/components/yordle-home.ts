@@ -25,18 +25,16 @@ import '@material/mwc-icon';
 import 'weightless/dialog';
 import 'weightless/textfield';
 
+import { Dialog } from 'weightless/dialog';
 import { Textfield } from 'weightless/textfield';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
 import { MESSAGES } from './yordle-home-en';
 
-import { store, RootState } from '../store';
-
 import { createShortUrl, Status } from '../actions/shortUrl';
-
 import shortUrl from '../reducers/shortUrl';
-import { Dialog } from 'weightless/dialog';
+import { store, RootState } from '../store';
 
 store.addReducers({ shortUrl });
 
@@ -208,7 +206,7 @@ export class YordleHome extends connect(store)(LitElement) {
     }
 
     private _onDoneClick(): void {
-        (this.shadowRoot.querySelector('#resultDialog') as Dialog).hide();
+        (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = false;
     }
 
     private _onShortenTap() {
@@ -224,7 +222,7 @@ export class YordleHome extends connect(store)(LitElement) {
 
             if (state.shortUrl.status === Status.SUCCESS) {
                 if (this.shadowRoot) {
-                    (this.shadowRoot.querySelector('#resultDialog') as Dialog).show();
+                    (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = true;
                 }
             }
         }

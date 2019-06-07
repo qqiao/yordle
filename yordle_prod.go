@@ -1,5 +1,5 @@
 // Yordle - A URL shortener for Google App Engine.
-// Copyright (C) 2017 The Yordle Team
+// Copyright (C) 2019 The Yordle Team
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,40 +15,17 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// +build local
+// +build !local
 
 package main
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/qqiao/webapp"
 )
 
-var staticFileExtensions = []string{
-	".ico",
-	".jpeg",
-	".jpg",
-	".json",
-	".js",
-	".map",
-	".png",
-}
-
-var fileServer = http.FileServer(http.Dir("."))
-
 func init() {
-	http.HandleFunc("/", webapp.HSTSHandler(localIndex))
-}
-
-func localIndex(w http.ResponseWriter, r *http.Request) {
-	for _, ext := range staticFileExtensions {
-		if strings.HasSuffix(r.URL.Path, ext) {
-			fileServer.ServeHTTP(w, r)
-			return
-		}
-	}
-	tmpl := webapp.GetTemplate("index.html", true)
-	tmpl.Execute(w, nil)
+	http.HandleFunc("/", webapp.HSTSHandler(landingPage))
+	http.HandleFunc("/version", webapp.HSTSHandler(version))
 }
