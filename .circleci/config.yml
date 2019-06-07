@@ -10,5 +10,6 @@ jobs:
     working_directory: /src/yordle
     steps:
       - checkout
+      - run: go get -u github.com/qqiao/app-tools
       - run: yarn install
       - run: CLOUDSDK_CORE_PROJECT=yordle-demo yarn build
