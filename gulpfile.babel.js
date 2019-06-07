@@ -55,7 +55,7 @@ const yaml = (data, cb) => {
 };
 
 const buildInfo = (cb) => {
-    execCommand('app-tools buildinfo generate -f build_info.json',
+    return execCommand('app-tools buildinfo generate -f build_info.json',
         cb);
 };
 
@@ -63,7 +63,7 @@ export const datastoreEmulator = (cb) => {
     const cmd = [
         `CLOUDSDK_CORE_PROJECT=${CLOUDSDK_CORE_PROJECT}`,
         'gcloud beta emulators datastore start',
-        `--no-store-on-disk --host-port=:${DATASTORE_PORT}`,
+        `--no-store-on-disk --host-port=localhost:${DATASTORE_PORT}`,
     ].join(' ');
     return execCommand(cmd, cb);
 };
@@ -75,7 +75,7 @@ const go = gulp.series(buildInfo, (cb) => {
         'SERVER_ENV=dev',
         'go run -tags local .',
     ].join(' ');
-    execCommand(cmd, cb);
+    return execCommand(cmd, cb);
 });
 
 const polyserve = (cb) => {
@@ -84,7 +84,7 @@ const polyserve = (cb) => {
         '-H 0.0.0.0',
         '-p 9090',
     ].join(' ');
-    execCommand(cmd, cb);
+    return execCommand(cmd, cb);
 };
 
 const tsProject = ts.createProject('tsconfig.json');
@@ -101,7 +101,7 @@ export const watch = gulp.series(tsCompile, () => {
 
 const polymerBuild = gulp.series(buildInfo, tsCompile,
     (cb) => {
-        execCommand('polymer build', cb);
+        return execCommand('polymer build', cb);
     },
     (cb) => {
         return yaml({
@@ -122,28 +122,28 @@ export const build = gulp.series(polymerBuild, gulp.parallel(() => {
     ]).pipe(gulp.dest(BUILD_DIR));
 }));
 
-export const test = (cb) => {
+export const test = gulp.parallel(datastoreEmulator, (cb) => {
     const cmd = [
         `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
         `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
         'SERVER_ENV=dev',
         'go test ./...',
     ].join(' ');
-    execCommand(cmd, cb, {
+    return execCommand(cmd, cb, {
         cwd: '.',
     });
-};
+});
 
 export const deploy = gulp.series(build, (cb) => {
     const cmd = [
         'gcloud -q app deploy --no-promote',
         `--project=${CLOUDSDK_CORE_PROJECT}`
     ].join(' ');
-    execCommand(cmd, cb, {
+    return execCommand(cmd, cb, {
         cwd: BUILD_DIR,
     });
 });
 
 
-const dev = gulp.parallel(watch, polyserve, go);
-export default dev;
+const start = gulp.parallel(datastoreEmulator, watch, polyserve, go);
+export default start;
