@@ -17,20 +17,20 @@
 
 /* eslint camelcase: "off" */
 /* eslint no-console: "off" */
-import child_process from 'child_process';
+import {ChildProcess, exec} from 'child_process';
 import gulp from 'gulp';
 
 import ts from 'gulp-typescript';
 
-const BUILD_DIR = 'build/es6-bundled/';
+const BUILD_DIR = 'dist/';
 const CLOUDSDK_CORE_PROJECT = process.env.CLOUDSDK_CORE_PROJECT || (() => {
     console.error('No CLOUDSDK_CORE_PROJECT environmental variable set!');
     process.exit(1);
 })();
 const DATASTORE_PORT = 23333;
 
-const execCommand = (command, cb, options) => {
-    let cli = child_process.exec(command, options, (err, stdout, stderr) => {
+const execCommand = (command, cb, options?) :ChildProcess => {
+    let cli = exec(command, options, (err, stdout, stderr) => {
         stderr && console.error(stderr);
         cb(err);
     });
@@ -44,17 +44,7 @@ const execCommand = (command, cb, options) => {
     return cli;
 };
 
-const yaml = (data, cb) => {
-    const command = [
-        'app-tools template execute',
-        '-o app.yaml -t app.yaml.template',
-        `-data='${JSON.stringify(data)}'`,
-    ].join(' ');
-
-    return execCommand(command, cb);
-};
-
-const buildInfo = (cb) => {
+export const buildInfo = (cb) => {
     return execCommand('app-tools buildinfo generate -f build_info.json',
         cb);
 };
@@ -68,49 +58,20 @@ export const datastoreEmulator = (cb) => {
     return execCommand(cmd, cb);
 };
 
-const go = gulp.series(buildInfo, (cb) => {
+const go = (cb) => {
     const cmd = [
         `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
         `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
-        'SERVER_ENV=dev',
         'go run -tags local .',
     ].join(' ');
-    return execCommand(cmd, cb);
-});
-
-const polyserve = (cb) => {
-    const cmd = [
-        'polymer serve',
-        '-H 0.0.0.0',
-        '-p 9090',
-    ].join(' ');
-    return execCommand(cmd, cb);
+    return execCommand(cmd, cb, {cwd: BUILD_DIR});
 };
 
-const tsProject = ts.createProject('tsconfig.json');
+const watch = (cb) => {
+    return execCommand('rollup -w -c rollup.config.ts', cb);
+}
 
-export const tsCompile = () => {
-    const tsResult = tsProject.src().pipe(tsProject());
-
-    return tsResult.js.pipe(gulp.dest('.'));
-};
-
-export const watch = gulp.series(tsCompile, () => {
-    gulp.watch('src/**/*.ts', tsCompile);
-});
-
-const polymerBuild = gulp.series(buildInfo, tsCompile,
-    (cb) => {
-        return execCommand('polymer build', cb);
-    },
-    (cb) => {
-        return yaml({
-            'dev': false,
-        }, cb);
-    }
-);
-
-export const build = gulp.series(polymerBuild, gulp.parallel(() => {
+export const copy = gulp.series(buildInfo, () => {
     return gulp.src([
         'app.yaml',
         'build_info.json',
@@ -119,8 +80,8 @@ export const build = gulp.series(polymerBuild, gulp.parallel(() => {
         'go.mod',
         '**/*.go',
         '!**/*_test.go',
-    ]).pipe(gulp.dest(BUILD_DIR));
-}));
+    ], {base: '.'}).pipe(gulp.dest(BUILD_DIR));
+});
 
 export const test = gulp.parallel(datastoreEmulator, (cb) => {
     const cmd = [
@@ -134,7 +95,7 @@ export const test = gulp.parallel(datastoreEmulator, (cb) => {
     });
 });
 
-export const deploy = gulp.series(build, (cb) => {
+export const deploy = (cb) => {
     const cmd = [
         'gcloud -q app deploy --no-promote',
         `--project=${CLOUDSDK_CORE_PROJECT}`
@@ -142,8 +103,7 @@ export const deploy = gulp.series(build, (cb) => {
     return execCommand(cmd, cb, {
         cwd: BUILD_DIR,
     });
-});
+};
 
-
-const start = gulp.parallel(datastoreEmulator, watch, polyserve, go);
+const start = gulp.series(copy, gulp.parallel(datastoreEmulator, watch, go));
 export default start;

@@ -45,11 +45,6 @@ const initDataTemplate = `
 </script>
 `
 
-func init() {
-	http.HandleFunc("/", webapp.HSTSHandler(landingPage))
-	http.HandleFunc("/version", webapp.HSTSHandler(version))
-}
-
 func preloadedState(ctx context.Context) <-chan string {
 	output := make(chan string)
 
