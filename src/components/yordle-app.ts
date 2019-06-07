@@ -54,41 +54,31 @@ export class YordleApp extends connect(store)(LitElement) {
         :host {
             color: #666;
             display: block;
+            --mdc-theme-primary: #fff
         }
 
-        :host app-toolbar {
-            align-items: center;
-            display: flex;
-        }
-
-        :host app-toolbar a {
+        :host mwc-top-app-bar a {
             color: #666;
             text-decoration: none;
         }
 
-        :host mwc-icon {
-            display: none;
+        :host mwc-icon-button {
             margin: 0 16px 0 0;
         }
 
-        :host mwc-icon[active] {
-            display: block;
+        :host mwc-icon-button:not([active]) {
+            display: none;
         }
 
-        :host app-header {
-            background-color: #fff;
-        }
-
-        :host app-header app-toolbar .top-navigation a {
+        :host mwc-top-app-bar .top-navigation a {
             color: #333;
-            font-size: 0.8em;
             margin-left: 20px;
             text-decoration: none;
         }
 
         :host .page {
             display: none;
-            margin: auto;
+            margin: 48px auto 0;
         }
 
         :host .page[active] {
@@ -115,7 +105,7 @@ export class YordleApp extends connect(store)(LitElement) {
     protected render() {
         return html`
         <mwc-top-app-bar>
-            <a href="/">
+            <a href="/" slot="navigationIcon">
                 <mwc-icon-button ?active="${'home' !== this._page}"
                     icon="arrow_back"></mwc-icon-button>
             </a>

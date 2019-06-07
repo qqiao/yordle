@@ -22,12 +22,10 @@ import { LitElement, html, customElement, property, css } from 'lit-element';
 import '@material/mwc-button';
 import '@material/mwc-icon';
 
-import '@polymer/paper-dialog/paper-dialog';
-import '@polymer/paper-input/paper-input';
+import 'weightless/dialog';
+import 'weightless/textfield';
 
-import { IronInputElement } from '@polymer/iron-input';
-import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog';
-import { PaperInputElement } from '@polymer/paper-input/paper-input';
+import { Textfield } from 'weightless/textfield';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
@@ -38,6 +36,7 @@ import { store, RootState } from '../store';
 import { createShortUrl, Status } from '../actions/shortUrl';
 
 import shortUrl from '../reducers/shortUrl';
+import { Dialog } from 'weightless/dialog';
 
 store.addReducers({ shortUrl });
 
@@ -77,10 +76,12 @@ export class YordleHome extends connect(store)(LitElement) {
             margin: 0;
         }
 
-        :host .inputs paper-input {
-            --paper-input-container-color: #fff;
-            --paper-input-container-focus-color: #fff;
-            --paper-input-container-input-color: #fff;
+        :host .inputs wl-textfield {
+            --input-color: #fff;
+            --input-font-family: 'Roboto';
+            --input-label-color: #fff;
+            --input-state-color-active: #fff;
+            --input-state-border-color-hover: #fff;
         }
 
         :host .inputs mwc-button {
@@ -124,17 +125,18 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-icon-size: 32px;
         }
 
-        :host paper-dialog .dialog-content {
+        :host wl-dialog .dialog-content {
             align-items: center;
             display: flex;
             flex-direction: row;
         }
 
-        :host paper-dialog mwc-button {
+        :host wl-dialog mwc-button {
             --mdc-theme-primary: #666;
         }
 
-        :host paper-dialog .dialog-content #shortUrl {
+        :host wl-dialog .dialog-content #shortUrl {
+            border: 1px solid #ccc;
             flex: 1;
         }`;
 
@@ -143,10 +145,10 @@ export class YordleHome extends connect(store)(LitElement) {
         <div class="inputs-container">
             <div class="inputs">
                 <h1>${this._messages['Shorten your links']}</h1>
-                <paper-input id="originalUrlInput"
+                <wl-textfield id="originalUrlInput"
                     label="${this._messages['Your original URL here']}"
                     type="url" error-message="${this._messages['URL invalid']}">
-                </paper-input>
+                </wl-textfield>
                 <mwc-button @click="${this._onShortenTap}">
                     ${this._messages['Shorten URL']}
                 </mwc-button>
@@ -177,22 +179,20 @@ export class YordleHome extends connect(store)(LitElement) {
                 </div>
             </div>
         </div>
-        <paper-dialog id="resultDialog" no-cancel-on-outside-click
-                      no-cancel-on-esc-key>
-            <div class="dialog-content">
-                <paper-input id="shortUrl" no-label-float type="url"
-                             value="${this._shortUrl}"></paper-input>
+        <wl-dialog id="resultDialog" fixed backdrop persistent>
+            <div slot="content" class="dialog-content">
+                <input id="shortUrl" value="${this._shortUrl}" type="text"></input>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
                     ${this._messages['Copy']}
                 </mwc-button>
             </div>
-            <div class="buttons">
-                <mwc-button dense dialog-dismiss>
+            <div slot="footer" class="buttons">
+                <mwc-button dense @click="${this._onDoneClick}">
                     ${this._messages['Done']}
                 </mwc-button>
             </div>
-        </paper-dialog>`;
+        </wl-dialog>`;
     }
 
     constructor() {
@@ -202,13 +202,18 @@ export class YordleHome extends connect(store)(LitElement) {
     }
 
     private _onCopyTap() {
-        ((this.shadowRoot.querySelector('#shortUrl') as PaperInputElement).inputElement as IronInputElement).inputElement.select();
+        const input = this.shadowRoot.querySelector('#shortUrl') as HTMLInputElement;
+        input.select();
         document.execCommand('copy');
+    }
+
+    private _onDoneClick(): void {
+        (this.shadowRoot.querySelector('#resultDialog') as Dialog).hide();
     }
 
     private _onShortenTap() {
         if (!this.shadowRoot) return
-        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as PaperInputElement)
+        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as Textfield)
             .value;
         store.dispatch(createShortUrl(originalUrl));
     }
@@ -219,7 +224,7 @@ export class YordleHome extends connect(store)(LitElement) {
 
             if (state.shortUrl.status === Status.SUCCESS) {
                 if (this.shadowRoot) {
-                    (this.shadowRoot.querySelector('#resultDialog') as PaperDialogElement).open();
+                    (this.shadowRoot.querySelector('#resultDialog') as Dialog).show();
                 }
             }
         }
@@ -241,11 +246,5 @@ export class YordleHome extends connect(store)(LitElement) {
                 });
             }
         }
-    }
-}
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'yordle-home': YordleHome;
     }
 }
