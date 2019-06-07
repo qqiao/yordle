@@ -70,6 +70,10 @@ export class YordleApp extends connect(store)(LitElement) {
             display: none;
         }
 
+        :host mwc-top-app-bar .title {
+            color: #666;
+        }
+
         :host mwc-top-app-bar .top-navigation a {
             color: #333;
             margin-left: 20px;
@@ -109,7 +113,7 @@ export class YordleApp extends connect(store)(LitElement) {
                 <mwc-icon-button ?active="${'home' !== this._page}"
                     icon="arrow_back"></mwc-icon-button>
             </a>
-            <div slot="title">${this.appName}</div>
+            <div slot="title" class="title">${this.appName}</div>
             <div slot="actionItems" class="top-navigation">
                 <a href="#/help">${this._messages.help}</a>
             </div>
