@@ -11,24 +11,4 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: CLOUDSDK_CORE_PROJECT=yordle-demo yarn run build
-
-  test:
-    docker:
-      - image: qqiao/dev-env
-
-    environment:
-      GOPATH: /go
-
-    working_directory: /src/yordle
-
-    steps:
-      - checkout
-      - run: yarn install
-      - run: CLOUDSDK_CORE_PROJECT=yordle-demo yarn run test
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - test
+      - run: CLOUDSDK_CORE_PROJECT=yordle-demo yarn build
