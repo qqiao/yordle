@@ -38,7 +38,7 @@
     "weightless": "^0.0.34"
   },
   "scripts": {
-    "build": "rimraf dist && gulp buildInfo copy && rollup -c rollup.config.ts && workbox generateSW workbox-config.js",
+    "build": "rimraf dist && gulp copy && rollup -c rollup.config.ts && workbox generateSW workbox-config.js",
     "deploy": "yarn build && gulp deploy",
     "start": "gulp",
     "test": "gulp test"
