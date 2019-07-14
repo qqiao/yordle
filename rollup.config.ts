@@ -20,7 +20,10 @@ export default [wc].map(conf => {
                 'process.env.BUILD_TYPE': JSON.stringify(buildType)
             }),
             ...conf.plugins,
-            typescript(),
+            typescript({
+                clean: true,
+                objectHashIgnoreUnknownHack: true
+            }),
             resolve(),
             production && terser()
         ],
