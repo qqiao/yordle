@@ -34,6 +34,8 @@ github.com/qqiao/buildinfo v1.0.0 h1:Z7FlLFA4XBfwP0PKVojWaPnKyyFocdIlb4hTl01jvYE
 github.com/qqiao/buildinfo v1.0.0/go.mod h1:t73wytAIYDgrnOXAqjrCYBEQXqWln9tSL5nmBH0Fs7s=
 github.com/qqiao/webapp v1.0.1 h1:znWF4YGOb/2XifHo4M7u7RACVj7W0TUF4TLNgQxh+wY=
 github.com/qqiao/webapp v1.0.1/go.mod h1:yh1HYdeRHCtrzUMciZCtO+jAxLCf4yi/mSQFzpeFREU=
+github.com/qqiao/webapp v1.0.2 h1:/Wi0SmlKiQWpbY/WoBjo2n1gWoBRuX+OiJAiIIgiIFU=
+github.com/qqiao/webapp v1.0.2/go.mod h1:yh1HYdeRHCtrzUMciZCtO+jAxLCf4yi/mSQFzpeFREU=
 github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 go.opencensus.io v0.21.0 h1:mU6zScU4U1YAFPHEHYk+3JC4SY7JxgkqS10ZOSyksNg=
