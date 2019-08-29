@@ -21,12 +21,12 @@ import { LitElement, html, customElement, property, css } from 'lit-element';
 
 import '@material/mwc-button';
 import '@material/mwc-icon';
+import '@material/mwc-textfield';
+import { TextField } from '@material/mwc-textfield';
 
 import 'weightless/dialog';
-import 'weightless/textfield';
 
 import { Dialog } from 'weightless/dialog';
-import { Textfield } from 'weightless/textfield';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
@@ -72,14 +72,6 @@ export class YordleHome extends connect(store)(LitElement) {
         :host .inputs h1 {
             font-weight: normal;
             margin: 0;
-        }
-
-        :host .inputs wl-textfield {
-            --input-color: #fff;
-            --input-font-family: 'Roboto';
-            --input-label-color: #fff;
-            --input-state-color-active: #fff;
-            --input-state-border-color-hover: #fff;
         }
 
         :host .inputs mwc-button {
@@ -143,10 +135,10 @@ export class YordleHome extends connect(store)(LitElement) {
         <div class="inputs-container">
             <div class="inputs">
                 <h1>${this._messages['Shorten your links']}</h1>
-                <wl-textfield id="originalUrlInput"
-                    label="${this._messages['Your original URL here']}"
+                <mwc-textfield outlined id="originalUrlInput"
+                    placeholder="${this._messages['Your original URL here']}"
                     type="url" error-message="${this._messages['URL invalid']}">
-                </wl-textfield>
+                </mwc-textfield>
                 <mwc-button @click="${this._onShortenTap}">
                     ${this._messages['Shorten URL']}
                 </mwc-button>
@@ -211,7 +203,7 @@ export class YordleHome extends connect(store)(LitElement) {
 
     private _onShortenTap() {
         if (!this.shadowRoot) return
-        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as Textfield)
+        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as TextField)
             .value;
         store.dispatch(createShortUrl(originalUrl));
     }
