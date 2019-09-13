@@ -10,11 +10,11 @@ To install Yordle, please make sure you have the following prerequisites:
 1. A registered Google Cloud Platform project.
 2. The most recent version of Google App Engine Go SDK and all its
    dependencies. Instructions on how to obtain the SDK can be found
-   [here](https://cloud.google.com/appengine/docs/standard/go/download)
+   [here](https://cloud.google.com/appengine/docs/standard/go/download).
 3. Google Cloud Datastore emulator. Documentations and installation guides are
    located [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
-4. ```yarn``` and Polymer CLI. You can install the latest version of them by
-   using the command: ```npm install -g yarn polymer-cli```
+4. ```yarn```. You can install the latest version of them by
+   using the command: ```npm install -g yarn```
 
 Please note that this project can also be built with ```npm```. Please search
 and replace all instances of ```yarn``` with ```npm``` in the
@@ -37,7 +37,7 @@ Other Readings
 Getting Yordle
 --------------
 Yordle is set up as a go module, thus simplying cloning this repository should
-work for users with Go versions supporting modules, Go > 1.11.
+work for users with Go versions supporting modules, in other words Go > 1.11.
 
 However, for backward compatibility, Yordle is also fully ```go get```
 friendly, you can get the source code by running:
@@ -52,10 +52,10 @@ Running the following commands will launch Yordle locally.
 
     cd $CHECKOUT_DIR
     yarn install
-    CLOUDSDK_CORE_PROJECT=<project_id> yarn run debug
+    CLOUDSDK_CORE_PROJECT=<project_id> yarn start
 
 You can then edit and test your application by visiting
-http://localhost:9090.
+http://localhost:8080.
 
 TypeScript changes will be reflected upon the next browser refresh. Go changes,
 however, will require killing the current running instancesand restarting.
@@ -68,7 +68,7 @@ You can then deploy the application by running:
 
     cd $CHECKOUT_DIR
     yarn install
-    CLOUDSDK_CORE_PROJECT=<project_id> yarn run deploy
+    CLOUDSDK_CORE_PROJECT=<project_id> yarn deploy
 
 Seeing is believing
 -------------------
