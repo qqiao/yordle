@@ -82,7 +82,7 @@ export class YordleApp extends connect(store)(LitElement) {
 
         :host .page {
             display: none;
-            margin: 48px auto 0;
+            margin: 0 auto;
         }
 
         :host .page[active] {
