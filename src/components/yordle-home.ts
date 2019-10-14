@@ -20,13 +20,11 @@
 import { LitElement, html, customElement, property, css } from 'lit-element';
 
 import '@material/mwc-button';
+import '@material/mwc-dialog';
 import '@material/mwc-icon';
 import '@material/mwc-textfield';
+import { Dialog } from '@material/mwc-dialog';
 import { TextField } from '@material/mwc-textfield';
-
-import 'weightless/dialog';
-
-import { Dialog } from 'weightless/dialog';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
@@ -49,6 +47,7 @@ export class YordleHome extends connect(store)(LitElement) {
     static styles = css`
         :host {
             display: block;
+            --mdc-theme-primary: #000;
         }
 
         :host > div {
@@ -72,6 +71,16 @@ export class YordleHome extends connect(store)(LitElement) {
         :host .inputs h1 {
             font-weight: normal;
             margin: 0;
+        }
+
+        :host .inputs mwc-textfield {
+            margin-top: 10px;
+            width: 100%;
+            --mdc-theme-primary: #fff;
+            --mdc-text-field-ink-color: #fff;
+            --mdc-text-field-label-ink-color: #fff;
+            --mdc-text-field-outlined-hover-border-color: #fff;
+            --mdc-text-field-outlined-idle-border-color: #eee;
         }
 
         :host .inputs mwc-button {
@@ -135,13 +144,17 @@ export class YordleHome extends connect(store)(LitElement) {
         <div class="inputs-container">
             <div class="inputs">
                 <h1>${this._messages['Shorten your links']}</h1>
-                <mwc-textfield outlined id="originalUrlInput"
-                    placeholder="${this._messages['Your original URL here']}"
-                    type="url" error-message="${this._messages['URL invalid']}">
-                </mwc-textfield>
-                <mwc-button @click="${this._onShortenTap}">
-                    ${this._messages['Shorten URL']}
-                </mwc-button>
+                <div>
+                    <mwc-textfield outlined id="originalUrlInput"
+                        label="${this._messages['Your original URL here']}"
+                        type="url" error-message="${this._messages['URL invalid']}">
+                    </mwc-textfield>
+                </div>
+                <div>
+                    <mwc-button @click="${this._onShortenTap}">
+                        ${this._messages['Shorten URL']}
+                    </mwc-button>
+                </div>
             </div>
         </div>
         <div>
@@ -169,20 +182,18 @@ export class YordleHome extends connect(store)(LitElement) {
                 </div>
             </div>
         </div>
-        <wl-dialog id="resultDialog" fixed backdrop persistent>
-            <div slot="content" class="dialog-content">
+        <mwc-dialog id="resultDialog">
+            <div class="dialog-content">
                 <input id="shortUrl" value="${this._shortUrl}" type="text"></input>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
                     ${this._messages['Copy']}
                 </mwc-button>
             </div>
-            <div slot="footer" class="buttons">
-                <mwc-button dense @click="${this._onDoneClick}">
-                    ${this._messages['Done']}
-                </mwc-button>
-            </div>
-        </wl-dialog>`;
+            <mwc-button dense slot="primaryAction" dialogAction="ok">
+                ${this._messages['Done']}
+            </mwc-button>
+        </mwc-dialog>`;
     }
 
     constructor() {
@@ -195,10 +206,6 @@ export class YordleHome extends connect(store)(LitElement) {
         const input = this.shadowRoot.querySelector('#shortUrl') as HTMLInputElement;
         input.select();
         document.execCommand('copy');
-    }
-
-    private _onDoneClick(): void {
-        (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = false;
     }
 
     private _onShortenTap() {
