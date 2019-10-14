@@ -124,19 +124,20 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-icon-size: 32px;
         }
 
-        :host wl-dialog .dialog-content {
+        :host mwc-dialog .dialog-content {
             align-items: center;
             display: flex;
             flex-direction: row;
         }
 
-        :host wl-dialog mwc-button {
+        :host mwc-dialog mwc-button {
             --mdc-theme-primary: #666;
         }
 
-        :host wl-dialog .dialog-content #shortUrl {
-            border: 1px solid #ccc;
+        :host mwc-dialog .dialog-content #shortUrl {
             flex: 1;
+            --mdc-theme-primary: #666;
+            --mdc-text-field-fill-color: transparent;
         }`;
 
     protected render() {
@@ -184,7 +185,8 @@ export class YordleHome extends connect(store)(LitElement) {
         </div>
         <mwc-dialog id="resultDialog">
             <div class="dialog-content">
-                <input id="shortUrl" value="${this._shortUrl}" type="text"></input>
+                <mwc-textfield id="shortUrl" value="${this._shortUrl}" type="text">
+                </mwc-textfield>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
                     ${this._messages['Copy']}
