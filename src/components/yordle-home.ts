@@ -17,7 +17,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { LitElement, html, customElement, property, css } from 'lit-element';
+import {
+    LitElement,
+    css, customElement, html, property, query
+} from 'lit-element';
 
 import '@material/mwc-button';
 import '@material/mwc-dialog';
@@ -43,6 +46,15 @@ export class YordleHome extends connect(store)(LitElement) {
 
     @property()
     private _shortUrl: string = ''
+
+    @query('#dialog')
+    private dialog?: Dialog;
+
+    @query('#result')
+    private result?: TextField;
+
+    @query('#input')
+    private input?: TextField;
 
     static styles = css`
         :host {
@@ -134,7 +146,7 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-theme-primary: #666;
         }
 
-        :host mwc-dialog .dialog-content #shortUrl {
+        :host mwc-dialog .dialog-content #result {
             flex: 1;
             --mdc-theme-primary: #666;
             --mdc-text-field-fill-color: transparent;
@@ -146,7 +158,7 @@ export class YordleHome extends connect(store)(LitElement) {
             <div class="inputs">
                 <h1>${this._messages['Shorten your links']}</h1>
                 <div>
-                    <mwc-textfield outlined id="originalUrlInput"
+                    <mwc-textfield outlined id="input"
                         label="${this._messages['Your original URL here']}"
                         type="url" error-message="${this._messages['URL invalid']}">
                     </mwc-textfield>
@@ -183,9 +195,9 @@ export class YordleHome extends connect(store)(LitElement) {
                 </div>
             </div>
         </div>
-        <mwc-dialog id="resultDialog">
+        <mwc-dialog id="dialog">
             <div class="dialog-content">
-                <mwc-textfield id="shortUrl" value="${this._shortUrl}" type="text">
+                <mwc-textfield id="result" value="${this._shortUrl}" type="text">
                 </mwc-textfield>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
@@ -205,15 +217,13 @@ export class YordleHome extends connect(store)(LitElement) {
     }
 
     private _onCopyTap() {
-        const input = this.shadowRoot.querySelector('#shortUrl') as HTMLInputElement;
-        input.select();
+        this.result.select();
         document.execCommand('copy');
     }
 
     private _onShortenTap() {
-        if (!this.shadowRoot) return
-        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as TextField)
-            .value;
+        if (!this.shadowRoot) return;
+        let originalUrl = this.input.value;
         store.dispatch(createShortUrl(originalUrl));
     }
 
@@ -222,9 +232,8 @@ export class YordleHome extends connect(store)(LitElement) {
             this._shortUrl = state.shortUrl.shortUrl;
 
             if (state.shortUrl.status === Status.SUCCESS) {
-                if (this.shadowRoot) {
-                    (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = true;
-                }
+                if (!this.shadowRoot) return;
+                this.dialog.open = true;
             }
         }
 
