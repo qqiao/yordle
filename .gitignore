@@ -1,6 +1,7 @@
 .idea
 .rpt2_cache
 build_info.json
+entrypoint.hashmanifest.json
 yordle
 yordle.iml
 

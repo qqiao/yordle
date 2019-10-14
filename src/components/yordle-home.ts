@@ -17,16 +17,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { LitElement, html, customElement, property, css } from 'lit-element';
+import {
+    LitElement,
+    css, customElement, html, property, query
+} from 'lit-element';
 
 import '@material/mwc-button';
+import '@material/mwc-dialog';
 import '@material/mwc-icon';
 import '@material/mwc-textfield';
+import { Dialog } from '@material/mwc-dialog';
 import { TextField } from '@material/mwc-textfield';
-
-import 'weightless/dialog';
-
-import { Dialog } from 'weightless/dialog';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
@@ -46,9 +47,19 @@ export class YordleHome extends connect(store)(LitElement) {
     @property()
     private _shortUrl: string = ''
 
+    @query('#dialog')
+    private dialog?: Dialog;
+
+    @query('#result')
+    private result?: TextField;
+
+    @query('#input')
+    private input?: TextField;
+
     static styles = css`
         :host {
             display: block;
+            --mdc-theme-primary: #000;
         }
 
         :host > div {
@@ -72,6 +83,16 @@ export class YordleHome extends connect(store)(LitElement) {
         :host .inputs h1 {
             font-weight: normal;
             margin: 0;
+        }
+
+        :host .inputs mwc-textfield {
+            margin-top: 10px;
+            width: 100%;
+            --mdc-theme-primary: #fff;
+            --mdc-text-field-ink-color: #fff;
+            --mdc-text-field-label-ink-color: #fff;
+            --mdc-text-field-outlined-hover-border-color: #fff;
+            --mdc-text-field-outlined-idle-border-color: #eee;
         }
 
         :host .inputs mwc-button {
@@ -115,19 +136,20 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-icon-size: 32px;
         }
 
-        :host wl-dialog .dialog-content {
+        :host mwc-dialog .dialog-content {
             align-items: center;
             display: flex;
             flex-direction: row;
         }
 
-        :host wl-dialog mwc-button {
+        :host mwc-dialog mwc-button {
             --mdc-theme-primary: #666;
         }
 
-        :host wl-dialog .dialog-content #shortUrl {
-            border: 1px solid #ccc;
+        :host mwc-dialog .dialog-content #result {
             flex: 1;
+            --mdc-theme-primary: #666;
+            --mdc-text-field-fill-color: transparent;
         }`;
 
     protected render() {
@@ -135,13 +157,17 @@ export class YordleHome extends connect(store)(LitElement) {
         <div class="inputs-container">
             <div class="inputs">
                 <h1>${this._messages['Shorten your links']}</h1>
-                <mwc-textfield outlined id="originalUrlInput"
-                    placeholder="${this._messages['Your original URL here']}"
-                    type="url" error-message="${this._messages['URL invalid']}">
-                </mwc-textfield>
-                <mwc-button @click="${this._onShortenTap}">
-                    ${this._messages['Shorten URL']}
-                </mwc-button>
+                <div>
+                    <mwc-textfield outlined id="input"
+                        label="${this._messages['Your original URL here']}"
+                        type="url" error-message="${this._messages['URL invalid']}">
+                    </mwc-textfield>
+                </div>
+                <div>
+                    <mwc-button @click="${this._onShortenTap}">
+                        ${this._messages['Shorten URL']}
+                    </mwc-button>
+                </div>
             </div>
         </div>
         <div>
@@ -169,20 +195,19 @@ export class YordleHome extends connect(store)(LitElement) {
                 </div>
             </div>
         </div>
-        <wl-dialog id="resultDialog" fixed backdrop persistent>
-            <div slot="content" class="dialog-content">
-                <input id="shortUrl" value="${this._shortUrl}" type="text"></input>
+        <mwc-dialog id="dialog">
+            <div class="dialog-content">
+                <mwc-textfield id="result" value="${this._shortUrl}" type="text">
+                </mwc-textfield>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
                     ${this._messages['Copy']}
                 </mwc-button>
             </div>
-            <div slot="footer" class="buttons">
-                <mwc-button dense @click="${this._onDoneClick}">
-                    ${this._messages['Done']}
-                </mwc-button>
-            </div>
-        </wl-dialog>`;
+            <mwc-button dense slot="primaryAction" dialogAction="ok">
+                ${this._messages['Done']}
+            </mwc-button>
+        </mwc-dialog>`;
     }
 
     constructor() {
@@ -192,19 +217,13 @@ export class YordleHome extends connect(store)(LitElement) {
     }
 
     private _onCopyTap() {
-        const input = this.shadowRoot.querySelector('#shortUrl') as HTMLInputElement;
-        input.select();
+        this.result.select();
         document.execCommand('copy');
     }
 
-    private _onDoneClick(): void {
-        (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = false;
-    }
-
     private _onShortenTap() {
-        if (!this.shadowRoot) return
-        let originalUrl = (this.shadowRoot.querySelector('#originalUrlInput') as TextField)
-            .value;
+        if (!this.shadowRoot) return;
+        let originalUrl = this.input.value;
         store.dispatch(createShortUrl(originalUrl));
     }
 
@@ -213,9 +232,8 @@ export class YordleHome extends connect(store)(LitElement) {
             this._shortUrl = state.shortUrl.shortUrl;
 
             if (state.shortUrl.status === Status.SUCCESS) {
-                if (this.shadowRoot) {
-                    (this.shadowRoot.querySelector('#resultDialog') as Dialog).open = true;
-                }
+                if (!this.shadowRoot) return;
+                this.dialog.open = true;
             }
         }
 
