@@ -25,8 +25,10 @@ import {
 import '@material/mwc-button';
 import '@material/mwc-dialog';
 import '@material/mwc-icon';
+import '@material/mwc-snackbar';
 import '@material/mwc-textfield';
 import { Dialog } from '@material/mwc-dialog';
+import { Snackbar } from '@material/mwc-snackbar';
 import { TextField } from '@material/mwc-textfield';
 
 import { connect } from 'pwa-helpers/connect-mixin';
@@ -50,11 +52,14 @@ export class YordleHome extends connect(store)(LitElement) {
     @query('#dialog')
     private dialog?: Dialog;
 
+    @query('#input')
+    private input?: TextField;
+
     @query('#result')
     private result?: TextField;
 
-    @query('#input')
-    private input?: TextField;
+    @query('#snackbar')
+    private snackbar?: Snackbar;
 
     static styles = css`
         :host {
@@ -195,7 +200,7 @@ export class YordleHome extends connect(store)(LitElement) {
                 </div>
             </div>
         </div>
-        <mwc-dialog id="dialog">
+        <mwc-dialog id="dialog" scrimClickAction="">
             <div class="dialog-content">
                 <mwc-textfield id="result" value="${this._shortUrl}" type="text">
                 </mwc-textfield>
@@ -207,7 +212,9 @@ export class YordleHome extends connect(store)(LitElement) {
             <mwc-button dense slot="primaryAction" dialogAction="ok">
                 ${this._messages['Done']}
             </mwc-button>
-        </mwc-dialog>`;
+        </mwc-dialog>
+        <mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="2000"
+            labelText="Short URL copied to clipboard"></mwc-snackbar>`;
     }
 
     constructor() {
@@ -217,12 +224,17 @@ export class YordleHome extends connect(store)(LitElement) {
     }
 
     private _onCopyTap() {
+        if (!this.dialog || !this.result) return;
         this.result.select();
         document.execCommand('copy');
+        this.dialog.open = false;
+
+        if (!this.snackbar) return;
+        this.snackbar.open();
     }
 
     private _onShortenTap() {
-        if (!this.shadowRoot) return;
+        if (!this.input) return;
         let originalUrl = this.input.value;
         store.dispatch(createShortUrl(originalUrl));
     }
@@ -232,7 +244,7 @@ export class YordleHome extends connect(store)(LitElement) {
             this._shortUrl = state.shortUrl.shortUrl;
 
             if (state.shortUrl.status === Status.SUCCESS) {
-                if (!this.shadowRoot) return;
+                if (!this.dialog) return;
                 this.dialog.open = true;
             }
         }

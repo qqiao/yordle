@@ -905,7 +905,7 @@
   dependencies:
     tslib "^1.9.3"
 
-"@material/button@=4.0.0-canary.e851d4f40.0":
+"@material/button@=4.0.0-canary.e851d4f40.0", "@material/button@^4.0.0-canary.e851d4f40.0":
   version "4.0.0-canary.e851d4f40.0"
   resolved "https://registry.yarnpkg.com/@material/button/-/button-4.0.0-canary.e851d4f40.0.tgz#d21b037b573b7c2d5260496b2364281fbe65db9f"
   integrity sha512-bdVVviEqZ1RUBAulyfij72hD7ct3TulKr8JE3Yr8IaZefCc0ijqdqkktoNOA2bX7MikT3CdauEP8DCG8WwYUig==
@@ -1100,6 +1100,17 @@
     lit-html "^1.1.2"
     tslib "^1.10.0"
 
+"@material/mwc-snackbar@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@material/mwc-snackbar/-/mwc-snackbar-0.10.0.tgz#c7765a20450e1722e209d2afb4e9b928b27d5a8f"
+  integrity sha512-QEJkVUs5ToCxzXdXqzUgHO3TBAqUeuXJQYQW6MB8noG9rPo6OvbVbfyOuKG7Lz0AOrlIdeVAhaLWVSVu7SJflQ==
+  dependencies:
+    "@material/mwc-base" "^0.10.0"
+    "@material/snackbar" "=4.0.0-canary.e851d4f40.0"
+    lit-element "^2.2.1"
+    lit-html "^1.1.2"
+    tslib "^1.10.0"
+
 "@material/mwc-textfield@^0.10.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@material/mwc-textfield/-/mwc-textfield-0.10.0.tgz#bd67a49e4b8329ef8577881467bcbe6fdebe8817"
@@ -1165,6 +1176,24 @@
   integrity sha512-i1v7xS4pI+bddTTlgSpO4pZJhgF4nB4yp50WqKVKT4VzwaVYETyMSW2PnWJ6TUerH9IAz/BaeqVI8FGWdYvoUA==
   dependencies:
     "@material/feature-targeting" "^4.0.0-canary.e851d4f40.0"
+
+"@material/snackbar@=4.0.0-canary.e851d4f40.0":
+  version "4.0.0-canary.e851d4f40.0"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-4.0.0-canary.e851d4f40.0.tgz#6b55f0bfb50e1913f96b1a650c97cad4ec3942b4"
+  integrity sha512-8gIaKsFDYQ34eWrOPAAZCId7d45mApQmdHYjJ9Ou4EnCiE/C4Sw/xyeG+iv7iM51l8IKBBcYqPr72o6A/WAQrw==
+  dependencies:
+    "@material/animation" "^4.0.0-canary.e851d4f40.0"
+    "@material/base" "^4.0.0-canary.e851d4f40.0"
+    "@material/button" "^4.0.0-canary.e851d4f40.0"
+    "@material/dom" "^4.0.0-canary.e851d4f40.0"
+    "@material/feature-targeting" "^4.0.0-canary.e851d4f40.0"
+    "@material/icon-button" "^4.0.0-canary.e851d4f40.0"
+    "@material/ripple" "^4.0.0-canary.e851d4f40.0"
+    "@material/rtl" "^4.0.0-canary.e851d4f40.0"
+    "@material/shape" "^4.0.0-canary.e851d4f40.0"
+    "@material/theme" "^4.0.0-canary.e851d4f40.0"
+    "@material/typography" "^4.0.0-canary.e851d4f40.0"
+    tslib "^1.9.3"
 
 "@material/textfield@=4.0.0-canary.e851d4f40.0":
   version "4.0.0-canary.e851d4f40.0"
