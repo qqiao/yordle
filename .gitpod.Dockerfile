@@ -2,11 +2,10 @@ FROM golang:latest
 
 # Install Google Cloud SDK
 RUN apt-get -y update && apt-get -y dist-upgrade && \
-    apt-get -y install lsb-release curl gnupg build-essential git apt-utils apt-transport-https
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
-    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get -y update && apt-get -y install google-cloud-sdk-app-engine-go google-cloud-sdk-datastore-emulator
+    apt-get -y install lsb-release curl gnupg build-essential git apt-utils apt-transport-https ca-certificates
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+RUN apt-get -y update && apt-get -y install google-cloud-sdk-app-engine-go google-cloud-sdk-datastore-emulator
 
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod \
