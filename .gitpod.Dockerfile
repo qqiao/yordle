@@ -4,6 +4,7 @@ FROM golang:latest
 RUN apt-get -y update && apt-get -y dist-upgrade && \
     apt-get -y install curl gnupg build-essential git less
 
+RUN touch /etc/profile.d/go.sh
 RUN cat "export GOPATH=${HOME}/gopath >> /etc/profile.d/go.sh"
 RUN cat "export PATH=${GOPATH}/bin:${PATH}:/usr/local/go/bin >> /etc/profile.d/go.sh"
 
