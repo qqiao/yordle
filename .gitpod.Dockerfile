@@ -15,10 +15,12 @@ RUN mkdir -p /usr/local/gcloud \
 # Adding the package path to local
 ENV PATH=$PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
+# Clean up
 RUN rm /tmp/google-cloud-sdk.tar.gz
 
-RUN gcloud components list
-RUN gcloud components list available
+RUN gcloud components update
+RUN gcloud components install app-engine-go
+RUN gcloud components install cloud-datastore-emulator
 
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod
