@@ -1,5 +1,5 @@
 tasks:
   - init: yarn install && go get && git config --global commit.gpgsign true
-  - command: CLOUDSDK_CORE_PROJECT=local-test yarn run start
+    command: CLOUDSDK_CORE_PROJECT=local-test yarn run start
 image:
   file: .gitpod.Dockerfile
