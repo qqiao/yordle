@@ -17,6 +17,7 @@ USER gitpod
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
+RUN ls -la
 RUN /bin/bash -c "source .bashrc"
 RUN /bin/bash -c "source .bash_profile"
 RUN gcloud components update
