@@ -1,0 +1,5 @@
+tasks:
+  - init: yarn install && go get
+    command: CLOUDSDK_CORE_PROJECT=local-test yarn run start
+image:
+  file: .gitpod.Dockerfile
