@@ -2,7 +2,7 @@ FROM golang:latest
 
 # Install Google Cloud SDK
 RUN apt-get -y update && apt-get -y dist-upgrade && \
-    apt-get -y install lsb-release curl gnupg build-essential git apt-utils apt-transport-https ca-certificates
+    apt-get -y install lsb-release curl gnupg build-essential git apt-utils apt-transport-https ca-certificates openjdk-8-jdk
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 RUN apt-get -y update && apt-get -y install google-cloud-sdk-app-engine-go google-cloud-sdk-datastore-emulator
