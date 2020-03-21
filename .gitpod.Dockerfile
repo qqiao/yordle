@@ -19,7 +19,7 @@ RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
 RUN ls -la
 RUN /bin/bash -c "source .bashrc"
-RUN /bin/bash -c "source .bash_profile"
+RUN /bin/bash -c "source .profile"
 RUN gcloud components update
 RUN gcloud components install app-engine-go
 RUN gcloud components list 
