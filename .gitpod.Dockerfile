@@ -28,10 +28,16 @@ RUN { echo && echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01
 ### Gitpod user (2) ###
 USER gitpod
 
-
+# Install Google Cloud SDK
+RUN curl https://sdk.cloud.google.com > install.sh
+RUN bash install.sh --disable-prompts
+RUN /bin/bash -c "source .bashrc"
+RUN gcloud components update
+RUN gcloud components install app-engine-go
+RUN gcloud components list 
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-RUN source ${HOME}/.bashrc
+RUN /bin/bash -c "source .bashrc"
 RUN nvm install v13
 RUN npm i -g yarn firebase-tools
