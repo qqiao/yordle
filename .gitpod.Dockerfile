@@ -4,8 +4,8 @@ FROM golang:latest
 RUN apt-get -y update && apt-get -y dist-upgrade && \
     apt-get -y install curl gnupg build-essential git less
 
-RUN echo "export GOPATH=${HOME}/gopath >> /etc/profile.d/go.sh"
-RUN echo "export PATH=${GOPATH}/bin:${PATH}:/usr/local/go/bin >> /etc/profile.d/go.sh"
+RUN echo "export GOPATH=${HOME}/gopath" >> /etc/profile.d/go.sh
+RUN echo "export PATH=${GOPATH}/bin:${PATH}:/usr/local/go/bin" >> /etc/profile.d/go.sh
 
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod
