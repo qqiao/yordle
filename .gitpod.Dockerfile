@@ -19,12 +19,8 @@ USER gitpod
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
-RUN /bin/bash -c "source .bashrc"
-RUN /bin/bash -c "source /etc/profile"
 
-RUN gcloud components update
-RUN gcloud components install app-engine-go
-RUN gcloud components list 
+RUN source .bashrc && gcloud components update && gcloud components install app-engine-go && gcloud components list 
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
