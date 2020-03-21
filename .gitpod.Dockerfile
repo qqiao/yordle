@@ -22,8 +22,8 @@ USER gitpod
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
-RUN echo "source $\{HOME\}/google-cloud-sdk/path.bash.inc" >> ${HOME}/.bashrc
-RUN echo "source $\{HOME\}/google-cloud-sdk/completion.bash.inc" >> ${HOME}/.bashrc
+RUN echo 'source $''{HOME}/google-cloud-sdk/path.bash.inc' >> ${HOME}/.bashrc
+RUN echo 'source $''{HOME}/google-cloud-sdk/completion.bash.inc' >> ${HOME}/.bashrc
 ENV PATH=${PATH}:${HOME}/google-cloud-sdk/bin
 RUN gcloud components update && gcloud components install app-engine-go && \
     gcloud components install cloud-datastore-emulator 
@@ -31,3 +31,6 @@ RUN gcloud components update && gcloud components install app-engine-go && \
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN . ${HOME}/.nvm/nvm.sh && nvm install v13 && npm i -g yarn firebase-tools
+
+# Install app-tools
+RUN go get -u github.com/qqiao/app-tools
