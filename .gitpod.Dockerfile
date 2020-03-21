@@ -16,6 +16,7 @@ USER gitpod
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
+RUN exec -l $SHELL
 RUN gcloud components install app-engine-go
 RUN gcloud components list
 
