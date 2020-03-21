@@ -3,6 +3,7 @@ FROM golang:latest
 # Update packages
 RUN apt-get -y update && apt-get -y dist-upgrade && \
     apt-get -y install curl gnupg build-essential git less
+    apt-get -y install nano
 
 # Create the gitpod user
 RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod

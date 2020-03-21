@@ -213,7 +213,7 @@ export class YordleHome extends connect(store)(LitElement) {
                 ${this._messages['Done']}
             </mwc-button>
         </mwc-dialog>
-        <mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="2000"
+        <mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="5000"
             labelText="Short URL copied to clipboard"></mwc-snackbar>`;
     }
 
