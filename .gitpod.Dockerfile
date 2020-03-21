@@ -1,6 +1,6 @@
 FROM golang:latest
 
-# Install Google Cloud SDK
+# Update packages
 RUN apt-get -y update && apt-get -y dist-upgrade && \
     apt-get -y install curl gnupg build-essential git
 
@@ -11,13 +11,14 @@ WORKDIR $HOME
 # custom Bash prompt
 RUN { echo && echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \\\$ '" ; } >> .bashrc
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 ### Gitpod user (2) ###
 USER gitpod
 
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
-RUN cat .profile
 RUN /bin/bash -c "source .bashrc"
 RUN /bin/bash -c "source /etc/profile"
 
