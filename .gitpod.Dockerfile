@@ -25,5 +25,4 @@ RUN gcloud components update && gcloud components install app-engine-go && \
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-RUN . ${HOME}/.nvm/nvm.sh
-RUN nvm install v13 && npm i -g yarn firebase-tools
+RUN . ${HOME}/.nvm/nvm.sh && nvm install v13 && npm i -g yarn firebase-tools
