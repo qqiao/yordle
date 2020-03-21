@@ -27,6 +27,7 @@ RUN echo 'source $''{HOME}/google-cloud-sdk/completion.bash.inc' >> ${HOME}/.bas
 ENV PATH=${PATH}:${HOME}/google-cloud-sdk/bin:/usr/local/go/bin
 RUN gcloud components update && gcloud components install app-engine-go && \
     gcloud components install cloud-datastore-emulator
+RUN rm install.sh
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
