@@ -6,7 +6,7 @@ RUN apt-get -y update && apt-get -y dist-upgrade && \
 RUN apt-get -y install default-jdk
 
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-RUN useradd -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod \
+RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod
 ENV HOME=/home/gitpod
 WORKDIR $HOME
 
