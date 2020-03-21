@@ -18,6 +18,7 @@ USER gitpod
 RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
 RUN /bin/bash -c "source .bashrc"
+RUN /bin/bash -c "source .bash_profile"
 RUN gcloud components update
 RUN gcloud components install app-engine-go
 RUN gcloud components list 
@@ -25,5 +26,6 @@ RUN gcloud components list
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN /bin/bash -c "source .bashrc"
+RUN /bin/bash -c "source .bash_profile"
 RUN nvm install v13
 RUN npm i -g yarn firebase-tools
