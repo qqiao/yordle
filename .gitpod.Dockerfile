@@ -28,10 +28,7 @@ RUN { echo && echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01
 ### Gitpod user (2) ###
 USER gitpod
 
-# Install gcloud related stuff
-RUN gcloud components update
-RUN gcloud components install app-engine-go
-RUN gcloud components install cloud-datastore-emulator
+
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
