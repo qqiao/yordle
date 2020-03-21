@@ -10,12 +10,15 @@ RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tm
 # Installing the package
 RUN mkdir -p /usr/local/gcloud \
   && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
-
-RUN rm /tmp/google-cloud-sdk.tar.gz
+  && /usr/local/gcloud/google-cloud-sdk/install.sh --disable-prompts
 
 # Adding the package path to local
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+RUN rm /tmp/google-cloud-sdk.tar.gz
+
+RUN gcloud components list
+RUN gcloud components list available
 
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod
