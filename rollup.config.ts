@@ -21,8 +21,7 @@ export default [wc].map(conf => {
             }),
             ...conf.plugins,
             typescript({
-                clean: true,
-                objectHashIgnoreUnknownHack: true
+                clean: true
             }),
             resolve(),
             production && terser()
