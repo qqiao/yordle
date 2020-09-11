@@ -13,8 +13,9 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "experimentalDecorators": true,
-        "strict": false,
+        "strict": true,
         "sourceMap": true,
+        "outDir": "out-tsc",
     },
     "include": [
         "src/**/*.ts",

@@ -52,7 +52,9 @@ export const createShortUrl: ActionCreator<ThunkResult> = (originalUrl: string) 
         body: formData,
     })).json();
 
-    switch (Status[resp.status]) {
+    const status = Object.values(Status).find(x => x === resp.status);
+
+    switch (status) {
         case Status.SUCCESS:
             dispatch({
                 type: ActionTypes.CREATION_SUCCESS,
