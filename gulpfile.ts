@@ -17,7 +17,7 @@
 
 /* eslint camelcase: "off" */
 /* eslint no-console: "off" */
-import {ChildProcess, exec} from 'child_process';
+import { ChildProcess, exec } from 'child_process';
 import gulp from 'gulp';
 
 import ts from 'gulp-typescript';
@@ -29,7 +29,7 @@ const CLOUDSDK_CORE_PROJECT = process.env.CLOUDSDK_CORE_PROJECT || (() => {
 })();
 const DATASTORE_PORT = 23333;
 
-const execCommand = (command, cb, options?) :ChildProcess => {
+const execCommand = (command, cb, options?): ChildProcess => {
     let cli = exec(command, options, (err, stdout, stderr) => {
         stderr && console.error(stderr);
         cb(err);
@@ -49,6 +49,21 @@ export const buildInfo = (cb) => {
         cb);
 };
 
+export const copy = gulp.series(buildInfo, () => {
+    return gulp.src([
+        'app.yaml',
+        'build_info.json',
+        'go.sum',
+        'go.mod',
+        'manifest.json',
+        'robots.txt',
+        '*.go',
+        '**/*.go',
+        '!dist/**',
+        '!**/*_test.go'
+    ], { base: '.' }).pipe(gulp.dest(BUILD_DIR));
+});
+
 export const datastoreEmulator = (cb) => {
     const cmd = [
         `CLOUDSDK_CORE_PROJECT=${CLOUDSDK_CORE_PROJECT}`,
@@ -64,28 +79,8 @@ const go = (cb) => {
         `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
         'go run -tags local .',
     ].join(' ');
-    return execCommand(cmd, cb, {cwd: BUILD_DIR});
+    return execCommand(cmd, cb, { cwd: BUILD_DIR });
 };
-
-const watch = (cb) => {
-    return execCommand('rollup -w -c rollup.config.ts', cb);
-}
-
-export const copy = gulp.series(buildInfo, () => {
-    return gulp.src([
-        'app.yaml',
-        'build_info.json',
-        'go.sum',
-        'go.mod',
-        'manifest.json',
-        'robots.txt',
-        '*.go',
-        '**/*.go',
-        '!dist/**',
-        '!node_modules/**',
-        '!**/*_test.go'
-    ], {base: '.'}).pipe(gulp.dest(BUILD_DIR));
-});
 
 export const test = gulp.parallel(datastoreEmulator, (cb) => {
     const cmd = [
@@ -108,5 +103,5 @@ export const deploy = (cb) => {
     });
 };
 
-const start = gulp.series(copy, gulp.parallel(datastoreEmulator, watch, go));
+const start = gulp.parallel(datastoreEmulator, go);
 export default start;

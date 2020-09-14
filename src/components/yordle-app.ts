@@ -54,16 +54,8 @@ export class YordleApp extends connect(store)(LitElement) {
         :host {
             color: #666;
             display: block;
-            --mdc-theme-primary: #fff
-        }
-
-        :host mwc-top-app-bar a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        :host mwc-icon-button {
-            margin: 0 16px 0 0;
+            --mdc-theme-primary: #fff;
+            --mdc-theme-on-primary: #666;
         }
 
         :host mwc-icon-button:not([active]) {
@@ -109,10 +101,10 @@ export class YordleApp extends connect(store)(LitElement) {
     protected render() {
         return html`
         <mwc-top-app-bar>
-            <a href="/" slot="navigationIcon">
-                <mwc-icon-button ?active="${'home' !== this._page}"
-                    icon="arrow_back"></mwc-icon-button>
-            </a>
+            <mwc-icon-button ?active="${'home' !== this._page}"
+                icon="arrow_back" slot="navigationIcon" @click="${() => {
+                history.go(-1);
+            }}"></mwc-icon-button>
             <div slot="title" class="title">${this.appName}</div>
             <div slot="actionItems" class="top-navigation">
                 <a href="#/help">${this._messages.help}</a>
@@ -156,11 +148,5 @@ export class YordleApp extends connect(store)(LitElement) {
                 }
             }
         }
-    }
-}
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'yordle-app': YordleApp;
     }
 }
