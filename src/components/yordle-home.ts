@@ -230,7 +230,7 @@ export class YordleHome extends connect(store)(LitElement) {
         this.dialog.open = false;
 
         if (!this.snackbar) return;
-        this.snackbar.open();
+        this.snackbar.open=true;
     }
 
     private _onShortenTap() {

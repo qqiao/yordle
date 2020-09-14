@@ -21,34 +21,34 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=0">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=0">
 
-    <title>{{.Config.AppName}}</title>
-    <meta name="description" content="{{.Config.AppName}}">
+	<title>{{.Config.AppName}}</title>
+	<meta name="description" content="{{.Config.AppName}}">
 
-    <!-- TODO implement favicon -->
-    <!-- <link rel="icon" href="/favicon.ico"> -->
+	<!-- TODO implement favicon -->
+	<!-- <link rel="icon" href="/favicon.ico"> -->
 
-    <!-- See https://goo.gl/OOhYW5 -->
-    <!-- <link rel="manifest" href="/manifest.json"> -->
+	<!-- See https://goo.gl/OOhYW5 -->
+	<!-- <link rel="manifest" href="/manifest.json"> -->
 
-    <!-- See https://goo.gl/qRE0vM -->
-    <meta name="theme-color" content="#5599ff">
+	<!-- See https://goo.gl/qRE0vM -->
+	<meta name="theme-color" content="#5599ff">
 
-    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="{{.Config.AppName}}">
+	<!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="application-name" content="{{.Config.AppName}}">
 
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="{{.Config.AppName}}">
+	<!-- Add to homescreen for Safari on iOS -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="{{.Config.AppName}}">
 
-    <!-- Homescreen icons
+	<!-- Homescreen icons
         TODO implement this
         -->
-    <!-- <link rel="apple-touch-icon" href="/images/manifest/icon-48x48.png">
+	<!-- <link rel="apple-touch-icon" href="/images/manifest/icon-48x48.png">
         <link
             rel="apple-touch-icon"
             sizes="72x72"
@@ -66,54 +66,45 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             sizes="192x192"
             href="/images/manifest/icon-192x192.png"> -->
 
-    <!-- Tile icon for Windows 8 (144x144 + tile color)
+	<!-- Tile icon for Windows 8 (144x144 + tile color)
         TODO implement this
         -->
-    <!-- <meta
+	<!-- <meta
             name="msapplication-TileImage"
             content="/images/manifest/icon-144x144.png"> -->
-    <meta name="msapplication-TileColor" content="#5599ff">
-    <meta name="msapplication-tap-highlight" content="no">
+	<meta name="msapplication-TileColor" content="#5599ff">
+	<meta name="msapplication-tap-highlight" content="no">
 
-    <link href="//fonts.googleapis.com/css?family=Roboto|Noto+Sans+SC|Material+Icons&display=swap" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Roboto|Noto+Sans+SC|Material+Icons&display=swap" rel="stylesheet">
 
-    <base href="/">
+	<base href="/">
 
-    <!-- Load and register pre-caching Service Worker -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('service-worker.js', {
-                    scope: '/',
-                });
-            });
-        }
-    </script> {{.InitData}}
+	{{.InitData}}
 
-    <!-- Add any global styles for body, document, etc. -->
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
-            line-height: 1.5;
-            min-height: 100vh;
-        }
-    </style>
-    {{if .Config.GoogleAnalytics.Enabled}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{.Config.GoogleAnalytics.TrackingID}}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+	<!-- Add any global styles for body, document, etc. -->
+	<style>
+		body {
+			margin: 0;
+			font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+			line-height: 1.5;
+			min-height: 100vh;
+		}
+	</style>
+	{{if .Config.GoogleAnalytics.Enabled}}
+	<script async src="https://www.googletagmanager.com/gtag/js?id={{.Config.GoogleAnalytics.TrackingID}}"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', '{{.Config.GoogleAnalytics.TrackingID}}');
-    </script>
-    {{end}}
+	</script>
+	{{end}}
 </head>
 
 <body>
-    <yordle-app appName="{{.Config.AppName}}"></yordle-app>
-    <script type="module" src="./src/components/yordle-app.ts"></script>
+	<yordle-app appName="{{.Config.AppName}}"></yordle-app>
+	<script type="module" src="./out-tsc/src/components/yordle-app.js"></script>
 </body>
 
 </html>

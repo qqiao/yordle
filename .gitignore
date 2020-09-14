@@ -9,3 +9,11 @@ bower_components/
 build/
 dist/
 node_modules/
+out-tsc/
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/version
+.pnp.*
