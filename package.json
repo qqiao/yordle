@@ -44,5 +44,8 @@
     "deploy": "yarn build && gulp deploy",
     "start": "gulp",
     "test": "gulp test"
+  },
+  "installConfig": {
+    "pnp": true
   }
 }
