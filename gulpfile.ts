@@ -20,8 +20,6 @@
 import { ChildProcess, exec } from 'child_process';
 import gulp from 'gulp';
 
-import ts from 'gulp-typescript';
-
 const BUILD_DIR = 'dist/';
 const CLOUDSDK_CORE_PROJECT = process.env.CLOUDSDK_CORE_PROJECT || (() => {
     console.error('No CLOUDSDK_CORE_PROJECT environmental variable set!');
