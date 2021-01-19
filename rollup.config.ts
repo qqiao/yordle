@@ -4,7 +4,7 @@ import merge from 'deepmerge';
 
 const baseConfig = createSpaConfig({
     developmentMode: process.env.ROLLUP_WATCH === 'true',
-    injectServiceWorker: true,
+    injectServiceWorker: false,
 });
 
 const production = process.env.ROLLUP_WATCH !== 'true';
