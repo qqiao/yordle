@@ -22,7 +22,7 @@ RUN curl https://sdk.cloud.google.com > install.sh
 RUN bash install.sh --disable-prompts
 RUN echo 'source $''{HOME}/google-cloud-sdk/path.bash.inc' >> ${HOME}/.bashrc
 RUN echo 'source $''{HOME}/google-cloud-sdk/completion.bash.inc' >> ${HOME}/.bashrc
-ENV PATH=${GOPATH}/bin:/usr/local/go/bin:${PATH}:${HOME}/google-cloud-sdk/bin:/usr/local/go/bin
+ENV PATH=${GOPATH}/bin:/usr/local/go/bin:${PATH}:${HOME}/google-cloud-sdk/bin
 RUN gcloud components update && gcloud components install app-engine-go && \
     gcloud components install cloud-datastore-emulator && \
     gcloud components install beta
