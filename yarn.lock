@@ -1177,6 +1177,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.9.2":
+  version: 7.14.0
+  resolution: "@babel/runtime@npm:7.14.0"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: ab6653f2f8ecdaebf36674894cef458a9d4f881dc007fdcd50a8261f5c6d9731e03fda2c17e32ecf0e6c779d69eb6cf49d68a48c780aaf07d5b572e8b7ef0508
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.10.4, @babel/template@npm:^7.12.7, @babel/template@npm:^7.3.3, @babel/template@npm:^7.7.0":
   version: 7.12.7
   resolution: "@babel/template@npm:7.12.7"
@@ -6353,7 +6362,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
+"js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
   checksum: 1fc4e4667ac2d972aba65148b9cbf9c17566b2394d3504238d8492bbd3e68f496c657eab06b26b40b17db5cac0a34d153a12130e2d2d2bb6dc2cdc8a4764eb1b
@@ -6646,7 +6655,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-element@npm:^2.3.0, lit-element@npm:^2.4.0":
+"lit-element@npm:^2.3.0":
   version: 2.4.0
   resolution: "lit-element@npm:2.4.0"
   dependencies:
@@ -6655,10 +6664,26 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^1.1.1, lit-html@npm:^1.1.2, lit-html@npm:^1.3.0":
+"lit-element@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "lit-element@npm:2.5.0"
+  dependencies:
+    lit-html: ^1.1.1
+  checksum: ad2e1dc8d41469fa02dbb11f6d5975ad6222f3a3f13fc2b12136b848d9074fc313a93e32bc03dca1553bdd5a2e3625fecfb78b056426ad7901d56e34524f51e3
+  languageName: node
+  linkType: hard
+
+"lit-html@npm:^1.1.1, lit-html@npm:^1.1.2":
   version: 1.3.0
   resolution: "lit-html@npm:1.3.0"
   checksum: b32528e92f47d2ad6a306319a16a8301e1d8bd7cd1a065516a4fc14e55904f054bfe38dd1725e584ba2bdd71549c88c90107e493e3094a2f13b507c1ba86bd39
+  languageName: node
+  linkType: hard
+
+"lit-html@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "lit-html@npm:1.4.0"
+  checksum: 9b50948632b56f69b87e1946e0f375a2b6f6da2b85d9a685c75e311c88046f4c31cda0fab3a79cdcb1f0bddff8d50083d46393d6570db67c0f3320737b11015a
   languageName: node
   linkType: hard
 
@@ -6738,17 +6763,6 @@ fsevents@^1.2.7:
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 4983720b9abca930a4a46f18db163d7dad8dd00dbed6db0cc7b499b33b717cce69f80928b27bbb1ff2cbd3b19d251ee90669a8b5ea466072ca81c2ebe91e7468
-  languageName: node
-  linkType: hard
-
-"loose-envify@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loose-envify@npm:1.4.0"
-  dependencies:
-    js-tokens: ^3.0.0 || ^4.0.0
-  bin:
-    loose-envify: cli.js
-  checksum: 5c3b47bbe5f597a3889fb001a3a98aaea2a3fafa48089c19034de1e0121bf57dbee609d184478514d74d5c5a7e9cfa3d846343455e5123b060040d46c39e91dc
   languageName: node
   linkType: hard
 
@@ -7935,13 +7949,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "redux@npm:4.0.5"
+"redux@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "redux@npm:4.1.0"
   dependencies:
-    loose-envify: ^1.4.0
-    symbol-observable: ^1.2.0
-  checksum: 112739c2fb83ae2e18335d942a883b3ee14ebada31ff3a7924511a1f38a4278a762f5823491f3eb5083492de601ed76cb2687295c7d5db9a6e098c2542cdc05b
+    "@babel/runtime": ^7.9.2
+  checksum: d939d0df1e12982c66c0ea767c8ec98276ee981ce0381222239b7f823c6ad02ea3e3c622859bcb4934446b3f86d735db35d7bd8b1697d359070e5fbef1f4ad49
   languageName: node
   linkType: hard
 
@@ -9037,13 +9050,6 @@ fsevents@^1.2.7:
     es6-iterator: ^2.0.1
     es6-symbol: ^3.1.1
   checksum: 3f6cc0c85d163f50c6c3c93eec28b2f55a79e5659723abb1b7172b2efdff99656b0f5df976ebc125824aec886afed9574757f7ea992d33bde1045d9007a8dcf7
-  languageName: node
-  linkType: hard
-
-"symbol-observable@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "symbol-observable@npm:1.2.0"
-  checksum: 268834a1d4cba19d40f367e5c2755f612969c8418e43a3be17408e392802a667f8bb542893440d58a080a8ea8da05ea98e27e472b9f4ff6fbda78a21a1a41c53
   languageName: node
   linkType: hard
 
@@ -10325,10 +10331,10 @@ typescript@^4.2.4:
     eslint-plugin-html: ^6.1.2
     gulp: ^4.0.2
     jest: ^26.6.3
-    lit-element: ^2.4.0
-    lit-html: ^1.3.0
+    lit-element: ^2.5.0
+    lit-html: ^1.4.0
     pwa-helpers: ^0.9.1
-    redux: ^4.0.5
+    redux: ^4.1.0
     redux-thunk: ^2.3.0
     rimraf: ^3.0.2
     rollup: ^2.46.0
