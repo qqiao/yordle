@@ -43,8 +43,5 @@
         "start": "yarn build && concurrently --kill-others --names tsc,rollup,gulp \"yarn tsc:watch\" \"rollup -w -c rollup.config.ts\" \"gulp\"",
         "test": "gulp test",
         "tsc:watch": "tsc --watch"
-    },
-    "installConfig": {
-        "pnp": true
     }
 }
