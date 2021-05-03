@@ -5,6 +5,7 @@ import merge from 'deepmerge';
 const baseConfig = createSpaConfig({
     developmentMode: process.env.ROLLUP_WATCH === 'true',
     injectServiceWorker: false,
+    nodeResolve: { browser: true, dedupe: ['lit-html'] },
 });
 
 const production = process.env.ROLLUP_WATCH !== 'true';
