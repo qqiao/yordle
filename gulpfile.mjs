@@ -17,7 +17,7 @@
 
 /* eslint camelcase: "off" */
 /* eslint no-console: "off" */
-import { ChildProcess, exec } from 'child_process';
+import { exec } from 'child_process';
 import gulp from 'gulp';
 
 const BUILD_DIR = 'dist/';
@@ -27,7 +27,7 @@ const CLOUDSDK_CORE_PROJECT = process.env.CLOUDSDK_CORE_PROJECT || (() => {
 })();
 const DATASTORE_PORT = 23333;
 
-const execCommand = (command, cb, options?): ChildProcess => {
+const execCommand = (command, cb, options) => {
     let cli = exec(command, options, (err, stdout, stderr) => {
         stderr && console.error(stderr);
         cb(err);
