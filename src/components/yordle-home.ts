@@ -19,8 +19,9 @@
 
 import {
     LitElement,
-    css, customElement, html, property, query
-} from 'lit-element';
+    css, html
+} from 'lit';
+import { customElement, property, query } from 'lit/decorators';
 
 import '@material/mwc-button';
 import '@material/mwc-dialog';
@@ -230,7 +231,7 @@ export class YordleHome extends connect(store)(LitElement) {
         this.dialog.open = false;
 
         if (!this.snackbar) return;
-        this.snackbar.open=true;
+        this.snackbar.open = true;
     }
 
     private _onShortenTap() {

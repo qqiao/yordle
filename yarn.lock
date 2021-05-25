@@ -1466,6 +1466,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lit/reactive-element@npm:^1.0.0-rc.2":
+  version: 1.0.0-rc.2
+  resolution: "@lit/reactive-element@npm:1.0.0-rc.2"
+  checksum: 89f9c912341a70d8b4318b5846ac5682f4aaa6b5135e6f8d69b37eb70d928cedfd1eca2df87bf3c37e735fd283374e1f978af6a152f60e6f0ef0e5607e30c208
+  languageName: node
+  linkType: hard
+
 "@material/animation@npm:12.0.0-canary.197f64fa2.0":
   version: 12.0.0-canary.197f64fa2.0
   resolution: "@material/animation@npm:12.0.0-canary.197f64fa2.0"
@@ -2338,6 +2345,13 @@ __metadata:
   version: 2.0.0
   resolution: "@types/stack-utils@npm:2.0.0"
   checksum: 662312302e07685c99a1c45c6753eb997b31d2af66e646c5937f62d593a63a111289503d0b06a8d1e6f3922b67fc2ed94889d84653a08861a7fee67b81ce5b92
+  languageName: node
+  linkType: hard
+
+"@types/trusted-types@npm:^1.0.1":
+  version: 1.0.6
+  resolution: "@types/trusted-types@npm:1.0.6"
+  checksum: a2eb3e307d4fa212888285de782e96bd083dbabb991c3803aed124d50c9637529699299319ec8be301b3c5668067f6ea07785c3c6099f99d92783a3dab48de29
   languageName: node
   linkType: hard
 
@@ -6600,12 +6614,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-element@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "lit-element@npm:2.5.1"
+"lit-element@npm:^3.0.0-rc.2":
+  version: 3.0.0-rc.2
+  resolution: "lit-element@npm:3.0.0-rc.2"
   dependencies:
-    lit-html: ^1.1.1
-  checksum: 82f14fc0edd82eec77ad4b48c5f65c1aff15d6cfe7639b19cbac983dcf94892c94c6a202bebf89114a9500e01e9013f5a0ff7e261adf24aa7a1de669448ccd74
+    "@lit/reactive-element": ^1.0.0-rc.2
+    lit-html: ^2.0.0-rc.3
+  checksum: 983b1bcc2bdcafc2afbfe66fcbde49eddc379ec0e331b949b1676010eef4a9b06d1ef8b0d62077195f87d710996c257de4cbbd71f40501e81352c1f7da207bce
   languageName: node
   linkType: hard
 
@@ -6625,10 +6640,23 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "lit-html@npm:1.4.1"
-  checksum: cf3dea0afa2cb014a258169b1b597272f868385ba7b5d7a55258500aa4f2fb3d79e903dd22aa2076ff1c801ba5fbcde3db2ca185707ae57ca3816c95e8bcc086
+"lit-html@npm:^2.0.0-rc.3":
+  version: 2.0.0-rc.3
+  resolution: "lit-html@npm:2.0.0-rc.3"
+  dependencies:
+    "@types/trusted-types": ^1.0.1
+  checksum: 6e7f6411f1749dd925d6bb2ff9af9d9fc5bede25c6cf3ef45b7d1fcd888a43096fa6be555fee43626ea1be1c2a82a282d73ce90a7465c775aed03bc1a8398cac
+  languageName: node
+  linkType: hard
+
+"lit@npm:^2.0.0-rc.2":
+  version: 2.0.0-rc.2
+  resolution: "lit@npm:2.0.0-rc.2"
+  dependencies:
+    "@lit/reactive-element": ^1.0.0-rc.2
+    lit-element: ^3.0.0-rc.2
+    lit-html: ^2.0.0-rc.3
+  checksum: 4adc81ee8836a5d2808408931cf7b7ff8de0851513c6120d1a0b980f2eaca735044db817fbe5b810b64e12a463656fdd63e4437760e219a6011c97f74996217f
   languageName: node
   linkType: hard
 
@@ -10250,8 +10278,7 @@ typescript@^4.2.4:
     eslint-plugin-html: ^6.1.2
     gulp: ^4.0.2
     jest: ^26.6.3
-    lit-element: ^2.5.1
-    lit-html: ^1.4.1
+    lit: ^2.0.0-rc.2
     pwa-helpers: ^0.9.1
     redux: ^4.1.0
     redux-thunk: ^2.3.0
