@@ -17,7 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { LitElement, html, customElement, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators';
 
 @customElement('yordle-help' as any)
 export class YordleHelp extends LitElement {
