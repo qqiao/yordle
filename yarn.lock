@@ -2376,6 +2376,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-typescript@npm:^8.2.1":
+  version: 8.2.1
+  resolution: "@rollup/plugin-typescript@npm:8.2.1"
+  dependencies:
+    "@rollup/pluginutils": ^3.1.0
+    resolve: ^1.17.0
+  peerDependencies:
+    rollup: ^2.14.0
+    tslib: "*"
+    typescript: ">=3.7.0"
+  checksum: a9dbd2000ec0190742322c445e403b43db65c21f7f548279473e4f512a17f482b28f1b98b2a58373e63b24611c31aa193037043c6aea159756c67ea49658dff2
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^3.0.8, @rollup/pluginutils@npm:^3.1.0":
   version: 3.1.0
   resolution: "@rollup/pluginutils@npm:3.1.0"
@@ -10550,6 +10564,7 @@ resolve@^1.20.0:
     "@material/mwc-top-app-bar": ^0.21.0
     "@open-wc/building-rollup": ^1.10.0
     "@rollup/plugin-replace": ^2.4.2
+    "@rollup/plugin-typescript": ^8.2.1
     "@types/gulp": ^4.0.8
     "@types/jest": ^26.0.23
     "@types/node": ^15.6.1
