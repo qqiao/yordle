@@ -8,15 +8,15 @@
         "@rollup/plugin-typescript": "^8.2.1",
         "@types/gulp": "^4.0.8",
         "@types/jest": "^26.0.23",
-        "@types/node": "^15.6.1",
+        "@types/node": "^15.12.0",
         "concurrently": "^6.2.0",
         "deepmerge": "^4.2.2",
         "eslint": "^7.27.0",
         "eslint-plugin-html": "^6.1.2",
         "gulp": "^4.0.2",
-        "jest": "^27.0.3",
+        "jest": "^27.0.4",
         "rimraf": "^3.0.2",
-        "rollup": "^2.50.5",
+        "rollup": "^2.50.6",
         "tslint": "^6.1.3",
         "typescript": "^4.3.2"
     },
@@ -35,10 +35,10 @@
         "redux-thunk": "^2.3.0"
     },
     "scripts": {
-        "build": "yarn clean && rollup -c rollup.config.js && gulp copy",
-        "clean": "rimraf dist/ out-tsc/",
+        "build": "yarn clean && rollup -c rollup.config.mjs && gulp copy",
+        "clean": "rimraf dist/",
         "deploy": "yarn build && gulp deploy",
-        "start": "yarn build && concurrently --kill-others --names rollup,gulp \"rollup -w -c rollup.config.js\" \"gulp\"",
+        "start": "yarn build && concurrently --kill-others --names rollup,gulp \"rollup -w -c rollup.config.mjs\" \"gulp\"",
         "test": "gulp test"
     }
 }

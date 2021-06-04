@@ -20,6 +20,9 @@
 package config
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/qqiao/buildinfo"
@@ -28,10 +31,34 @@ import (
 // B is the build information instance
 var B buildinfo.BuildInfo
 
+// Locales is all supported locals
+var Locales []string
+
 // ProjectName is used for identifying of the project to the runtime.
 var ProjectName string
+
+type litLocalize struct {
+	targetLocales []string
+}
 
 func init() {
 	B, _ = buildinfo.Load("build_info.json")
 	ProjectName = os.Getenv("GOOGLE_CLOUD_PROJECT")
+
+	Locales = loadLocalizeConfig()
+}
+
+func loadLocalizeConfig() []string {
+	var localizeConfig litLocalize
+
+	jsonFile, err := ioutil.ReadFile("lit-localize.json")
+	if err != nil {
+		log.Fatalf("Unable to read localization configuration")
+	}
+
+	if err = json.Unmarshal(jsonFile, &localizeConfig); err != nil {
+		log.Fatalf("unable to parse localization configuration")
+	}
+
+	return localizeConfig.targetLocales
 }
