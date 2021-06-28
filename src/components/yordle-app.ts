@@ -19,7 +19,7 @@
 
 import { html, LitElement, css } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { msg } from '@lit/localize';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
@@ -33,22 +33,16 @@ import './yordle-home';
 import { store, RootState } from '../store';
 import { navigate, i18n } from '../actions/app';
 
-import { MESSAGES } from './yordle-app-en';
-
 @customElement('yordle-app')
 export class YordleApp extends connect(store)(LitElement) {
     @property()
     private appName: string = 'Yordle'
 
     @property()
-    _messages: any
-
-    @property()
     _page: string = 'home'
 
     constructor() {
         super();
-        this._messages = MESSAGES;
     }
 
     static styles = css`
@@ -108,7 +102,7 @@ export class YordleApp extends connect(store)(LitElement) {
             }}"></mwc-icon-button>
             <div slot="title" class="title">${this.appName}</div>
             <div slot="actionItems" class="top-navigation">
-                <a href="#/help">${this._messages.help}</a>
+                <a href="#/help">${msg('Help')}</a>
             </div>
         </mwc-top-app-bar>
 
@@ -116,7 +110,7 @@ export class YordleApp extends connect(store)(LitElement) {
         <yordle-help class="page" ?active="${'help' === this._page}"></yordle-help>
 
         <footer>
-            ${unsafeHTML(this._messages.poweredBy)}
+            ${msg(html`Powered by <a href="https://github.com/qqiao/yordle" target="_blank">Yordle</a>`)}
         </footer>`;
     }
 
@@ -131,23 +125,6 @@ export class YordleApp extends connect(store)(LitElement) {
     stateChanged(state: RootState) {
         if (state.app) {
             this._page = state.app.page;
-
-            if (state.app.language) {
-                if ('en' === state.app.language) {
-                    this._messages = MESSAGES;
-                } else {
-                    let promise;
-                    switch (state.app.language) {
-                        case 'zh':
-                            promise = import('./yordle-app-zh.js')
-                            break;
-                    }
-                    if (promise)
-                        promise.then((module) => {
-                            this._messages = module.MESSAGES;
-                        });
-                }
-            }
         }
     }
 }

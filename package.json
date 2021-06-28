@@ -35,6 +35,7 @@
                 "redux-thunk": "^2.3.0"
         },
         "scripts": {
+                "i18n-extract": "lit-localize extract",
                 "build": "yarn clean && rollup -c rollup.config.mjs && gulp copy",
                 "clean": "rimraf dist/",
                 "deploy": "yarn build && gulp deploy",
