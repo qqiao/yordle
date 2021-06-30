@@ -51,7 +51,7 @@ func init() {
 
 func localIndex(w http.ResponseWriter, r *http.Request) {
 	locale := webapp.DetermineLocale(r.Header.Get("accept-language"),
-	config.Locales)
+		config.Locales)
 
 	fileServer := fileServers[locale]
 
