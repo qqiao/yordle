@@ -20,7 +20,10 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators';
 
-@customElement('yordle-help' as any)
+import { localized, msg } from '@lit/localize';
+
+@localized()
+@customElement('yordle-help')
 export class YordleHelp extends LitElement {
     static styles = css`
         :host {
@@ -54,13 +57,13 @@ export class YordleHelp extends LitElement {
         return html`
         <div class="header">
             <div>
-                <h2>Yordle Help</h2>
+                <h2>${msg(html`Yordle Help`)}</h2>
             </div>
         </div>
         <div class="contents">
             <div>
-                <h4>What is Yordle?</h4>
-                <p>
+                <h4>${msg(html`What is Yordle?`)}</h4>
+                ${msg(html`<p>
                     Yordle allows you to shorten URLs so that they are easier
                     to share with people. For example, the following URL
                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -69,25 +72,19 @@ export class YordleHelp extends LitElement {
                     <a href="/PmYUlTPea"
                        target="_blank">${document.baseURI}PmYUlTPea</a>,
                     which can be shared more easily.
-                </p>
-                <h4>How to I shorten a link?</h4>
-                <p>
+                </p>`)}
+                <h4>${msg(html`How do I shorten a link?`)}</h4>
+                ${msg(html`<p>
                     To shorten a link, paste in the long URL in the text box
                     labeled 'Your original URL here', then click on the
-                    'Shorten URL' link.
+                    'Shorten URL' button.
                 </p>
                 <p>
                     A new dialog box will show up with the shortened URL. Click
                     on the 'Copy' button to copy it to your clipboard so that
                     it can be shared, emailed or tweeted.
-                </p>
+                </p>`)}
             </div>
         </div>`;
-    }
-}
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'yordle-help': YordleHelp;
     }
 }

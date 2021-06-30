@@ -2,6 +2,52 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file target-language="zh" source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="h23a3086c88b29047">
+  <source>Yordle Help</source>
+  <target>Yordle帮助</target>
+</trans-unit>
+<trans-unit id="h40911ccca1e188f3">
+  <source>What is Yordle?</source>
+  <target>什么是Yordle？</target>
+</trans-unit>
+<trans-unit id="hdadcbed1e04f3625">
+  <source><ph id="0">&lt;p></ph>
+                    Yordle allows you to shorten URLs so that they are easier
+                    to share with people. For example, the following URL
+                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
+                    can be shortened to
+                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.baseURI}</ph>PmYUlTPea<ph id="4">&lt;/a></ph>,
+                    which can be shared more easily.
+                <ph id="5">&lt;/p></ph></source>
+  <target><ph id="0">&lt;p></ph>
+                    Yordle能帮助您生成一个短网址以方便您与他人分享。例如以下这个复杂的网址：
+                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
+                    就可以轻易被缩短为
+                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.baseURI}</ph>PmYUlTPea<ph id="4">&lt;/a></ph>。这样的短网址在即时通信工具以及社交网络都更容易分享以及被记忆。
+                <ph id="5">&lt;/p></ph></target>
+</trans-unit>
+<trans-unit id="hff04f4a8484bac26">
+  <source>How do I shorten a link?</source>
+  <target>我怎样才能缩短一个网址？</target>
+</trans-unit>
+<trans-unit id="hbce2dfd4cf9c4395">
+  <source><ph id="0">&lt;p></ph>
+                    To shorten a link, paste in the long URL in the text box
+                    labeled 'Your original URL here', then click on the
+                    'Shorten URL' button.
+                <ph id="1">&lt;/p>
+                &lt;p></ph>
+                    A new dialog box will show up with the shortened URL. Click
+                    on the 'Copy' button to copy it to your clipboard so that
+                    it can be shared, emailed or tweeted.
+                <ph id="2">&lt;/p></ph></source>
+  <target><ph id="0">&lt;p></ph>
+                    要想缩短一个长链接，请在标注了“请填入您的链接地址”的输入框住填入您原本的链接地址，然后点击“缩短网址”按钮。
+                <ph id="1">&lt;/p>
+                &lt;p></ph>
+                    一个带有短网址的新的对话框将会出现。点击“复制”按钮，可以自动把这个短网址复制到您的剪贴板，以方便您在邮件，即时通信工具，以及社交网络上分享。
+                <ph id="2">&lt;/p></ph></target>
+</trans-unit>
 <trans-unit id="h8012815c243dcab4">
   <source>Shorten your links</source>
   <target>缩短您的链接</target>
@@ -50,7 +96,6 @@
 </trans-unit>
 <trans-unit id="h2865510cf08443ce">
   <source><ph id="0">&lt;mwc-snackbar id="snackbar" leading="" closeonescape="" timeoutms="5000" labeltext="Short URL copied to clipboard">&lt;/mwc-snackbar></ph></source>
-  <source><ph id="0">&lt;mwc-snackbar id="snackbar" leading="" closeonescape="" timeoutms="5000" labeltext="短网址已复制到剪贴板">&lt;/mwc-snackbar></ph></source>
 </trans-unit>
 <trans-unit id="s352719d86112de9a">
   <source>Help</source>

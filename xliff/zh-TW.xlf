@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-<file target-language="zh_TW" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<file target-language="zh-TW" source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="h23a3086c88b29047">
+  <source>Yordle Help</source>
+</trans-unit>
+<trans-unit id="h40911ccca1e188f3">
+  <source>What is Yordle?</source>
+</trans-unit>
+<trans-unit id="hdadcbed1e04f3625">
+  <source><ph id="0">&lt;p></ph>
+                    Yordle allows you to shorten URLs so that they are easier
+                    to share with people. For example, the following URL
+                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
+                    can be shortened to
+                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.baseURI}</ph>PmYUlTPea<ph id="4">&lt;/a></ph>,
+                    which can be shared more easily.
+                <ph id="5">&lt;/p></ph></source>
+</trans-unit>
+<trans-unit id="hff04f4a8484bac26">
+  <source>How do I shorten a link?</source>
+</trans-unit>
+<trans-unit id="hbce2dfd4cf9c4395">
+  <source><ph id="0">&lt;p></ph>
+                    To shorten a link, paste in the long URL in the text box
+                    labeled 'Your original URL here', then click on the
+                    'Shorten URL' button.
+                <ph id="1">&lt;/p>
+                &lt;p></ph>
+                    A new dialog box will show up with the shortened URL. Click
+                    on the 'Copy' button to copy it to your clipboard so that
+                    it can be shared, emailed or tweeted.
+                <ph id="2">&lt;/p></ph></source>
+</trans-unit>
 <trans-unit id="h8012815c243dcab4">
   <source>Shorten your links</source>
 </trans-unit>
