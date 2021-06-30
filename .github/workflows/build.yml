@@ -1,0 +1,16 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: 
+      image: qqiao/dev-env:latest
+      options: --user root
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: go get github.com/qqiao/app-tools
+      - run: yarn install
+      - run: yarn build
