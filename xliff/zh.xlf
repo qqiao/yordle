@@ -6,7 +6,7 @@
   <source>帮助</source>
 </trans-unit>
 <trans-unit id="he2eaab962285b050">
-  <source>Powered by <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></source>
+  <source`动力来自<ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></source>
 </trans-unit>
 </body>
 </file>

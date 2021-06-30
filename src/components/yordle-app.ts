@@ -19,7 +19,7 @@
 
 import { html, LitElement, css } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { msg } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
@@ -33,6 +33,7 @@ import './yordle-home';
 import { store, RootState } from '../store';
 import { navigate, i18n } from '../actions/app';
 
+@localized()
 @customElement('yordle-app')
 export class YordleApp extends connect(store)(LitElement) {
     @property()
