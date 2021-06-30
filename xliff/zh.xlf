@@ -2,6 +2,56 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file target-language="zh" source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="h8012815c243dcab4">
+  <source>Shorten your links</source>
+  <target>缩短您的链接</target>
+</trans-unit>
+<trans-unit id="hd5a89281df2c88c7">
+  <source><ph id="0">&lt;mwc-textfield outlined="" id="input" label="Your original URL here" type="url" error-message="URL invalid">
+                    &lt;/mwc-textfield></ph></source>
+  <target><ph id="0">&lt;mwc-textfield outlined="" id="input" label="请填入您的链接地址" type="url" error-message="链接地址不合法">
+                    &lt;/mwc-textfield></ph></target>
+</trans-unit>
+<trans-unit id="h3500976a032c4e7f">
+  <source>Shorten URL</source>
+  <target>缩短网址</target>
+</trans-unit>
+<trans-unit id="h4b4da3e72a08fcfa">
+  <source>Shorten</source>
+  <target>缩短</target>
+</trans-unit>
+<trans-unit id="h1d64d29c847603b0">
+  <source>Shorten your URL so its ready to be shared everywhere</source>
+  <target>缩短您的链接地址以便可以在任何场合使用</target>
+</trans-unit>
+<trans-unit id="h9e85800d3700e31c">
+  <source>Track</source>
+  <target>跟踪</target>
+</trans-unit>
+<trans-unit id="h86a3121c2add6304">
+  <source>Analytics help you know where your clicks are coming from</source>
+  <target>数据分析帮您了解您的用户来自何处</target>
+</trans-unit>
+<trans-unit id="h19b10d1a8593ca55">
+  <source>Learn</source>
+  <target>学习</target>
+</trans-unit>
+<trans-unit id="h2eb8a092a50abb0b">
+  <source>Understand and visualize your audience</source>
+  <target>具体跟踪了解您的用户</target>
+</trans-unit>
+<trans-unit id="h3687049d1af562c4">
+  <source>Copy</source>
+  <target>复制</target>
+</trans-unit>
+<trans-unit id="h0379fc73608ab971">
+  <source>Done</source>
+  <target>完成</target>
+</trans-unit>
+<trans-unit id="h2865510cf08443ce">
+  <source><ph id="0">&lt;mwc-snackbar id="snackbar" leading="" closeonescape="" timeoutms="5000" labeltext="Short URL copied to clipboard">&lt;/mwc-snackbar></ph></source>
+  <source><ph id="0">&lt;mwc-snackbar id="snackbar" leading="" closeonescape="" timeoutms="5000" labeltext="短网址已复制到剪贴板">&lt;/mwc-snackbar></ph></source>
+</trans-unit>
 <trans-unit id="s352719d86112de9a">
   <source>Help</source>
   <target>帮助</target>

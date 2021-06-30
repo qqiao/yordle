@@ -21,7 +21,9 @@ import {
     LitElement,
     css, html
 } from 'lit';
-import { customElement, property, query } from 'lit/decorators';
+import { customElement, query, state } from 'lit/decorators';
+
+import { localized, msg } from '@lit/localize';
 
 import '@material/mwc-button';
 import '@material/mwc-dialog';
@@ -34,20 +36,17 @@ import { TextField } from '@material/mwc-textfield';
 
 import { connect } from 'pwa-helpers/connect-mixin';
 
-import { MESSAGES } from './yordle-home-en';
-
 import { createShortUrl, Status } from '../actions/shortUrl';
 import shortUrl from '../reducers/shortUrl';
 import { store, RootState } from '../store';
 
 store.addReducers({ shortUrl });
 
+@localized()
 @customElement('yordle-home')
 export class YordleHome extends connect(store)(LitElement) {
-    @property()
-    private _messages: any
 
-    @property()
+    @state()
     private _shortUrl: string = ''
 
     @query('#dialog')
@@ -162,16 +161,16 @@ export class YordleHome extends connect(store)(LitElement) {
         return html`
         <div class="inputs-container">
             <div class="inputs">
-                <h1>${this._messages['Shorten your links']}</h1>
+                <h1>${msg(html`Shorten your links`)}</h1>
                 <div>
-                    <mwc-textfield outlined id="input"
-                        label="${this._messages['Your original URL here']}"
-                        type="url" error-message="${this._messages['URL invalid']}">
-                    </mwc-textfield>
+                    ${msg(html`<mwc-textfield outlined id="input"
+                        label="Your original URL here"
+                        type="url" error-message="URL invalid">
+                    </mwc-textfield>`)}
                 </div>
                 <div>
                     <mwc-button @click="${this._onShortenTap}">
-                        ${this._messages['Shorten URL']}
+                        ${msg(html`Shorten URL`)}
                     </mwc-button>
                 </div>
             </div>
@@ -181,23 +180,23 @@ export class YordleHome extends connect(store)(LitElement) {
                 <div class="point">
                     <h2>
                         <mwc-icon>link</mwc-icon>
-                        ${this._messages['Shorten']}
+                        ${msg(html`Shorten`)}
                     </h2>
-                    ${this._messages['Shorten your URL so its ready to be shared everywhere']}
+                    ${msg(html`Shorten your URL so its ready to be shared everywhere`)}
                 </div>
                 <div class="point">
                     <h2>
                         <mwc-icon>trending_up</mwc-icon>
-                        ${this._messages['Track']}
+                        ${msg(html`Track`)}
                     </h2>
-                    ${this._messages['Analytics help you know where your clicks are coming from']}
+                    ${msg(html`Analytics help you know where your clicks are coming from`)}
                 </div>
                 <div class="point">
                     <h2>
                         <mwc-icon>people</mwc-icon>
-                        ${this._messages['Learn']}
+                        ${msg(html`Learn`)}
                     </h2>
-                    ${this._messages['Understand and visualize your audience']}
+                    ${msg(html`Understand and visualize your audience`)}
                 </div>
             </div>
         </div>
@@ -207,21 +206,15 @@ export class YordleHome extends connect(store)(LitElement) {
                 </mwc-textfield>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
-                    ${this._messages['Copy']}
+                    ${msg(html`Copy`)}
                 </mwc-button>
             </div>
             <mwc-button dense slot="primaryAction" dialogAction="ok">
-                ${this._messages['Done']}
+                ${msg(html`Done`)}
             </mwc-button>
         </mwc-dialog>
-        <mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="5000"
-            labelText="Short URL copied to clipboard"></mwc-snackbar>`;
-    }
-
-    constructor() {
-        super();
-
-        this._messages = MESSAGES;
+        ${msg(html`<mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="5000"
+            labelText="Short URL copied to clipboard"></mwc-snackbar>`)}`;
     }
 
     private _onCopyTap() {
@@ -247,24 +240,6 @@ export class YordleHome extends connect(store)(LitElement) {
             if (state.shortUrl.status === Status.SUCCESS) {
                 if (!this.dialog) return;
                 this.dialog.open = true;
-            }
-        }
-
-        if (state.app && state.app.language) {
-            if ('en' === state.app.language) {
-                this._messages = MESSAGES;
-            } else {
-                let promise;
-                switch (state.app.language) {
-                    case 'zh':
-                        promise = import('./yordle-home-zh.js')
-                        break;
-                    default:
-                        promise = import('./yordle-home-en.js')
-                }
-                promise.then((module) => {
-                    this._messages = module.MESSAGES;
-                });
             }
         }
     }
