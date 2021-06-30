@@ -21,9 +21,12 @@ package main
 
 import (
 	"net/http"
+	"path/filepath"
 	"strings"
 
 	"github.com/qqiao/webapp"
+
+	"github.com/qqiao/yordle/config"
 )
 
 var staticFileExtensions = []string{
@@ -36,19 +39,27 @@ var staticFileExtensions = []string{
 	".png",
 }
 
-var fileServer = http.FileServer(http.Dir("."))
+var fileServers = map[string]http.Handler{}
 
 func init() {
 	http.HandleFunc("/", webapp.HSTSHandler(localIndex))
+
+	for _, locale := range config.Locales {
+		fileServers[locale] = http.FileServer(http.Dir(filepath.Join(".", locale)))
+	}
 }
 
 func localIndex(w http.ResponseWriter, r *http.Request) {
+	locale := webapp.DetermineLocale(r.Header.Get("accept-language"),
+	config.Locales)
+
+	fileServer := fileServers[locale]
+
 	for _, ext := range staticFileExtensions {
 		if strings.HasSuffix(r.URL.Path, ext) {
 			fileServer.ServeHTTP(w, r)
 			return
 		}
 	}
-	tmpl := webapp.GetTemplate("index.html", true)
-	tmpl.Execute(w, nil)
+	landingPage(w, r)
 }

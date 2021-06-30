@@ -53,6 +53,7 @@ export const copy = gulp.series(buildInfo, () => {
         'build_info.json',
         'go.sum',
         'go.mod',
+        'lit-localize.json',
         'manifest.json',
         'robots.txt',
         '*.go',
