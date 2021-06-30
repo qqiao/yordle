@@ -27,6 +27,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"cloud.google.com/go/datastore"
 
@@ -51,7 +52,9 @@ func preloadedState(ctx context.Context) <-chan string {
 	go func() {
 		defer close(output)
 
-		str, err := json.Marshal(nil)
+		str, err := json.Marshal(map[string]interface{}{
+			"languages": config.Locales,
+		})
 
 		if nil != err {
 			log.Printf("Unable to marshall preloaded state. Error: %v",
@@ -78,9 +81,13 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 			nodeEnv = "development"
 		}
 
+		locale := webapp.DetermineLocale(r.Header.Get("accept-language"),
+		config.Locales)
+		log.Printf("Locale determined for request: %s", locale)
+
 		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)
 
-		tmpl := webapp.GetTemplate("index.html", webapp.IsDev)
+		tmpl := webapp.GetTemplate(filepath.Join(locale, "index.html"), webapp.IsDev)
 		tmpl.Execute(w, map[string]interface{}{
 			"Config":    <-dcCh,
 			"BuildInfo": config.B,

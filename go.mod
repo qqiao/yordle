@@ -11,7 +11,7 @@ require (
 	github.com/jcoene/go-base62 v0.0.0-20170519195839-4f4155803613
 	github.com/kr/text v0.2.0 // indirect
 	github.com/qqiao/buildinfo v1.0.0
-	github.com/qqiao/webapp v1.0.2
+	github.com/qqiao/webapp v1.0.3
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
 	golang.org/x/oauth2 v0.0.0-20210622215436-a8dc77f794b6 // indirect

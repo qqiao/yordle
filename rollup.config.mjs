@@ -35,4 +35,4 @@ const configs = locales.map(({ locale, localeTransformer }) => {
     });
 });
 
-export default configs;
+export default production ? configs : configs[0];
