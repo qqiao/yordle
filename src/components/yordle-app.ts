@@ -103,7 +103,7 @@ export class YordleApp extends connect(store)(LitElement) {
             }}"></mwc-icon-button>
             <div slot="title" class="title">${this.appName}</div>
             <div slot="actionItems" class="top-navigation">
-                <a href="#/help">${msg('Help')}</a>
+                <a href="/#/help">${msg('Help')}</a>
             </div>
         </mwc-top-app-bar>
 

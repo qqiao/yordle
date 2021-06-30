@@ -217,7 +217,7 @@ export class YordleHome extends connect(store)(LitElement) {
             labelText="Short URL copied to clipboard"></mwc-snackbar>`)}`;
     }
 
-    private _onCopyTap() {
+    private _onCopyTap = () => {
         if (!this.dialog || !this.result) return;
         this.result.select();
         document.execCommand('copy');
@@ -227,7 +227,7 @@ export class YordleHome extends connect(store)(LitElement) {
         this.snackbar.open = true;
     }
 
-    private _onShortenTap() {
+    private _onShortenTap = () => {
         if (!this.input) return;
         let originalUrl = this.input.value;
         store.dispatch(createShortUrl(originalUrl));
