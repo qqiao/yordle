@@ -71,7 +71,7 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 
 	idStr := r.URL.Path[1:]
 
-	if len(idStr) < 1 || "index.html" == idStr {
+	if len(idStr) < 1 || idStr == "index.html" {
 		dcCh := config.MustGetAsync(ctx)
 		psCh := preloadedState(ctx)
 
@@ -82,7 +82,7 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 		}
 
 		locale := webapp.DetermineLocale(r.Header.Get("accept-language"),
-		config.Locales)
+			config.Locales)
 		log.Printf("Locale determined for request: %s", locale)
 
 		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)

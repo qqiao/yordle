@@ -38,7 +38,7 @@ var Locales []string
 var ProjectName string
 
 type LitLocalize struct {
-	SourceLocale string `json:"sourceLocale"`
+	SourceLocale  string   `json:"sourceLocale"`
 	TargetLocales []string `json:"targetLocales"`
 }
 
