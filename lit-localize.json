@@ -3,7 +3,7 @@
     "sourceLocale": "en",
     "targetLocales": [
         "zh",
-        "zh-tw"
+        "zh_TW"
     ],
     "tsConfig": "tsconfig.json",
     "output": {

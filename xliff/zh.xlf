@@ -3,10 +3,12 @@
 <file target-language="zh" source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
 <trans-unit id="s352719d86112de9a">
-  <source>帮助</source>
+  <source>Help</source>
+  <target>帮助</target>
 </trans-unit>
 <trans-unit id="he2eaab962285b050">
-  <source`动力来自<ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></source>
+  <source>Powered by <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></source>
+  <target>动力来自<ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></target>
 </trans-unit>
 </body>
 </file>

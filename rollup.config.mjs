@@ -1,6 +1,7 @@
 import { localeTransformers } from '@lit/localize-tools/lib/rollup.js';
 import { createSpaConfig } from '@open-wc/building-rollup';
 import replace from '@rollup/plugin-replace';
+import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import merge from 'deepmerge';
 
@@ -27,7 +28,8 @@ const configs = locales.map(({ locale, localeTransformer }) => {
                 transformers: {
                     before: [localeTransformer],
                 },
-            })
+            }),
+            resolve(),
         ],
         output: {
             dir: `dist/${locale}`,
