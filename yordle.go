@@ -92,6 +92,7 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 			"Config":    <-dcCh,
 			"BuildInfo": config.B,
 			"InitData":  template.HTML(initData),
+			"Locale":    locale,
 		})
 		return
 	}
