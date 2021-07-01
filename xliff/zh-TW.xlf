@@ -8,13 +8,13 @@
 <trans-unit id="h40911ccca1e188f3">
   <source>What is Yordle?</source>
 </trans-unit>
-<trans-unit id="hb38ce96372eeb86a">
+<trans-unit id="h7d077018ff842bee">
   <source><ph id="0">&lt;p></ph>
                     Yordle allows you to shorten URLs so that they are easier
                     to share with people. For example, the following URL
-                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
+                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
                     can be shortened to
-                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.location.protocol}</ph>//<ph id="4">${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}</ph>/PmYUlTPea<ph id="5">&lt;/a></ph>,
+                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank" rel="noreferrer">${document.location.protocol}</ph>//<ph id="4">${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}</ph>/PmYUlTPea<ph id="5">&lt;/a></ph>,
                     which can be shared more easily.
                 <ph id="6">&lt;/p></ph></source>
 </trans-unit>
@@ -73,8 +73,8 @@
 <trans-unit id="s352719d86112de9a">
   <source>Help</source>
 </trans-unit>
-<trans-unit id="he2eaab962285b050">
-  <source>Powered by <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank"></ph>Yordle<ph id="1">&lt;/a></ph></source>
+<trans-unit id="h4e68a7c50950dda4">
+  <source>Powered by <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank" rel="noreferrer"></ph>Yordle<ph id="1">&lt;/a></ph></source>
 </trans-unit>
 </body>
 </file>

@@ -53,7 +53,7 @@ export class YordleHelp extends LitElement {
             margin: 0;
         }`;
 
-    protected render():TemplateResult {
+    protected render(): TemplateResult {
         return html`
         <div class="header">
             <div>
@@ -67,10 +67,12 @@ export class YordleHelp extends LitElement {
                     Yordle allows you to shorten URLs so that they are easier
                     to share with people. For example, the following URL
                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                       target="_blank">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a>
+                       target="_blank"
+                       rel="noreferrer">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a>
                     can be shortened to
                     <a href="/PmYUlTPea"
-                       target="_blank">${document.location.protocol}//${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}/PmYUlTPea</a>,
+                       target="_blank"
+                       rel="noreferrer">${document.location.protocol}//${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}/PmYUlTPea</a>,
                     which can be shared more easily.
                 </p>`)}
                 <h4>${msg(html`How do I shorten a link?`)}</h4>
