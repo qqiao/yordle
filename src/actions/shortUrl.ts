@@ -43,7 +43,6 @@ type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
 
 export type Actions = ActionCreationFailure | ActionCreationSuccess;
 
-
 export const createShortUrl: ActionCreator<ThunkResult> = (originalUrl: string) => async (dispatch) => {
     let formData = new FormData();
     formData.append('OriginalUrl', originalUrl);
@@ -56,15 +55,15 @@ export const createShortUrl: ActionCreator<ThunkResult> = (originalUrl: string) 
 
     switch (status) {
         case Status.SUCCESS:
-            dispatch({
+            return dispatch({
                 type: ActionTypes.CREATION_SUCCESS,
                 shortUrl: resp.payload
             } as ActionCreationSuccess);
-            return;
         case Status.FAILURE:
-            dispatch({
+            return dispatch({
                 type: ActionTypes.CREATION_FAILURE
             } as ActionCreationFailure);
+        default:
             return;
     }
 };
