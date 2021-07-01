@@ -162,8 +162,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/qqiao/buildinfo v1.0.0 h1:Z7FlLFA4XBfwP0PKVojWaPnKyyFocdIlb4hTl01jvYE=
 github.com/qqiao/buildinfo v1.0.0/go.mod h1:t73wytAIYDgrnOXAqjrCYBEQXqWln9tSL5nmBH0Fs7s=
-github.com/qqiao/webapp v1.0.3 h1:27t5qCsExDPwPMr7EsSyVURQq9na/UYE/LE0/BObz1Y=
-github.com/qqiao/webapp v1.0.3/go.mod h1:yh1HYdeRHCtrzUMciZCtO+jAxLCf4yi/mSQFzpeFREU=
+github.com/qqiao/webapp v1.0.6 h1:0mqwMsdIfDkRbE8kZc4CMa9OcKh5eqHOshh5FB0HNng=
+github.com/qqiao/webapp v1.0.6/go.mod h1:yh1HYdeRHCtrzUMciZCtO+jAxLCf4yi/mSQFzpeFREU=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
