@@ -19,9 +19,9 @@
 
 import {
     LitElement,
-    css, html, TemplateResult
+    css, html, TemplateResult, PropertyValues
 } from 'lit';
-import { customElement, query, state } from 'lit/decorators';
+import { customElement, property, query } from 'lit/decorators';
 
 import { localized, msg } from '@lit/localize';
 
@@ -34,20 +34,15 @@ import { Dialog } from '@material/mwc-dialog';
 import { Snackbar } from '@material/mwc-snackbar';
 import { TextField } from '@material/mwc-textfield';
 
-import { connect } from 'pwa-helpers/connect-mixin';
-
 import { createShortUrl, Status } from '../actions/shortUrl';
-import shortUrl from '../reducers/shortUrl';
-import { store, RootState } from '../store';
+import shortUrl, { State } from '../reducers/shortUrl';
+import { store } from '../store';
 
 store.addReducers({ shortUrl });
 
 @localized()
 @customElement('yordle-home')
-export class YordleHome extends connect(store)(LitElement) {
-
-    @state()
-    private _shortUrl: string = ''
+export class YordleHome extends LitElement {
 
     @query('#dialog')
     private dialog?: Dialog;
@@ -60,6 +55,9 @@ export class YordleHome extends connect(store)(LitElement) {
 
     @query('#snackbar')
     private snackbar?: Snackbar;
+
+    @property()
+    public response?: State;
 
     static styles = css`
         :host {
@@ -157,6 +155,15 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-text-field-fill-color: transparent;
         }`;
 
+    protected updated(changed: PropertyValues): void {
+        if (changed.has('response')) {
+            if (Status.SUCCESS === this.response?.status) {
+                if (this.result) this.result.value = this.response.shortUrl ?? '';
+                if (this.dialog) this.dialog.open = true;
+            }
+        }
+    }
+
     protected render(): TemplateResult {
         return html`
         <div class="inputs-container">
@@ -202,7 +209,7 @@ export class YordleHome extends connect(store)(LitElement) {
         </div>
         <mwc-dialog id="dialog" scrimClickAction="">
             <div class="dialog-content">
-                <mwc-textfield id="result" value="${this._shortUrl}" type="text">
+                <mwc-textfield id="result" type="text">
                 </mwc-textfield>
                 <mwc-button dense icon="file_copy"
                             @click="${this._onCopyTap}">
@@ -232,17 +239,6 @@ export class YordleHome extends connect(store)(LitElement) {
         const originalUrl = this.input.value;
         if (originalUrl?.length) {
             store.dispatch(createShortUrl(originalUrl));
-        }
-    }
-
-    stateChanged(state: RootState) {
-        if (state.shortUrl && state.shortUrl.shortUrl) {
-            this._shortUrl = state.shortUrl.shortUrl;
-
-            if (state.shortUrl.status === Status.SUCCESS) {
-                if (!this.dialog) return;
-                this.dialog.open = true;
-            }
         }
     }
 }

@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { html, LitElement, css } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { html, LitElement, css, TemplateResult } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
 import { localized, msg } from '@lit/localize';
 
 import '@material/mwc-icon';
@@ -31,20 +31,20 @@ import { installRouter } from 'pwa-helpers/router';
 import './yordle-home';
 
 import { store, RootState } from '../store';
-import { navigate, i18n } from '../actions/app';
+import { navigate } from '../actions/app';
+import { State } from '../reducers/shortUrl';
 
 @localized()
 @customElement('yordle-app')
 export class YordleApp extends connect(store)(LitElement) {
     @property()
-    private appName: string = 'Yordle'
+    public appName: string = 'Yordle'
 
-    @property()
-    _page: string = 'home'
+    @state()
+    private _page?: string;
 
-    constructor() {
-        super();
-    }
+    @state()
+    private _response?: State;
 
     static styles = css`
         :host {
@@ -94,7 +94,7 @@ export class YordleApp extends connect(store)(LitElement) {
             text-decoration: underline;
         }`;
 
-    protected render() {
+    protected render(): TemplateResult {
         return html`
         <mwc-top-app-bar>
             <mwc-icon-button ?active="${'home' !== this._page}"
@@ -107,7 +107,8 @@ export class YordleApp extends connect(store)(LitElement) {
             </div>
         </mwc-top-app-bar>
 
-        <yordle-home class="page" ?active="${'home' === this._page}"></yordle-home>
+        <yordle-home class="page" ?active="${'home' === this._page}"
+            .response="${this._response}"></yordle-home>
         <yordle-help class="page" ?active="${'help' === this._page}"></yordle-help>
 
         <footer>
@@ -115,17 +116,14 @@ export class YordleApp extends connect(store)(LitElement) {
         </footer>`;
     }
 
-    protected firstUpdated() {
+    protected firstUpdated(): void {
         installRouter((location) => {
             store.dispatch(navigate(decodeURIComponent(location.hash)));
         });
-
-        store.dispatch(i18n(navigator.language));
     }
 
-    stateChanged(state: RootState) {
-        if (state.app) {
-            this._page = state.app.page;
-        }
+    public stateChanged(state: RootState): void {
+        this._page = state.app?.page || 'home';
+        this._response = state.shortUrl;
     }
 }

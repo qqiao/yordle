@@ -38,11 +38,6 @@ export type Actions = ActionUpdateLanguage | ActionUpdatePage;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
 
-export const SUPPORTED_LANGUAGES = [
-    'en',
-    'zh',
-];
-
 export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
     // Extract the page name from path.
     const page = path === '' ? 'home' : path.slice(2);
@@ -65,20 +60,5 @@ const updatePage: ActionCreator<ActionUpdatePage> = (page: string) => {
     return {
         type: ActionTypes.UPDATE_PAGE,
         page
-    };
-}
-
-export const i18n: ActionCreator<ActionUpdateLanguage> = (language: string) => {
-    if (!SUPPORTED_LANGUAGES.includes(language)) {
-        language = language.slice(0, 2);
-    }
-
-    if (!SUPPORTED_LANGUAGES.includes(language)) {
-        language = SUPPORTED_LANGUAGES[0];
-    }
-
-    return {
-        type: ActionTypes.UPDATE_LANGUAGE,
-        language
     };
 }
