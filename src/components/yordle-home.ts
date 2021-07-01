@@ -19,7 +19,7 @@
 
 import {
     LitElement,
-    css, html
+    css, html, TemplateResult
 } from 'lit';
 import { customElement, query, state } from 'lit/decorators';
 
@@ -157,7 +157,7 @@ export class YordleHome extends connect(store)(LitElement) {
             --mdc-text-field-fill-color: transparent;
         }`;
 
-    protected render() {
+    protected render(): TemplateResult {
         return html`
         <div class="inputs-container">
             <div class="inputs">
@@ -217,7 +217,7 @@ export class YordleHome extends connect(store)(LitElement) {
             labelText="Short URL copied to clipboard"></mwc-snackbar>`)}`;
     }
 
-    private _onCopyTap = () => {
+    private _onCopyTap = (): void => {
         if (!this.dialog || !this.result) return;
         this.result.select();
         document.execCommand('copy');
@@ -227,10 +227,12 @@ export class YordleHome extends connect(store)(LitElement) {
         this.snackbar.open = true;
     }
 
-    private _onShortenTap = () => {
+    private _onShortenTap = (): void => {
         if (!this.input) return;
-        let originalUrl = this.input.value;
-        store.dispatch(createShortUrl(originalUrl));
+        const originalUrl = this.input.value;
+        if (originalUrl?.length) {
+            store.dispatch(createShortUrl(originalUrl));
+        }
     }
 
     stateChanged(state: RootState) {
