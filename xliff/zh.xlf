@@ -10,21 +10,19 @@
   <source>What is Yordle?</source>
   <target>什么是Yordle？</target>
 </trans-unit>
-<trans-unit id="hdadcbed1e04f3625">
+<trans-unit id="hb38ce96372eeb86a">
   <source><ph id="0">&lt;p></ph>
                     Yordle allows you to shorten URLs so that they are easier
                     to share with people. For example, the following URL
                     <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
                     can be shortened to
-                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.baseURI}</ph>PmYUlTPea<ph id="4">&lt;/a></ph>,
+                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.location.protocol}</ph>//<ph id="4">${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}</ph>/PmYUlTPea<ph id="5">&lt;/a></ph>,
                     which can be shared more easily.
-                <ph id="5">&lt;/p></ph></source>
+                <ph id="6">&lt;/p></ph></source>
   <target><ph id="0">&lt;p></ph>
                     Yordle能帮助您生成一个短网址以方便您与他人分享。例如以下这个复杂的网址：
-                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
-                    就可以轻易被缩短为
-                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.baseURI}</ph>PmYUlTPea<ph id="4">&lt;/a></ph>。这样的短网址在即时通信工具以及社交网络都更容易分享以及被记忆。
-                <ph id="5">&lt;/p></ph></target>
+                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>就可以轻易被缩短为<ph id="3">&lt;a href="/PmYUlTPea" target="_blank">${document.location.protocol}</ph>//<ph id="4">${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}</ph>/PmYUlTPea<ph id="5">&lt;/a></ph>。这样的短网址在即时通信工具以及社交网络都更容易分享以及被记忆。
+                <ph id="6">&lt;/p></ph></target>
 </trans-unit>
 <trans-unit id="hff04f4a8484bac26">
   <source>How do I shorten a link?</source>

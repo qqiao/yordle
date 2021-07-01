@@ -70,7 +70,7 @@ export class YordleHelp extends LitElement {
                        target="_blank">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a>
                     can be shortened to
                     <a href="/PmYUlTPea"
-                       target="_blank">${document.baseURI}PmYUlTPea</a>,
+                       target="_blank">${document.location.protocol}//${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}/PmYUlTPea</a>,
                     which can be shared more easily.
                 </p>`)}
                 <h4>${msg(html`How do I shorten a link?`)}</h4>
