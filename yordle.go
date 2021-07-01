@@ -28,6 +28,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"cloud.google.com/go/datastore"
 
@@ -71,7 +72,10 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 
 	idStr := r.URL.Path[1:]
 
-	if len(idStr) < 1 || idStr == "index.html" {
+	// When we don't have an idStr or it contains any path elements, we would
+	// serve the landing page
+	if len(idStr) < 1 || strings.Contains(idStr, "/") ||
+		strings.HasSuffix(idStr, "index.html") {
 		dcCh := config.MustGetAsync(ctx)
 		psCh := preloadedState(ctx)
 
@@ -81,9 +85,22 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 			nodeEnv = "development"
 		}
 
-		locale := webapp.DetermineLocale(r.Header.Get("accept-language"),
+		// We always try to get a locale from header as the fallback value
+		locale := webapp.DetermineLocaleWithDefault(r.Header.Get("accept-language"),
 			config.Locales)
-		log.Printf("Locale determined for request: %s", locale)
+		log.Printf("Locale determined from request header: %s", locale)
+
+		// We allow the url of the page to be /$LOCALE/ for better l10n. But
+		// in the case of a path element, we have to have a strong match, or
+		// we use the fallback value
+		paths := strings.Split(idStr, "/")
+		if len(paths) > 0 {
+			pathLocale := webapp.DetermineLocale(paths[0], config.Locales)
+			if pathLocale != "" {
+				locale = pathLocale
+			}
+		}
+		log.Printf("Locale determined from path and header: %s", locale)
 
 		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)
 
