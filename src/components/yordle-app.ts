@@ -112,7 +112,7 @@ export class YordleApp extends connect(store)(LitElement) {
         <yordle-help class="page" ?active="${'help' === this._page}"></yordle-help>
 
         <footer>
-            ${msg(html`Powered by <a href="https://github.com/qqiao/yordle" target="_blank">Yordle</a>`)}
+            ${msg(html`Powered by <a href="https://github.com/qqiao/yordle" target="_blank" rel="noreferrer">Yordle</a>`)}
         </footer>`;
     }
 
