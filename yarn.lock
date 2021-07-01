@@ -8748,9 +8748,9 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.52.4":
-  version: 2.52.4
-  resolution: "rollup@npm:2.52.4"
+"rollup@npm:^2.52.6":
+  version: 2.52.6
+  resolution: "rollup@npm:2.52.6"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -8758,7 +8758,7 @@ fsevents@~2.3.1:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: a97a24ff62a42bed6b9f0575f422e4c2ee8e457123f6ed51b5aa644d21e0bba36d661163e81e6be4e989918c7f73539b17b7bea0e1a11b2265805b87f4c9562d
+  checksum: 2de4dd74127dffbd5ad7fa1e2ae0666a7dccf0991a6026e7897ab266a3ec6372ecc8fe690f7295bb5698b358a0bf5ad958b4a5127eb454a6c848ca73795069b6
   languageName: node
   linkType: hard
 
@@ -9778,7 +9778,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"typescript@^4.0.2, typescript@^4.3.4":
+typescript@^4.0.2:
   version: 4.3.4
   resolution: "typescript@npm:4.3.4"
   bin:
@@ -9788,13 +9788,33 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.0.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.3.4#~builtin<compat/typescript>":
+typescript@^4.3.5:
+  version: 4.3.5
+  resolution: "typescript@npm:4.3.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: bab033b5e2b0790dd35b77fd005df976ef80b8d84fd2c6e63cc31808151875beae9216e5a315fe7068e8499905c3c354248fe83272cdfc13b7705635f0c66c97
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.0.2#~builtin<compat/typescript>":
   version: 4.3.4
   resolution: "typescript@patch:typescript@npm%3A4.3.4#~builtin<compat/typescript>::version=4.3.4&hash=d8b4e7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: a6b1a3674b60971691b89fa8187a4905e132cb8061724b4bd485e5d5441caa61166fe3bcf2b47aa679a6d860cae823022ca51db713cc3446296274c005dd02e5
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
+  version: 4.3.5
+  resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: bc2c4fdf0f1557fdafe4ef74848c72ebd9c8c60829568248f869121aea2bb20e16649a252431d0acb185ec118143be22bed73d08f64379557810d82756afedde
   languageName: node
   linkType: hard
 
@@ -10600,8 +10620,8 @@ fsevents@~2.3.1:
     redux: ^4.1.0
     redux-thunk: ^2.3.0
     rimraf: ^3.0.2
-    rollup: ^2.52.4
+    rollup: ^2.52.6
     tslint: ^6.1.3
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
