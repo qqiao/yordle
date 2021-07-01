@@ -30,7 +30,7 @@ The user interface of Yordle is written in
 
 Other Readings
 --------------
-- [LitElement](https://lit-element.polymer-project.org): Yordle's user
+- [Lit](https://lit.dev): Yordle's user
   interface framework.
 - [Redux](https://redux.js.org/): Yordle's state management library.
 
