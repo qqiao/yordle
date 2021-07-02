@@ -1,5 +1,3 @@
-[![Build Status](https://circleci.com/gh/qqiao/yordle/tree/master.svg?style=svg)](https://circleci.com/gh/qqiao/yordle/tree/master)
-
 Yordle Short URL service
 ========================
 
