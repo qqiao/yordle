@@ -12,7 +12,7 @@ const locales = localeTransformers();
 
 const configs = locales.map(({ locale, localeTransformer }) => {
     const baseConfig = createSpaConfig({
-        developmentMode: process.env.ROLLUP_WATCH === 'true',
+        developmentMode: !production,
         injectServiceWorker: false,
         nodeResolve: { browser: true, dedupe: ['lit-html'] },
     });
@@ -21,8 +21,11 @@ const configs = locales.map(({ locale, localeTransformer }) => {
         input: './index.html',
         plugins: [
             replace({
-                'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
-                'process.env.BUILD_TYPE': JSON.stringify(buildType)
+                preventAssignment: true,
+                values: {
+                    'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
+                    'process.env.BUILD_TYPE': JSON.stringify(buildType)
+                }
             }),
             typescript({
                 transformers: {
@@ -33,6 +36,7 @@ const configs = locales.map(({ locale, localeTransformer }) => {
         ],
         output: {
             dir: `dist/${locale}`,
+            sourcemap: true,
         },
     });
 });
