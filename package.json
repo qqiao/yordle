@@ -40,7 +40,7 @@
                 "build": "yarn clean && rollup -c rollup.config.mjs && gulp copy",
                 "clean": "rimraf dist/ out-tsc/",
                 "deploy": "yarn build && gulp deploy",
-                "start": "yarn build && concurrently --kill-others --names rollup,gulp \"rollup -w -c rollup.config.mjs\" \"gulp\"",
+                "start": "yarn build && concurrently --kill-others \"rollup -w -c rollup.config.mjs\" \"gulp\"",
                 "test": "gulp test"
         }
 }

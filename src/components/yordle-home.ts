@@ -169,11 +169,10 @@ export class YordleHome extends LitElement {
         <div class="inputs-container">
             <div class="inputs">
                 <h1>${msg(html`Shorten your links`)}</h1>
-                <div>
-                    ${msg(html`<mwc-textfield outlined id="input"
-                        label="Your original URL here"
-                        type="url" error-message="URL invalid">
-                    </mwc-textfield>`)}
+                <div><mwc-textfield outlined id="input"
+                        label="${msg('Your original URL here')}"
+                        type="url" error-message="${msg('URL invalid')}">
+                    </mwc-textfield>
                 </div>
                 <div>
                     <mwc-button @click="${this._onShortenTap}">
