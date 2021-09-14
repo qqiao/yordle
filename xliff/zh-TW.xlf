@@ -69,8 +69,8 @@
 <trans-unit id="h0379fc73608ab971">
   <source>Done</source>
 </trans-unit>
-<trans-unit id="h2865510cf08443ce">
-  <source><ph id="0">&lt;mwc-snackbar id="snackbar" leading="" closeonescape="" timeoutms="5000" labeltext="Short URL copied to clipboard">&lt;/mwc-snackbar></ph></source>
+<trans-unit id="s2aef9c356025fbbf">
+  <source>Short URL copied to clipboard</source>
 </trans-unit>
 <trans-unit id="s352719d86112de9a">
   <source>Help</source>
