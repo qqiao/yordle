@@ -1,7 +1,6 @@
 import { localeTransformers } from '@lit/localize-tools/lib/rollup.js';
 import { createSpaConfig } from '@open-wc/building-rollup';
 import replace from '@rollup/plugin-replace';
-import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import merge from 'deepmerge';
 
@@ -12,7 +11,7 @@ const locales = localeTransformers();
 
 const configs = locales.map(({ locale, localeTransformer }) => {
     const baseConfig = createSpaConfig({
-        developmentMode: process.env.ROLLUP_WATCH === 'true',
+        developmentMode: !production,
         injectServiceWorker: false,
         nodeResolve: { browser: true, dedupe: ['lit-html'] },
     });
@@ -21,20 +20,24 @@ const configs = locales.map(({ locale, localeTransformer }) => {
         input: './index.html',
         plugins: [
             replace({
-                'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
-                'process.env.BUILD_TYPE': JSON.stringify(buildType)
+                preventAssignment: true,
+                values: {
+                    'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
+                    'process.env.BUILD_TYPE': JSON.stringify(buildType)
+                }
             }),
             typescript({
                 transformers: {
                     before: [localeTransformer],
                 },
             }),
-            resolve(),
         ],
         output: {
             dir: `dist/${locale}`,
+            sourcemap: true,
+            format: 'es'
         },
     });
 });
 
-export default production ? configs : configs[0];
+export default configs;

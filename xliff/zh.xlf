@@ -49,11 +49,13 @@
   <source>Shorten your links</source>
   <target>缩短您的链接</target>
 </trans-unit>
-<trans-unit id="hd5a89281df2c88c7">
-  <source><ph id="0">&lt;mwc-textfield outlined="" id="input" label="Your original URL here" type="url" error-message="URL invalid">
-                    &lt;/mwc-textfield></ph></source>
-  <target><ph id="0">&lt;mwc-textfield outlined="" id="input" label="请填入您的链接地址" type="url" error-message="链接地址不合法">
-                    &lt;/mwc-textfield></ph></target>
+<trans-unit id="sbfcdf066c279c6f6">
+  <source>Your original URL here</source>
+  <target>请填入您的链接地址</target>
+</trans-unit>
+<trans-unit id="sf425fd947217e471">
+  <source>URL invalid</source>
+  <target>链接地址不合法</target>
 </trans-unit>
 <trans-unit id="h3500976a032c4e7f">
   <source>Shorten URL</source>

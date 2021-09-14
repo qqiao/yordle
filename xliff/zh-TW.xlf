@@ -36,9 +36,11 @@
 <trans-unit id="h8012815c243dcab4">
   <source>Shorten your links</source>
 </trans-unit>
-<trans-unit id="hd5a89281df2c88c7">
-  <source><ph id="0">&lt;mwc-textfield outlined="" id="input" label="Your original URL here" type="url" error-message="URL invalid">
-                    &lt;/mwc-textfield></ph></source>
+<trans-unit id="sbfcdf066c279c6f6">
+  <source>Your original URL here</source>
+</trans-unit>
+<trans-unit id="sf425fd947217e471">
+  <source>URL invalid</source>
 </trans-unit>
 <trans-unit id="h3500976a032c4e7f">
   <source>Shorten URL</source>
