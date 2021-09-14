@@ -15,11 +15,11 @@
         "experimentalDecorators": true,
         "strict": true,
         "sourceMap": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "outDir": "out-tsc/"
     },
     "include": [
         "src/**/*.ts",
-        "test/**/*.ts"
     ],
     "exclude": [],
 }

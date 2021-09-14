@@ -4,6 +4,7 @@
         "devDependencies": {
                 "@lit/localize-tools": "^0.3.6",
                 "@open-wc/building-rollup": "^1.10.0",
+                "@rollup/plugin-dynamic-import-vars": "^1.4.0",
                 "@rollup/plugin-node-resolve": "^13.0.4",
                 "@rollup/plugin-replace": "^3.0.0",
                 "@rollup/plugin-typescript": "^8.2.5",
@@ -36,11 +37,12 @@
                 "redux-thunk": "^2.3.0"
         },
         "scripts": {
-                "i18n-extract": "lit-localize extract",
-                "build": "yarn clean && rollup -c rollup.config.mjs && gulp copy",
+                "i18n:extract": "lit-localize extract",
+                "i18n:build": "lit-localize build",
+                "build": "yarn clean && yarn i18n:build && tsc && rollup -c rollup.config.mjs && gulp copy",
                 "clean": "rimraf dist/ out-tsc/",
                 "deploy": "yarn build && gulp deploy",
-                "start": "yarn build && concurrently --kill-others \"rollup -w -c rollup.config.mjs\" \"gulp\"",
+                "start": "yarn build && concurrently --kill-others \"tsc --watch\" \"rollup -w -c rollup.config.mjs\" \"gulp\"",
                 "test": "gulp test"
         }
 }

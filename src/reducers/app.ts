@@ -23,12 +23,12 @@ import { RootActions } from '../store';
 
 export interface State {
     page: string;
-    language: string;
+    locale: string;
 };
 
 const DEFAULT_STATE: State = {
     page: 'home',
-    language: 'en',
+    locale: 'en',
 }
 
 const app: Reducer<State, RootActions> = (state = DEFAULT_STATE, action: RootActions): State => {
@@ -38,10 +38,10 @@ const app: Reducer<State, RootActions> = (state = DEFAULT_STATE, action: RootAct
                 ...state,
                 page: action.page,
             };
-        case ActionTypes.UPDATE_LANGUAGE:
+        case ActionTypes.UPDATE_LOCALE:
             return {
                 ...state,
-                language: action.language,
+                locale: action.locale,
             };
         default:
             return state;
