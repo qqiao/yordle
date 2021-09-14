@@ -219,8 +219,8 @@ export class YordleHome extends LitElement {
                 ${msg(html`Done`)}
             </mwc-button>
         </mwc-dialog>
-        ${msg(html`<mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="5000"
-            labelText="Short URL copied to clipboard"></mwc-snackbar>`)}`;
+        <mwc-snackbar id="snackbar" leading closeOnEscape timeoutMs="5000"
+            labelText="${msg('Short URL copied to clipboard')}"></mwc-snackbar>`;
     }
 
     private _onCopyTap = (): void => {

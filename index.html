@@ -77,7 +77,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 	<link href="//fonts.googleapis.com/css?family=Roboto|Noto+Sans+SC|Material+Icons&display=swap" rel="stylesheet">
 
-	<base href="/{{.Locale}}/">
+	<base href="/">
 
 	{{.InitData}}
 
@@ -104,7 +104,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 <body>
 	<yordle-app appName="{{.Config.AppName}}"></yordle-app>
-	<script type="module" src="./src/components/yordle-app.ts"></script>
+	<script type="module" src="./out-tsc/components/yordle-app.js"></script>
 </body>
 
 </html>

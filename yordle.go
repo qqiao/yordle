@@ -27,7 +27,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"cloud.google.com/go/datastore"
@@ -85,31 +84,13 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 			nodeEnv = "development"
 		}
 
-		// We always try to get a locale from header as the fallback value
-		locale := webapp.DetermineLocaleWithDefault(r.Header.Get("accept-language"),
-			config.Locales)
-		log.Printf("Locale determined from request header: %s", locale)
-
-		// We allow the url of the page to be /$LOCALE/ for better l10n. But
-		// in the case of a path element, we have to have a strong match, or
-		// we use the fallback value
-		paths := strings.Split(idStr, "/")
-		if len(paths) > 0 {
-			pathLocale := webapp.DetermineLocale(paths[0], config.Locales)
-			if pathLocale != "" {
-				locale = pathLocale
-			}
-		}
-		log.Printf("Locale determined from path and header: %s", locale)
-
 		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)
 
-		tmpl := webapp.GetTemplate(filepath.Join(locale, "index.html"), webapp.IsDev)
+		tmpl := webapp.GetTemplate("index.html", webapp.IsDev)
 		tmpl.Execute(w, map[string]interface{}{
 			"Config":    <-dcCh,
 			"BuildInfo": config.B,
 			"InitData":  template.HTML(initData),
-			"Locale":    locale,
 		})
 		return
 	}

@@ -31,7 +31,7 @@ import { installRouter } from 'pwa-helpers/router';
 import './yordle-home';
 
 import { store, RootState } from '../store';
-import { navigate } from '../actions/app';
+import { navigate, updateLocale } from '../actions/app';
 import { State } from '../reducers/shortUrl';
 
 @localized()
@@ -120,6 +120,7 @@ export class YordleApp extends connect(store)(LitElement) {
         installRouter((location) => {
             store.dispatch(navigate(decodeURIComponent(location.hash)));
         });
+        store.dispatch(updateLocale(navigator.language));
     }
 
     public stateChanged(state: RootState): void {
