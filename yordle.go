@@ -23,6 +23,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html"
 	"html/template"
 	"log"
 	"net/http"
@@ -96,6 +97,8 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	id := base62.Decode(idStr)
+
+	idStr = html.EscapeString(idStr)
 
 	shortURL, err := shorturl.ByID(ctx, id)
 	if err == datastore.ErrNoSuchEntity {
