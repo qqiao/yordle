@@ -11,36 +11,29 @@ To install Yordle, please make sure you have the following prerequisites:
    [here](https://cloud.google.com/appengine/docs/standard/go/download).
 3. Google Cloud Datastore emulator. Documentations and installation guides are
    located [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
-4. ```yarn```. You can install the latest version of them by
-   using the command: ```npm install -g yarn```
+4. `yarn`. You can install the latest version of them by
+   using the command: `npm install -g yarn`
 
-Please note that this project can also be built with ```npm```. Please search
-and replace all instances of ```yarn``` with ```npm``` in the
-```package.json``` file.
+Please note that this project can also be built with `npm`. Please search and
+replace all instances of `yarn` with `npm` in the `package.json` file.
 
 Yordle assumes knowledge of Google Cloud Platform, specifically the App Engine
 Go runtimes, and the Go programming language. You can visit
 https://cloud.google.com/appengine for information on Google App Engine and
-https://golang.org for information on the Go programming language.
+https://go.dev for information on the Go programming language.
 
 The user interface of Yordle is written in
 [TypeScript](https://www.typescriptlang.org/).
 
 Other Readings
 --------------
-- [Lit](https://lit.dev): Yordle's user
-  interface framework.
+- [Lit](https://lit.dev): Yordle's user interface framework.
 - [Redux](https://redux.js.org/): Yordle's state management library.
 
 Getting Yordle
 --------------
 Yordle is set up as a go module, thus simplying cloning this repository should
 work for users with Go versions supporting modules, in other words Go > 1.11.
-
-However, for backward compatibility, Yordle is also fully ```go get```
-friendly, you can get the source code by running:
-
-    go get -u github.com/qqiao/yordle
 
 Working with Yordle
 -------------------
@@ -56,7 +49,7 @@ You can then edit and test your application by visiting
 http://localhost:8080.
 
 TypeScript changes will be reflected upon the next browser refresh. Go changes,
-however, will require killing the current running instancesand restarting.
+however, will require killing the current running instances and restarting.
 
 #### Deploying to Google App Engine
 Please ensure that you have correctly setup your Google Cloud SDK user
