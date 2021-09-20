@@ -11,6 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: go get github.com/qqiao/app-tools
+      - run: go install github.com/qqiao/app-tools@latest
       - run: yarn install
       - run: CLOUDSDK_CORE_PROJECT=local-test yarn build
