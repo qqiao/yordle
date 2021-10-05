@@ -11,7 +11,7 @@ node_modules/
 out-tsc/
 src/*.js
 src/*.map
-
+src/locale-codes.ts
 src/locales/
 
 .yarn/
