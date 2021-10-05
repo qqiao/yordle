@@ -1,25 +1,25 @@
 {
-    "compilerOptions": {
-        "target": "es2018",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "lib": [
-            "es2017",
-            "dom",
-            "dom.iterable"
-        ],
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "experimentalDecorators": true,
-        "strict": true,
-        "sourceMap": true,
-        "skipLibCheck": true,
-        "outDir": "out-tsc/"
-    },
-    "include": [
-        "src/**/*.ts",
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "es2017",
+      "dom",
+      "dom.iterable"
     ],
-    "exclude": [],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "outDir": "out-tsc/"
+  },
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": [],
 }

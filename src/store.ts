@@ -17,20 +17,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-declare global {
-    interface Window {
-        process?: Object;
-        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
-
 import {
-    createStore,
-    compose,
-    applyMiddleware,
-    combineReducers,
-    Reducer,
-    StoreEnhancer
+  createStore,
+  compose,
+  applyMiddleware,
+  combineReducers,
+  Reducer,
+  StoreEnhancer,
 } from 'redux';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 import { lazyReducerEnhancer } from 'pwa-helpers/lazy-reducer-enhancer';
@@ -41,10 +34,17 @@ import { Actions as ShortUrlActions } from './actions/shortUrl';
 import app, { State as AppState } from './reducers/app';
 import { State as ShortUrlState } from './reducers/shortUrl';
 
+declare global {
+  interface Window {
+    process?: Object;
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
 // Overall state extends static states and partials lazy states.
 export interface RootState {
-    app?: AppState;
-    shortUrl?: ShortUrlState;
+  app?: AppState;
+  shortUrl?: ShortUrlState;
 }
 
 export type RootActions = AppActions | ShortUrlActions;
@@ -52,9 +52,10 @@ export type RootActions = AppActions | ShortUrlActions;
 // Sets up a Chrome extension for time travel debugging.
 // See https://github.com/zalmoxisus/redux-devtools-extension for more information.
 const devCompose: <Ext0, Ext1, StateExt0, StateExt1>(
-    f1: StoreEnhancer<Ext0, StateExt0>, f2: StoreEnhancer<Ext1, StateExt1>
+  f1: StoreEnhancer<Ext0, StateExt0>,
+  f2: StoreEnhancer<Ext1, StateExt1>
 ) => StoreEnhancer<Ext0 & Ext1, StateExt0 & StateExt1> =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // Initializes the Redux store with a lazyReducerEnhancer (so that you can
 // lazily add reducers after the store has been created) and redux-thunk (so
@@ -62,13 +63,14 @@ const devCompose: <Ext0, Ext1, StateExt0, StateExt1>(
 // section of the wiki for more details:
 // https://github.com/Polymer/pwa-starter-kit/wiki/4.-Redux-and-state-management
 export const store = createStore(
-    state => state as Reducer<RootState, RootActions>,
-    devCompose(
-        lazyReducerEnhancer(combineReducers),
-        applyMiddleware(thunk as ThunkMiddleware<RootState, RootActions>))
+  state => state as Reducer<RootState, RootActions>,
+  devCompose(
+    lazyReducerEnhancer(combineReducers),
+    applyMiddleware(thunk as ThunkMiddleware<RootState, RootActions>)
+  )
 );
 
 // Initially loaded reducers.
 store.addReducers({
-    app
+  app,
 });

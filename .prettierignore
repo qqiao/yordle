@@ -14,9 +14,5 @@ src/*.map
 
 src/locales/
 
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/version
+.yarn/
 .pnp.*

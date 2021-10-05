@@ -23,47 +23,48 @@ import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../store';
 
 export const enum ActionTypes {
-    CREATION_FAILURE = '[short url] Creation Failure',
-    CREATION_SUCCESS = '[short url] Creation Success',
+  CREATION_FAILURE = '[short url] Creation Failure',
+  CREATION_SUCCESS = '[short url] Creation Success',
 }
 
 export enum Status {
-    SUCCESS = 'SUCCESS',
-    FAILURE = 'FAILURE',
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
 }
 
 interface ActionCreationFailure extends Action<ActionTypes.CREATION_FAILURE> {
-    error?: string;
+  error?: string;
 }
 interface ActionCreationSuccess extends Action<ActionTypes.CREATION_SUCCESS> {
-    shortUrl: string;
-};
-
-type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
+  shortUrl: string;
+}
 
 export type Actions = ActionCreationFailure | ActionCreationSuccess;
 
-export const createShortUrl: ActionCreator<ThunkResult> = (originalUrl: string) => async (dispatch) => {
-    let formData = new FormData();
+type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
+
+export const createShortUrl: ActionCreator<ThunkResult> =
+  (originalUrl: string) => async dispatch => {
+    const formData = new FormData();
     formData.append('OriginalUrl', originalUrl);
-    const resp = await (await fetch('/v1/api/create', {
+    const resp = await (
+      await fetch('/v1/api/create', {
         method: 'POST',
         body: formData,
-    })).json();
+      })
+    ).json();
 
     const status = Object.values(Status).find(x => x === resp.status);
 
     switch (status) {
-        case Status.SUCCESS:
-            return dispatch({
-                type: ActionTypes.CREATION_SUCCESS,
-                shortUrl: resp.payload
-            } as ActionCreationSuccess);
-        case Status.FAILURE:
-            return dispatch({
-                type: ActionTypes.CREATION_FAILURE
-            } as ActionCreationFailure);
-        default:
-            return;
+      case Status.SUCCESS:
+        return dispatch({
+          type: ActionTypes.CREATION_SUCCESS,
+          shortUrl: resp.payload,
+        } as ActionCreationSuccess);
+      default:
+        return dispatch({
+          type: ActionTypes.CREATION_FAILURE,
+        } as ActionCreationFailure);
     }
-};
+  };

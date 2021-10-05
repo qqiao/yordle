@@ -22,28 +22,31 @@ import { ActionTypes, Status } from '../actions/shortUrl';
 import { RootActions } from '../store';
 
 export interface State {
-    shortUrl?: string;
-    status?: Status;
+  shortUrl?: string;
+  status?: Status;
 }
 
 const INITIAL_STATE: State = {};
 
-const shortUrl: Reducer<State, RootActions> = (state = INITIAL_STATE, action: RootActions) => {
-    switch (action.type) {
-        case ActionTypes.CREATION_SUCCESS:
-            return {
-                ...state,
-                shortUrl: action.shortUrl,
-                status: Status.SUCCESS,
-            };
-        case ActionTypes.CREATION_FAILURE:
-            return {
-                ...state,
-                status: Status.FAILURE,
-            };
-        default:
-            return state;
-    }
+const shortUrl: Reducer<State, RootActions> = (
+  state = INITIAL_STATE,
+  action: RootActions
+) => {
+  switch (action.type) {
+    case ActionTypes.CREATION_SUCCESS:
+      return {
+        ...state,
+        shortUrl: action.shortUrl,
+        status: Status.SUCCESS,
+      };
+    case ActionTypes.CREATION_FAILURE:
+      return {
+        ...state,
+        status: Status.FAILURE,
+      };
+    default:
+      return state;
+  }
 };
 
 export default shortUrl;

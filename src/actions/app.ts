@@ -24,81 +24,81 @@ import { ThunkAction } from 'redux-thunk';
 import { allLocales, sourceLocale, targetLocales } from '../locale-codes';
 import { RootState } from '../store';
 
-
 export const enum ActionTypes {
-    UPDATE_LOCALE = '[app] Update Language',
-    UPDATE_PAGE = '[app] Update Page',
-};
+  UPDATE_LOCALE = '[app] Update Language',
+  UPDATE_PAGE = '[app] Update Page',
+}
 
 interface ActionUpdatePage extends Action<ActionTypes.UPDATE_PAGE> {
-    page: string
-};
+  page: string;
+}
 interface ActionUpdateLocale extends Action<ActionTypes.UPDATE_LOCALE> {
-    locale: string
-};
+  locale: string;
+}
 
 export type Actions = ActionUpdateLocale | ActionUpdatePage;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
 
-export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
+const updatePage: ActionCreator<ActionUpdatePage> = (page: string) => ({
+  type: ActionTypes.UPDATE_PAGE,
+  page,
+});
+
+const loadPage: ActionCreator<ThunkResult> = (page: string) => dispatch => {
+  switch (page) {
+    case 'help': {
+      import('../components/yordle-help.js');
+      break;
+    }
+    default:
+      break;
+  }
+  dispatch(updatePage(page));
+};
+
+export const navigate: ActionCreator<ThunkResult> =
+  (path: string) => dispatch => {
     // Extract the page name from path.
     const page = path === '' ? 'home' : path.slice(2);
 
     // Any other info you might want to extract from the path (like page type),
     // you can do here
     dispatch(loadPage(page));
-};
-
-const loadPage: ActionCreator<ThunkResult> = (page: string) => (dispatch) => {
-    switch (page) {
-        case 'help':
-            import('../components/yordle-help.js');
-            break;
-    }
-    dispatch(updatePage(page));
-}
-
-const updatePage: ActionCreator<ActionUpdatePage> = (page: string) => {
-    return {
-        type: ActionTypes.UPDATE_PAGE,
-        page
-    };
-}
+  };
 
 const { getLocale, setLocale } = configureLocalization({
-    sourceLocale,
-    targetLocales,
-    loadLocale: locale => import(`../locales/${locale}.js`),
+  sourceLocale,
+  targetLocales,
+  loadLocale: locale => import(`../locales/${locale}.js`),
 });
 
 export const updateLocale: ActionCreator<ThunkResult> =
-    (locale?: string) => async (dispatch, getState) => {
-        let targetLoc = locale;
-        // setting non-existent locale would result in system going to default
-        // locale;
-        if (!targetLoc) {
-            targetLoc = sourceLocale;
-        } else {
-            let bestmatch = '';
-            allLocales.forEach(l => {
-                if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
-                    bestmatch = l;
-                }
-            });
-            targetLoc = bestmatch ?? sourceLocale;
+  (locale?: string) => async (dispatch, getState) => {
+    let targetLoc = locale;
+    // setting non-existent locale would result in system going to default
+    // locale;
+    if (!targetLoc) {
+      targetLoc = sourceLocale;
+    } else {
+      let bestmatch = '';
+      allLocales.forEach(l => {
+        if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
+          bestmatch = l;
         }
+      });
+      targetLoc = bestmatch ?? sourceLocale;
+    }
 
-        const state = getState();
+    const state = getState();
 
-        if (targetLoc !== getLocale() || !state.app?.locale) {
-            await setLocale(targetLoc);
-            return dispatch({
-                type: ActionTypes.UPDATE_LOCALE,
-                locale: targetLoc,
-            });
-        }
+    if (targetLoc !== getLocale() || !state.app?.locale) {
+      await setLocale(targetLoc);
+      return dispatch({
+        type: ActionTypes.UPDATE_LOCALE,
+        locale: targetLoc,
+      });
+    }
 
-        return undefined;
-    };
-
+    return undefined;
+  };
