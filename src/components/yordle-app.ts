@@ -37,94 +37,112 @@ import { State } from '../reducers/shortUrl';
 @localized()
 @customElement('yordle-app')
 export class YordleApp extends connect(store)(LitElement) {
-    @property()
-    public appName: string = 'Yordle'
+  @property()
+  public appName: string = 'Yordle';
 
-    @state()
-    private _page?: string;
+  @state()
+  private _page?: string;
 
-    @state()
-    private _response?: State;
+  @state()
+  private _response?: State;
 
-    static styles = css`
-        :host {
-            color: #666;
-            display: block;
-            --mdc-theme-primary: #fff;
-            --mdc-theme-on-primary: #666;
-        }
-
-        :host mwc-icon-button:not([active]) {
-            display: none;
-        }
-
-        :host mwc-top-app-bar .title {
-            color: #666;
-        }
-
-        :host mwc-top-app-bar .top-navigation a {
-            color: #333;
-            margin-left: 20px;
-            text-decoration: none;
-        }
-
-        :host .page {
-            display: none;
-            margin: 0 auto;
-        }
-
-        :host .page[active] {
-            display: block;
-        }
-
-        :host footer {
-            margin: auto;
-            color: #666;
-            font-size: 13px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        :host footer a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        :host footer a:hover {
-            text-decoration: underline;
-        }`;
-
-    protected render(): TemplateResult {
-        return html`
-        <mwc-top-app-bar>
-            <mwc-icon-button ?active="${'home' !== this._page}"
-                icon="arrow_back" slot="navigationIcon" @click="${() => {
-                history.go(-1);
-            }}"></mwc-icon-button>
-            <div slot="title" class="title">${this.appName}</div>
-            <div slot="actionItems" class="top-navigation">
-                <a href="/#/help">${msg('Help')}</a>
-            </div>
-        </mwc-top-app-bar>
-
-        <yordle-home class="page" ?active="${'home' === this._page}"
-            .response="${this._response}"></yordle-home>
-        <yordle-help class="page" ?active="${'help' === this._page}"></yordle-help>
-
-        <footer>
-            ${msg(html`Powered by <a href="https://github.com/qqiao/yordle" target="_blank" rel="noreferrer">Yordle</a>`)}
-        </footer>`;
+  static styles = css`
+    :host {
+      color: #666;
+      display: block;
+      --mdc-theme-primary: #fff;
+      --mdc-theme-on-primary: #666;
     }
 
-    protected firstUpdated(): void {
-        installRouter((location) => {
-            store.dispatch(navigate(decodeURIComponent(location.hash)));
-        });
-        store.dispatch(updateLocale(navigator.language));
+    :host mwc-icon-button:not([active]) {
+      display: none;
     }
 
-    public stateChanged(state: RootState): void {
-        this._page = state.app?.page || 'home';
-        this._response = state.shortUrl;
+    :host mwc-top-app-bar .title {
+      color: #666;
     }
+
+    :host mwc-top-app-bar .top-navigation a {
+      color: #333;
+      margin-left: 20px;
+      text-decoration: none;
+    }
+
+    :host .page {
+      display: none;
+      margin: 0 auto;
+    }
+
+    :host .page[active] {
+      display: block;
+    }
+
+    :host footer {
+      margin: auto;
+      color: #666;
+      font-size: 13px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    :host footer a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    :host footer a:hover {
+      text-decoration: underline;
+    }
+  `;
+
+  protected render(): TemplateResult {
+    return html` <mwc-top-app-bar>
+        <mwc-icon-button
+          ?active="${this._page !== 'home'}"
+          icon="arrow_back"
+          slot="navigationIcon"
+          @click="${() => {
+            window.history.go(-1);
+          }}"
+        ></mwc-icon-button>
+        <div slot="title" class="title">${this.appName}</div>
+        <div slot="actionItems" class="top-navigation">
+          <a href="/#/help">${msg('Help')}</a>
+        </div>
+      </mwc-top-app-bar>
+
+      <yordle-home
+        class="page"
+        ?active="${this._page === 'home'}"
+        .response="${this._response}"
+      ></yordle-home>
+      <yordle-help
+        class="page"
+        ?active="${this._page === 'help'}"
+      ></yordle-help>
+
+      <footer>
+        ${msg(
+          html`Powered by
+            <a
+              href="https://github.com/qqiao/yordle"
+              target="_blank"
+              rel="noreferrer"
+              >Yordle</a
+            >`
+        )}
+      </footer>`;
+  }
+
+  protected firstUpdated(): void {
+    installRouter((location) => {
+      store.dispatch(navigate(decodeURIComponent(location.hash)));
+    });
+    store.dispatch(updateLocale(navigator.language));
+  }
+
+  public stateChanged(state: RootState): void {
+    this._page = state.app?.page || 'home';
+    this._response = state.shortUrl;
+  }
 }

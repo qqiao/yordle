@@ -22,71 +22,76 @@ import { customElement } from 'lit/decorators';
 
 import { localized, msg } from '@lit/localize';
 
+const BASE_URL = `${document.location.protocol}//${document.location.hostname}${
+  document.location.port || ''
+}`;
+
 @localized()
 @customElement('yordle-help')
 export class YordleHelp extends LitElement {
-    static styles = css`
-        :host {
-            display: block;
-        }
-
-        :host > div {
-            display: flex;
-            justify-content: center;
-            padding: 30px;
-        }
-
-        :host .header {
-            background-color: #59f;
-        }
-
-        :host .contents > *,
-        :host .header > * {
-            flex: 1;
-            max-width: 900px;
-        }
-
-        :host .header h2 {
-            color: #fff;
-            display: block;
-            font-weight: normal;
-            margin: 0;
-        }`;
-
-    protected render(): TemplateResult {
-        return html`
-        <div class="header">
-            <div>
-                <h2>${msg(html`Yordle Help`)}</h2>
-            </div>
-        </div>
-        <div class="contents">
-            <div>
-                <h4>${msg(html`What is Yordle?`)}</h4>
-                ${msg(html`<p>
-                    Yordle allows you to shorten URLs so that they are easier
-                    to share with people. For example, the following URL
-                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                       target="_blank"
-                       rel="noreferrer">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a>
-                    can be shortened to
-                    <a href="/PmYUlTPea"
-                       target="_blank"
-                       rel="noreferrer">${document.location.protocol}//${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}/PmYUlTPea</a>,
-                    which can be shared more easily.
-                </p>`)}
-                <h4>${msg(html`How do I shorten a link?`)}</h4>
-                ${msg(html`<p>
-                    To shorten a link, paste in the long URL in the text box
-                    labeled 'Your original URL here', then click on the
-                    'Shorten URL' button.
-                </p>
-                <p>
-                    A new dialog box will show up with the shortened URL. Click
-                    on the 'Copy' button to copy it to your clipboard so that
-                    it can be shared, emailed or tweeted.
-                </p>`)}
-            </div>
-        </div>`;
+  static styles = css`
+    :host {
+      display: block;
     }
+
+    :host > div {
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    :host .header {
+      background-color: #59f;
+    }
+
+    :host .contents > *,
+    :host .header > * {
+      flex: 1;
+      max-width: 900px;
+    }
+
+    :host .header h2 {
+      color: #fff;
+      display: block;
+      font-weight: normal;
+      margin: 0;
+    }
+  `;
+
+  protected render(): TemplateResult {
+    return html` <div class="header">
+        <div>
+          <h2>${msg('Yordle Help')}</h2>
+        </div>
+      </div>
+      <div class="contents">
+        <div>
+          <h4>${msg('What is Yordle?')}</h4>
+          ${msg(html`<p>
+            Yordle allows you to shorten URLs so that they are easier to share
+            with people. For example, the following URL
+            <a
+              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              target="_blank"
+              rel="noreferrer"
+              >https://www.youtube.com/watch?v=dQw4w9WgXcQ</a
+            >
+            can be shortened to
+            <a href="/PmYUlTPea" target="_blank" rel="noreferrer"
+              >${BASE_URL}/PmYUlTPea</a
+            >, which can be shared more easily.
+          </p>`)}
+          <h4>${msg('How do I shorten a link?')}</h4>
+          ${msg(html`<p>
+              To shorten a link, paste in the long URL in the text box labeled
+              'Your original URL here', then click on the 'Shorten URL' button.
+            </p>
+            <p>
+              A new dialog box will show up with the shortened URL. Click on the
+              'Copy' button to copy it to your clipboard so that it can be
+              shared, emailed or tweeted.
+            </p>`)}
+        </div>
+      </div>`;
+  }
 }

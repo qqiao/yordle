@@ -1,6 +1,6 @@
 /**
  * Yordle - A URL shortener for Google App Engine.
- * Copyright (C) 2017 The Yordle Team
+ * Copyright (C) 2021 The Yordle Team
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,39 +16,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-import { Reducer } from 'redux';
 
-import { ActionTypes } from '../actions/app';
-import { RootActions } from '../store';
-
-export interface State {
-  page: string;
-  locale: string;
-}
-
-const DEFAULT_STATE: State = {
-  page: 'home',
-  locale: 'en',
+module.exports = {
+  singleQuote: true,
 };
-
-const app: Reducer<State, RootActions> = (
-  state = DEFAULT_STATE,
-  action: RootActions
-): State => {
-  switch (action.type) {
-    case ActionTypes.UPDATE_PAGE:
-      return {
-        ...state,
-        page: action.page,
-      };
-    case ActionTypes.UPDATE_LOCALE:
-      return {
-        ...state,
-        locale: action.locale,
-      };
-    default:
-      return state;
-  }
-};
-
-export default app;
