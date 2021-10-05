@@ -18,6 +18,7 @@
  */
 
 module.exports = {
+  ignorePatterns: ['src/locale-codes.ts'],
   extends: [
     'plugin:jest/recommended',
     'eslint-config-prettier',
@@ -36,7 +37,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts', '!src/locale-codes.ts'],
+      files: ['*.ts'],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
       rules: {

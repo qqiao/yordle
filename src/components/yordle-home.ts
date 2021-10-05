@@ -234,11 +234,17 @@ export class YordleHome extends LitElement {
       ></mwc-snackbar>`;
   }
 
-  #onCopyTap = (): void => {
-    if (!this.dialog || !this.result) return;
-    this.result.select();
-    document.execCommand('copy');
-    this.dialog.open = false;
+  #onCopyTap = async (): Promise<void> => {
+    if (navigator.clipboard) {
+      if (this.result?.value) {
+        await navigator.clipboard.writeText(this.result?.value);
+      }
+    } else {
+      if (!this.dialog || !this.result) return;
+      this.result.select();
+      document.execCommand('copy');
+      this.dialog.open = false;
+    }
 
     if (!this.snackbar) return;
     this.snackbar.open = true;
