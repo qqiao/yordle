@@ -46,7 +46,7 @@ export class YordleApp extends connect(store)(LitElement) {
   @state()
   private _response?: State;
 
-  static styles = css`
+  static override readonly styles = css`
     :host {
       color: #666;
       display: block;
@@ -95,7 +95,7 @@ export class YordleApp extends connect(store)(LitElement) {
     }
   `;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html` <mwc-top-app-bar>
         <mwc-icon-button
           ?active="${this._page !== 'home'}"
@@ -134,14 +134,14 @@ export class YordleApp extends connect(store)(LitElement) {
       </footer>`;
   }
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     installRouter((location) => {
       store.dispatch(navigate(decodeURIComponent(location.hash)));
     });
     store.dispatch(updateLocale(navigator.language));
   }
 
-  public stateChanged(state: RootState): void {
+  public override stateChanged(state: RootState): void {
     this._page = state.app?.page || 'home';
     this._response = state.shortUrl;
   }
