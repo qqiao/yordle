@@ -22,6 +22,10 @@ import { customElement } from 'lit/decorators';
 
 import { localized, msg } from '@lit/localize';
 
+const BASE_URL = `${document.location.protocol}//${document.location.hostname}${
+  document.location.port || ''
+}`;
+
 @localized()
 @customElement('yordle-help')
 export class YordleHelp extends LitElement {
@@ -57,12 +61,12 @@ export class YordleHelp extends LitElement {
   protected render(): TemplateResult {
     return html` <div class="header">
         <div>
-          <h2>${msg(html`Yordle Help`)}</h2>
+          <h2>${msg('Yordle Help')}</h2>
         </div>
       </div>
       <div class="contents">
         <div>
-          <h4>${msg(html`What is Yordle?`)}</h4>
+          <h4>${msg('What is Yordle?')}</h4>
           ${msg(html`<p>
             Yordle allows you to shorten URLs so that they are easier to share
             with people. For example, the following URL
@@ -74,13 +78,10 @@ export class YordleHelp extends LitElement {
             >
             can be shortened to
             <a href="/PmYUlTPea" target="_blank" rel="noreferrer"
-              >${document.location.protocol}//${document.location
-                .hostname}${document.location.port
-                ? `:${document.location.port}`
-                : ''}/PmYUlTPea</a
+              >${BASE_URL}/PmYUlTPea</a
             >, which can be shared more easily.
           </p>`)}
-          <h4>${msg(html`How do I shorten a link?`)}</h4>
+          <h4>${msg('How do I shorten a link?')}</h4>
           ${msg(html`<p>
               To shorten a link, paste in the long URL in the text box labeled
               'Your original URL here', then click on the 'Shorten URL' button.

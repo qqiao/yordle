@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /**
  * Yordle - A URL shortener for Google App Engine.
  * Copyright (C) 2017 The Yordle Team
@@ -23,9 +24,19 @@ import { customElement, property, query } from 'lit/decorators';
 import { localized, msg } from '@lit/localize';
 
 import '@material/mwc-button';
-import { Dialog } from '@material/mwc-dialog';
+// eslint-disable-next-line import/no-duplicates
+import '@material/mwc-dialog';
 import '@material/mwc-icon';
+// eslint-disable-next-line import/no-duplicates
+import '@material/mwc-snackbar';
+
+// eslint-disable-next-line import/no-duplicates
+import { Dialog } from '@material/mwc-dialog';
 import { Snackbar } from '@material/mwc-snackbar';
+
+// eslint-disable-next-line import/no-duplicates
+import '@material/mwc-textfield';
+// eslint-disable-next-line import/no-duplicates
 import { TextField } from '@material/mwc-textfield';
 
 import { createShortUrl, Status } from '../actions/shortUrl';
@@ -161,7 +172,7 @@ export class YordleHome extends LitElement {
   protected render(): TemplateResult {
     return html` <div class="inputs-container">
         <div class="inputs">
-          <h1>${msg(html`Shorten your links`)}</h1>
+          <h1>${msg('Shorten your links')}</h1>
           <div>
             <mwc-textfield
               outlined
@@ -169,12 +180,11 @@ export class YordleHome extends LitElement {
               label="${msg('Your original URL here')}"
               type="url"
               error-message="${msg('URL invalid')}"
-            >
-            </mwc-textfield>
+            ></mwc-textfield>
           </div>
           <div>
             <mwc-button @click="${this._onShortenTap}">
-              ${msg(html`Shorten URL`)}
+              ${msg('Shorten URL')}
             </mwc-button>
           </div>
         </div>
@@ -184,25 +194,23 @@ export class YordleHome extends LitElement {
           <div class="point">
             <h2>
               <mwc-icon>link</mwc-icon>
-              ${msg(html`Shorten`)}
+              ${msg('Shorten')}
             </h2>
-            ${msg(html`Shorten your URL so its ready to be shared everywhere`)}
+            ${msg('Shorten your URL so its ready to be shared everywhere')}
           </div>
           <div class="point">
             <h2>
               <mwc-icon>trending_up</mwc-icon>
-              ${msg(html`Track`)}
+              ${msg('Track')}
             </h2>
-            ${msg(
-              html`Analytics help you know where your clicks are coming from`
-            )}
+            ${msg('Analytics help you know where your clicks are coming from')}
           </div>
           <div class="point">
             <h2>
               <mwc-icon>people</mwc-icon>
-              ${msg(html`Learn`)}
+              ${msg('Learn')}
             </h2>
-            ${msg(html`Understand and visualize your audience`)}
+            ${msg('Understand and visualize your audience')}
           </div>
         </div>
       </div>
@@ -210,11 +218,11 @@ export class YordleHome extends LitElement {
         <div class="dialog-content">
           <mwc-textfield id="result" type="text"> </mwc-textfield>
           <mwc-button dense icon="file_copy" @click="${this._onCopyTap}">
-            ${msg(html`Copy`)}
+            ${msg('Copy')}
           </mwc-button>
         </div>
         <mwc-button dense slot="primaryAction" dialogAction="ok">
-          ${msg(html`Done`)}
+          ${msg('Done')}
         </mwc-button>
       </mwc-dialog>
       <mwc-snackbar

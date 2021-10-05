@@ -41,7 +41,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "i18n:extract": "lit-localize extract",
+    "i18n:extract": "yarn run format && lit-localize extract",
     "i18n:build": "lit-localize build",
     "format": "eslint --ext .ts --ext .cjs --ext .mjs . --fix --ignore-path .gitignore && prettier \"**/*.(cjs|mjs|ts)\" --write",
     "build": "yarn clean && yarn i18n:build && tsc && rollup -c rollup.config.mjs && gulp copy",

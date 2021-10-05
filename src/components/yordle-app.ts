@@ -135,7 +135,7 @@ export class YordleApp extends connect(store)(LitElement) {
   }
 
   protected firstUpdated(): void {
-    installRouter(location => {
+    installRouter((location) => {
       store.dispatch(navigate(decodeURIComponent(location.hash)));
     });
     store.dispatch(updateLocale(navigator.language));

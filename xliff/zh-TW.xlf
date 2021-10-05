@@ -2,38 +2,36 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file target-language="zh-TW" source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
-<trans-unit id="h23a3086c88b29047">
+<trans-unit id="s23a3086c88b29047">
   <source>Yordle Help</source>
 </trans-unit>
-<trans-unit id="h40911ccca1e188f3">
+<trans-unit id="s40911ccca1e188f3">
   <source>What is Yordle?</source>
 </trans-unit>
-<trans-unit id="h7d077018ff842bee">
+<trans-unit id="h262beb9c97056094">
   <source><ph id="0">&lt;p></ph>
-                    Yordle allows you to shorten URLs so that they are easier
-                    to share with people. For example, the following URL
-                    <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
-                    can be shortened to
-                    <ph id="3">&lt;a href="/PmYUlTPea" target="_blank" rel="noreferrer">${document.location.protocol}</ph>//<ph id="4">${document.location.hostname}${document.location.port ? `:${document.location.port}` : ''}</ph>/PmYUlTPea<ph id="5">&lt;/a></ph>,
-                    which can be shared more easily.
-                <ph id="6">&lt;/p></ph></source>
+            Yordle allows you to shorten URLs so that they are easier to share
+            with people. For example, the following URL
+            <ph id="1">&lt;a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer"></ph>https://www.youtube.com/watch?v=dQw4w9WgXcQ<ph id="2">&lt;/a></ph>
+            can be shortened to
+            <ph id="3">&lt;a href="/PmYUlTPea" target="_blank" rel="noreferrer">${BASE_URL}</ph>/PmYUlTPea<ph id="4">&lt;/a></ph>, which can be shared more easily.
+          <ph id="5">&lt;/p></ph></source>
 </trans-unit>
-<trans-unit id="hff04f4a8484bac26">
+<trans-unit id="sff04f4a8484bac26">
   <source>How do I shorten a link?</source>
 </trans-unit>
-<trans-unit id="hbce2dfd4cf9c4395">
+<trans-unit id="h719ac6e82b845aa3">
   <source><ph id="0">&lt;p></ph>
-                    To shorten a link, paste in the long URL in the text box
-                    labeled 'Your original URL here', then click on the
-                    'Shorten URL' button.
-                <ph id="1">&lt;/p>
-                &lt;p></ph>
-                    A new dialog box will show up with the shortened URL. Click
-                    on the 'Copy' button to copy it to your clipboard so that
-                    it can be shared, emailed or tweeted.
-                <ph id="2">&lt;/p></ph></source>
+              To shorten a link, paste in the long URL in the text box labeled
+              'Your original URL here', then click on the 'Shorten URL' button.
+            <ph id="1">&lt;/p>
+            &lt;p></ph>
+              A new dialog box will show up with the shortened URL. Click on the
+              'Copy' button to copy it to your clipboard so that it can be
+              shared, emailed or tweeted.
+            <ph id="2">&lt;/p></ph></source>
 </trans-unit>
-<trans-unit id="h8012815c243dcab4">
+<trans-unit id="s8012815c243dcab4">
   <source>Shorten your links</source>
 </trans-unit>
 <trans-unit id="sbfcdf066c279c6f6">
@@ -42,31 +40,31 @@
 <trans-unit id="sf425fd947217e471">
   <source>URL invalid</source>
 </trans-unit>
-<trans-unit id="h3500976a032c4e7f">
+<trans-unit id="s3500976a032c4e7f">
   <source>Shorten URL</source>
 </trans-unit>
-<trans-unit id="h4b4da3e72a08fcfa">
+<trans-unit id="s4b4da3e72a08fcfa">
   <source>Shorten</source>
 </trans-unit>
-<trans-unit id="h1d64d29c847603b0">
+<trans-unit id="s1d64d29c847603b0">
   <source>Shorten your URL so its ready to be shared everywhere</source>
 </trans-unit>
-<trans-unit id="h9e85800d3700e31c">
+<trans-unit id="s9e85800d3700e31c">
   <source>Track</source>
 </trans-unit>
-<trans-unit id="h86a3121c2add6304">
+<trans-unit id="s86a3121c2add6304">
   <source>Analytics help you know where your clicks are coming from</source>
 </trans-unit>
-<trans-unit id="h19b10d1a8593ca55">
+<trans-unit id="s19b10d1a8593ca55">
   <source>Learn</source>
 </trans-unit>
-<trans-unit id="h2eb8a092a50abb0b">
+<trans-unit id="s2eb8a092a50abb0b">
   <source>Understand and visualize your audience</source>
 </trans-unit>
-<trans-unit id="h3687049d1af562c4">
+<trans-unit id="s3687049d1af562c4">
   <source>Copy</source>
 </trans-unit>
-<trans-unit id="h0379fc73608ab971">
+<trans-unit id="s0379fc73608ab971">
   <source>Done</source>
 </trans-unit>
 <trans-unit id="s2aef9c356025fbbf">
@@ -75,8 +73,9 @@
 <trans-unit id="s352719d86112de9a">
   <source>Help</source>
 </trans-unit>
-<trans-unit id="h4e68a7c50950dda4">
-  <source>Powered by <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank" rel="noreferrer"></ph>Yordle<ph id="1">&lt;/a></ph></source>
+<trans-unit id="h40cb2fc65a176dc6">
+  <source>Powered by
+            <ph id="0">&lt;a href="https://github.com/qqiao/yordle" target="_blank" rel="noreferrer"></ph>Yordle<ph id="1">&lt;/a></ph></source>
 </trans-unit>
 </body>
 </file>

@@ -37,17 +37,17 @@ const execCommand = (command, cb, options) => {
     if (stderr) console.error(stderr);
     cb(err);
   });
-  cli.stdout.on('data', data => {
+  cli.stdout.on('data', (data) => {
     process.stdout.write(data);
   });
-  cli.stderr.on('data', data => {
+  cli.stderr.on('data', (data) => {
     process.stderr.write(data);
   });
 
   return cli;
 };
 
-export const buildInfo = cb =>
+export const buildInfo = (cb) =>
   execCommand('app-tools buildinfo generate -f build_info.json', cb);
 
 export const copy = gulp.series(buildInfo, () =>
@@ -71,7 +71,7 @@ export const copy = gulp.series(buildInfo, () =>
     .pipe(gulp.dest(BUILD_DIR))
 );
 
-export const datastoreEmulator = cb => {
+export const datastoreEmulator = (cb) => {
   const cmd = [
     `CLOUDSDK_CORE_PROJECT=${CLOUDSDK_CORE_PROJECT}`,
     'gcloud beta emulators datastore start',
@@ -80,7 +80,7 @@ export const datastoreEmulator = cb => {
   return execCommand(cmd, cb);
 };
 
-const go = cb => {
+const go = (cb) => {
   const cmd = [
     `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
     `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
@@ -89,7 +89,7 @@ const go = cb => {
   return execCommand(cmd, cb, { cwd: BUILD_DIR });
 };
 
-export const test = gulp.parallel(datastoreEmulator, cb => {
+export const test = gulp.parallel(datastoreEmulator, (cb) => {
   const cmd = [
     `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
     `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
@@ -100,7 +100,7 @@ export const test = gulp.parallel(datastoreEmulator, cb => {
   });
 });
 
-export const deploy = cb => {
+export const deploy = (cb) => {
   const cmd = [
     'gcloud -q app deploy --no-promote',
     `--project=${CLOUDSDK_CORE_PROJECT}`,
