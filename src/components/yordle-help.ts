@@ -29,7 +29,7 @@ const BASE_URL = `${document.location.protocol}//${document.location.hostname}${
 @localized()
 @customElement('yordle-help')
 export class YordleHelp extends LitElement {
-  static styles = css`
+  static override readonly styles = css`
     :host {
       display: block;
     }
@@ -58,7 +58,7 @@ export class YordleHelp extends LitElement {
     }
   `;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html` <div class="header">
         <div>
           <h2>${msg('Yordle Help')}</h2>

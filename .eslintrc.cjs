@@ -36,7 +36,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts'],
+      files: ['*.ts', '!src/locale-codes.ts'],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
       rules: {

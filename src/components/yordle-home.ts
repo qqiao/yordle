@@ -63,7 +63,7 @@ export class YordleHome extends LitElement {
   @property()
   public response?: State;
 
-  static styles = css`
+  static override readonly styles = css`
     :host {
       display: block;
       --mdc-theme-primary: #000;
@@ -160,7 +160,7 @@ export class YordleHome extends LitElement {
     }
   `;
 
-  protected updated(changed: PropertyValues): void {
+  protected override updated(changed: PropertyValues): void {
     if (changed.has('response')) {
       if (Status.SUCCESS === this.response?.status) {
         if (this.result) this.result.value = this.response.shortUrl ?? '';
@@ -169,7 +169,7 @@ export class YordleHome extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html` <div class="inputs-container">
         <div class="inputs">
           <h1>${msg('Shorten your links')}</h1>
@@ -183,7 +183,7 @@ export class YordleHome extends LitElement {
             ></mwc-textfield>
           </div>
           <div>
-            <mwc-button @click="${this._onShortenTap}">
+            <mwc-button @click="${this.#onShortenTap}">
               ${msg('Shorten URL')}
             </mwc-button>
           </div>
@@ -217,7 +217,7 @@ export class YordleHome extends LitElement {
       <mwc-dialog id="dialog" scrimClickAction="">
         <div class="dialog-content">
           <mwc-textfield id="result" type="text"> </mwc-textfield>
-          <mwc-button dense icon="file_copy" @click="${this._onCopyTap}">
+          <mwc-button dense icon="file_copy" @click="${this.#onCopyTap}">
             ${msg('Copy')}
           </mwc-button>
         </div>
@@ -234,7 +234,7 @@ export class YordleHome extends LitElement {
       ></mwc-snackbar>`;
   }
 
-  private _onCopyTap = (): void => {
+  #onCopyTap = (): void => {
     if (!this.dialog || !this.result) return;
     this.result.select();
     document.execCommand('copy');
@@ -244,7 +244,7 @@ export class YordleHome extends LitElement {
     this.snackbar.open = true;
   };
 
-  private _onShortenTap = (): void => {
+  #onShortenTap = (): void => {
     if (!this.input) return;
     const originalUrl = this.input.value;
     if (originalUrl?.length) {
