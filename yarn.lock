@@ -2252,6 +2252,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@qqiao/webapp-scaffold@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@qqiao/webapp-scaffold@npm:0.0.9"
+  dependencies:
+    lit: ^2.0.0
+    redux: ^4.1.1
+    redux-thunk: ^2.3.0
+  checksum: 0bace5a6ac3547b7ad9de4cec5b36ee0d740618b2b658d159507d4ae0b27367820c1739824066a82be002f3a5efd3940b1befc9b3cda6f4a22bdd1a42f4b8e8f
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.1.0":
   version: 5.3.0
   resolution: "@rollup/plugin-babel@npm:5.3.0"
@@ -2566,10 +2577,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^16.10.2":
+"@types/node@npm:*":
   version: 16.10.2
   resolution: "@types/node@npm:16.10.2"
   checksum: 83c1c3c68e7500103908c3f16094e458879c840a719c15b6ea577f81fe1f24a1b3473bb6c8e8091fe79a82543ca7639c6b1088fcf80292ec091d1d1c9504a87e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.10.3":
+  version: 16.10.3
+  resolution: "@types/node@npm:16.10.3"
+  checksum: 3fd429bce8a4acb497dcc62b536782a5e87ccf7cd91d64a78b263ae5d66cb72bf84be9eeeff6f84ae0567b065a40b267caa66d311f9e094990a5847bbd168a29
   languageName: node
   linkType: hard
 
@@ -11236,11 +11254,12 @@ fsevents@^1.2.7:
     "@material/mwc-top-app-bar": ^0.25.1
     "@open-wc/building-rollup": ^1.10.0
     "@open-wc/eslint-config": ^4.3.0
+    "@qqiao/webapp-scaffold": ^0.0.9
     "@rollup/plugin-dynamic-import-vars": ^1.4.0
     "@rollup/plugin-replace": ^3.0.0
     "@types/gulp": ^4.0.9
     "@types/jest": ^27.0.2
-    "@types/node": ^16.10.2
+    "@types/node": ^16.10.3
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     concurrently: ^6.3.0

@@ -17,35 +17,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-module.exports = {
-  ignorePatterns: ['src/locale-codes.ts'],
-  extends: ['eslint-config-prettier', '@open-wc/eslint-config'],
-  env: {
-    browser: true,
-    node: true,
-  },
-  plugins: ['jest'],
-  rules: {
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'no-unused-vars': 'off',
-    'operator-linebreak': ['error', 'before', { overrides: { '=': 'after' } }],
-  },
-  overrides: [
-    {
-      files: ['*.ts'],
-      plugins: ['@typescript-eslint'],
-      parser: '@typescript-eslint/parser',
-      rules: {
-        'no-shadow': 'off',
-      },
-    },
-    {
-      files: ['*.mjs'],
-      parserOptions: {
-        sourceType: 'module',
-        ecmaVersion: 12,
-      },
-    },
-  ],
-};
+import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
+
+import { RootState, store } from '../store';
+
+export class NavigationController extends ReduxStateController(store) {
+  page?: string;
+
+  override stateChanged(state: RootState) {
+    let needsUpdate = false;
+    if (state.app?.page !== this.page) {
+      this.page = state.app?.page;
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) this.host.requestUpdate();
+  }
+}
