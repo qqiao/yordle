@@ -19,11 +19,7 @@
 
 module.exports = {
   ignorePatterns: ['src/locale-codes.ts'],
-  extends: [
-    'plugin:jest/recommended',
-    'eslint-config-prettier',
-    '@open-wc/eslint-config',
-  ],
+  extends: ['eslint-config-prettier', '@open-wc/eslint-config'],
   env: {
     browser: true,
     node: true,

@@ -35,6 +35,7 @@
     "@material/mwc-snackbar": "^0.25.1",
     "@material/mwc-textfield": "^0.25.1",
     "@material/mwc-top-app-bar": "^0.25.1",
+    "@qqiao/webapp-scaffold": "next",
     "lit": "^2.0.0",
     "pwa-helpers": "^0.9.1",
     "redux": "^4.1.1",

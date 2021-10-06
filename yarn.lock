@@ -2252,6 +2252,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@qqiao/webapp-scaffold@npm:next":
+  version: 0.0.9-rc1
+  resolution: "@qqiao/webapp-scaffold@npm:0.0.9-rc1"
+  dependencies:
+    lit: ^2.0.0
+    redux: ^4.1.1
+    redux-thunk: ^2.3.0
+  checksum: 97e5c349ab9860fdb15345986dd8b1e7c17013bbeaa52996fda93e450d1f5b086b0626d8384619960e61ab2516098ac44b92df67958c7cc5971acec260787e65
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.1.0":
   version: 5.3.0
   resolution: "@rollup/plugin-babel@npm:5.3.0"
@@ -11236,6 +11247,7 @@ fsevents@^1.2.7:
     "@material/mwc-top-app-bar": ^0.25.1
     "@open-wc/building-rollup": ^1.10.0
     "@open-wc/eslint-config": ^4.3.0
+    "@qqiao/webapp-scaffold": next
     "@rollup/plugin-dynamic-import-vars": ^1.4.0
     "@rollup/plugin-replace": ^3.0.0
     "@types/gulp": ^4.0.9

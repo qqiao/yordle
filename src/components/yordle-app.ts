@@ -30,9 +30,11 @@ import { installRouter } from 'pwa-helpers/router';
 
 import './yordle-home';
 
-import { store, RootState } from '../store';
 import { navigate, updateLocale } from '../actions/app';
+import { NavigationController } from '../controllers/navigation';
 import { State } from '../reducers/shortUrl';
+import { store, RootState } from '../store';
+import { LocaleController } from '../controllers/locale';
 
 @localized()
 @customElement('yordle-app')
@@ -40,8 +42,9 @@ export class YordleApp extends connect(store)(LitElement) {
   @property()
   public appName: string = 'Yordle';
 
-  @state()
-  private _page?: string;
+  _localeController = new LocaleController(this);
+
+  #navigationController = new NavigationController(this);
 
   @state()
   private _response?: State;
@@ -98,7 +101,7 @@ export class YordleApp extends connect(store)(LitElement) {
   protected override render(): TemplateResult {
     return html` <mwc-top-app-bar>
         <mwc-icon-button
-          ?active="${this._page !== 'home'}"
+          ?active="${this.#navigationController.page !== 'home'}"
           icon="arrow_back"
           slot="navigationIcon"
           @click="${() => {
@@ -113,12 +116,12 @@ export class YordleApp extends connect(store)(LitElement) {
 
       <yordle-home
         class="page"
-        ?active="${this._page === 'home'}"
+        ?active="${this.#navigationController.page === 'home'}"
         .response="${this._response}"
       ></yordle-home>
       <yordle-help
         class="page"
-        ?active="${this._page === 'help'}"
+        ?active="${this.#navigationController.page === 'help'}"
       ></yordle-help>
 
       <footer>
@@ -142,7 +145,6 @@ export class YordleApp extends connect(store)(LitElement) {
   }
 
   public override stateChanged(state: RootState): void {
-    this._page = state.app?.page || 'home';
     this._response = state.shortUrl;
   }
 }
