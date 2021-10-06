@@ -18,8 +18,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { LitElement, css, html, TemplateResult, PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators';
+import { css, html, LitElement, TemplateResult } from 'lit';
+import { customElement, query } from 'lit/decorators';
 
 import { localized, msg } from '@lit/localize';
 
@@ -39,11 +39,7 @@ import '@material/mwc-textfield';
 // eslint-disable-next-line import/no-duplicates
 import { TextField } from '@material/mwc-textfield';
 
-import { createShortUrl, Status } from '../actions/shortUrl';
-import shortUrl, { State } from '../reducers/shortUrl';
-import { store } from '../store';
-
-store.addReducers({ shortUrl });
+import { ShortURLController, Status } from '../controllers/short-url';
 
 @localized()
 @customElement('yordle-home')
@@ -60,8 +56,7 @@ export class YordleHome extends LitElement {
   @query('#snackbar')
   private snackbar?: Snackbar;
 
-  @property()
-  public response?: State;
+  #shortURLController = new ShortURLController(this);
 
   static override readonly styles = css`
     :host {
@@ -160,12 +155,12 @@ export class YordleHome extends LitElement {
     }
   `;
 
-  protected override updated(changed: PropertyValues): void {
-    if (changed.has('response')) {
-      if (Status.SUCCESS === this.response?.status) {
-        if (this.result) this.result.value = this.response.shortUrl ?? '';
-        if (this.dialog) this.dialog.open = true;
+  protected override updated(): void {
+    if (Status.SUCCESS === this.#shortURLController.status) {
+      if (this.result) {
+        this.result.value = this.#shortURLController.shortURL ?? '';
       }
+      if (this.dialog) this.dialog.open = true;
     }
   }
 
@@ -254,7 +249,7 @@ export class YordleHome extends LitElement {
     if (!this.input) return;
     const originalUrl = this.input.value;
     if (originalUrl?.length) {
-      store.dispatch(createShortUrl(originalUrl));
+      this.#shortURLController.create(originalUrl);
     }
   };
 }

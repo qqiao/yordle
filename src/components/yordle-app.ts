@@ -17,37 +17,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { html, LitElement, css, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { css, html, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators';
 import { localized, msg } from '@lit/localize';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 import '@material/mwc-top-app-bar';
 
-import { connect } from 'pwa-helpers/connect-mixin';
 import { installRouter } from 'pwa-helpers/router';
 
 import './yordle-home';
 
 import { navigate, updateLocale } from '../actions/app';
 import { NavigationController } from '../controllers/navigation';
-import { State } from '../reducers/shortUrl';
-import { store, RootState } from '../store';
+import { store } from '../store';
 import { LocaleController } from '../controllers/locale';
 
 @localized()
 @customElement('yordle-app')
-export class YordleApp extends connect(store)(LitElement) {
+export class YordleApp extends LitElement {
   @property()
   public appName: string = 'Yordle';
 
   _localeController = new LocaleController(this);
 
   #navigationController = new NavigationController(this);
-
-  @state()
-  private _response?: State;
 
   static override readonly styles = css`
     :host {
@@ -117,7 +112,6 @@ export class YordleApp extends connect(store)(LitElement) {
       <yordle-home
         class="page"
         ?active="${this.#navigationController.page === 'home'}"
-        .response="${this._response}"
       ></yordle-home>
       <yordle-help
         class="page"
@@ -142,9 +136,5 @@ export class YordleApp extends connect(store)(LitElement) {
       store.dispatch(navigate(decodeURIComponent(location.hash)));
     });
     store.dispatch(updateLocale(navigator.language));
-  }
-
-  public override stateChanged(state: RootState): void {
-    this._response = state.shortUrl;
   }
 }
