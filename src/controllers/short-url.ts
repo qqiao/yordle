@@ -30,7 +30,7 @@ export class ShortURLController extends ReduxStateController(store) {
 
   status?: Status;
 
-  override stateChanged(state: RootState) {
+  override stateChanged(state: RootState): void {
     let needsUpdate = false;
 
     if (this.status !== state.shortUrl?.status) {

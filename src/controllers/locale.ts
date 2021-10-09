@@ -23,7 +23,7 @@ import { RootState, store } from '../store';
 export class LocaleController extends ReduxStateController(store) {
   locale?: string;
 
-  override stateChanged(state: RootState) {
+  override stateChanged(state: RootState): void {
     let needsUpdate = false;
 
     if (state.app?.locale !== this.locale) {

@@ -90,20 +90,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			min-height: 100vh;
 		}
 	</style>
-	{{if .Config.GoogleAnalytics.Enabled}}
-	<script async src="https://www.googletagmanager.com/gtag/js?id={{.Config.GoogleAnalytics.TrackingID}}"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-
-		gtag('config', '{{.Config.GoogleAnalytics.TrackingID}}');
-	</script>
-	{{end}}
 </head>
 
 <body>
-	<yordle-app appName="{{.Config.AppName}}"></yordle-app>
+	<yordle-admin></yordle-admin>
 	<script type="module" src="./out-tsc/components/yordle-admin.js"></script>
 </body>
 

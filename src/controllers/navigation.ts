@@ -24,7 +24,7 @@ import { RootState, store } from '../store';
 export class NavigationController extends ReduxStateController(store) {
   page?: string;
 
-  override stateChanged(state: RootState) {
+  override stateChanged(state: RootState): void {
     let needsUpdate = false;
     if (state.app?.page !== this.page) {
       this.page = state.app?.page;

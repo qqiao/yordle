@@ -36,7 +36,7 @@ import { State as ShortUrlState } from './reducers/shortUrl';
 
 declare global {
   interface Window {
-    process?: Object;
+    process?: unknown;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
   }
 }

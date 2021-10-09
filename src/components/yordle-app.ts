@@ -38,7 +38,7 @@ import { LocaleController } from '../controllers/locale';
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()
-  public appName: string = 'Yordle';
+  public appName = 'Yordle';
 
   _localeController = new LocaleController(this);
 

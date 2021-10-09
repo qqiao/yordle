@@ -19,12 +19,18 @@
 
 module.exports = {
   ignorePatterns: ['src/locale-codes.ts'],
-  extends: ['eslint-config-prettier', '@open-wc/eslint-config'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'eslint-config-prettier',
+    '@open-wc/eslint-config',
+  ],
   env: {
     browser: true,
     node: true,
   },
-  plugins: ['jest'],
+  plugins: ['jest', '@typescript-eslint'],
   rules: {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
@@ -35,7 +41,7 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts'],
-      plugins: ['@typescript-eslint', 'jest'],
+      plugins: ['jest'],
       parser: '@typescript-eslint/parser',
       rules: {
         'no-shadow': 'off',
@@ -43,6 +49,7 @@ module.exports = {
     },
     {
       files: ['*.mjs'],
+      extends: ['eslint-config-prettier', '@open-wc/eslint-config'],
       parserOptions: {
         sourceType: 'module',
         ecmaVersion: 12,
