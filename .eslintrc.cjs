@@ -28,13 +28,14 @@ module.exports = {
   rules: {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
+    'implicit-arrow-linebreak': 'off',
     'no-unused-vars': 'off',
     'operator-linebreak': ['error', 'before', { overrides: { '=': 'after' } }],
   },
   overrides: [
     {
       files: ['*.ts'],
-      plugins: ['@typescript-eslint'],
+      plugins: ['@typescript-eslint', 'jest'],
       parser: '@typescript-eslint/parser',
       rules: {
         'no-shadow': 'off',

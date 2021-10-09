@@ -35,7 +35,8 @@ import (
 	base62 "github.com/jcoene/go-base62"
 
 	"github.com/qqiao/webapp"
-	_ "github.com/qqiao/yordle/api" // api stuff
+	_ "github.com/qqiao/yordle/admin" // admin UI
+	_ "github.com/qqiao/yordle/api"   // api stuff
 	"github.com/qqiao/yordle/config"
 	"github.com/qqiao/yordle/shorturl"
 )

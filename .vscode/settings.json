@@ -1,3 +1,4 @@
 {
-    "eslint.packageManager": "yarn"
+    "eslint.packageManager": "yarn",
+    "eslint.runtime": "node_modules/eslint/bin/eslint.js"
 }

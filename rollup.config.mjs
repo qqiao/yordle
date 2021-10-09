@@ -25,24 +25,34 @@ import merge from 'deepmerge';
 
 const production = process.env.ROLLUP_WATCH !== 'true';
 const buildType = process.env.BUILD_TYPE;
-const baseConfig = createSpaConfig({
-  developmentMode: !production,
-  injectServiceWorker: false,
-  nodeResolve: { browser: true, dedupe: ['lit-html'] },
-});
 
-export default merge(baseConfig, {
-  input: './index.html',
-  plugins: [
-    replace({
-      preventAssignment: true,
-      values: {
-        'process.env.NODE_ENV': JSON.stringify(
-          production ? 'production' : 'development'
-        ),
-        'process.env.BUILD_TYPE': JSON.stringify(buildType),
-      },
+const ENTRY_POINTS = ['./index.html', './admin.html'];
+
+const createBaseConfig = () =>
+  merge(
+    createSpaConfig({
+      developmentMode: !production,
+      injectServiceWorker: false,
+      nodeResolve: { browser: true, dedupe: ['lit-html'] },
     }),
-    dynamicImportVars.default(),
-  ],
-});
+    {
+      plugins: [
+        replace({
+          preventAssignment: true,
+          values: {
+            'process.env.NODE_ENV': JSON.stringify(
+              production ? 'production' : 'development'
+            ),
+            'process.env.BUILD_TYPE': JSON.stringify(buildType),
+          },
+        }),
+        dynamicImportVars.default(),
+      ],
+    }
+  );
+
+export default ENTRY_POINTS.map(entryPoint =>
+  merge(createBaseConfig(), {
+    input: entryPoint,
+  })
+);

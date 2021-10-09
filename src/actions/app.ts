@@ -45,7 +45,7 @@ const updatePage: ActionCreator<ActionUpdatePage> = (page: string) => ({
   page,
 });
 
-const loadPage: ActionCreator<ThunkResult> = (page: string) => (dispatch) => {
+const loadPage: ActionCreator<ThunkResult> = (page: string) => dispatch => {
   switch (page) {
     case 'help': {
       import('../components/yordle-help.js');
@@ -58,7 +58,7 @@ const loadPage: ActionCreator<ThunkResult> = (page: string) => (dispatch) => {
 };
 
 export const navigate: ActionCreator<ThunkResult> =
-  (path: string) => (dispatch) => {
+  (path: string) => dispatch => {
     // Extract the page name from path.
     const page = path === '' ? 'home' : path.slice(2);
 
@@ -70,7 +70,7 @@ export const navigate: ActionCreator<ThunkResult> =
 const { getLocale, setLocale } = configureLocalization({
   sourceLocale,
   targetLocales,
-  loadLocale: (locale) => import(`../locales/${locale}.js`),
+  loadLocale: locale => import(`../locales/${locale}.js`),
 });
 
 export const updateLocale: ActionCreator<ThunkResult> =
@@ -82,7 +82,7 @@ export const updateLocale: ActionCreator<ThunkResult> =
       targetLoc = sourceLocale;
     } else {
       let bestmatch = '';
-      allLocales.forEach((l) => {
+      allLocales.forEach(l => {
         if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
           bestmatch = l;
         }

@@ -44,7 +44,7 @@ export type Actions = ActionCreationFailure | ActionCreationSuccess;
 type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
 
 export const createShortUrl: ActionCreator<ThunkResult> =
-  (originalUrl: string) => async (dispatch) => {
+  (originalUrl: string) => async dispatch => {
     const formData = new FormData();
     formData.append('OriginalUrl', originalUrl);
     const resp = await (
@@ -54,7 +54,7 @@ export const createShortUrl: ActionCreator<ThunkResult> =
       })
     ).json();
 
-    const status = Object.values(Status).find((x) => x === resp.status);
+    const status = Object.values(Status).find(x => x === resp.status);
 
     switch (status) {
       case Status.SUCCESS:

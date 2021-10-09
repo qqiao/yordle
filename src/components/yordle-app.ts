@@ -132,7 +132,7 @@ export class YordleApp extends LitElement {
   }
 
   protected override firstUpdated(): void {
-    installRouter((location) => {
+    installRouter(location => {
       store.dispatch(navigate(decodeURIComponent(location.hash)));
     });
     store.dispatch(updateLocale(navigator.language));

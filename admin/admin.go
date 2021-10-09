@@ -32,6 +32,6 @@ func init() {
 // Handler function for admin functionalities.
 func admin(w http.ResponseWriter, r *http.Request) {
 	tmpl := webapp.GetTemplate(
-		filepath.Clean(filepath.Join("templates", "admin.html")), webapp.IsDev)
+		filepath.Clean(filepath.Join("admin.html")), webapp.IsDev)
 	tmpl.Execute(w, nil)
 }
