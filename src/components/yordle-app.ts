@@ -29,16 +29,14 @@ import { installRouter } from 'pwa-helpers/router';
 
 import './yordle-home';
 
-import { navigate, updateLocale } from '../actions/app';
-import { NavigationController } from '../controllers/navigation';
-import { store } from '../store';
-import { LocaleController } from '../controllers/locale';
+import { navigate, NavigationController } from '../controllers/navigation';
+import { LocaleController, update } from '../controllers/locale';
 
 @localized()
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()
-  public appName = 'Yordle';
+  appName = 'Yordle';
 
   _localeController = new LocaleController(this);
 
@@ -133,8 +131,8 @@ export class YordleApp extends LitElement {
 
   protected override firstUpdated(): void {
     installRouter(location => {
-      store.dispatch(navigate(decodeURIComponent(location.hash)));
+      navigate(location.hash);
     });
-    store.dispatch(updateLocale(navigator.language));
+    update(navigator.language);
   }
 }

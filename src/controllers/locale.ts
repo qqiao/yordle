@@ -18,7 +18,12 @@
  */
 
 import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
+import { updateLocale } from '../actions/app';
 import { RootState, store } from '../store';
+
+export const update = (locale: string): void => {
+  store.dispatch(updateLocale(locale));
+};
 
 export class LocaleController extends ReduxStateController(store) {
   locale?: string;

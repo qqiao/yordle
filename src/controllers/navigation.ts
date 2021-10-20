@@ -18,8 +18,13 @@
  */
 
 import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
+import { navigate as n } from '../actions/app';
 
 import { RootState, store } from '../store';
+
+export const navigate = (path: string): void => {
+  store.dispatch(n(path));
+};
 
 export class NavigationController extends ReduxStateController(store) {
   page?: string;
