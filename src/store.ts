@@ -28,11 +28,11 @@ import {
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 import { lazyReducerEnhancer } from 'pwa-helpers/lazy-reducer-enhancer';
 
-import { Actions as AppActions } from './actions/app';
-import { Actions as ShortUrlActions } from './actions/shortUrl';
+import { Actions as AppActions } from './actions/app.js';
+import { Actions as ShortUrlActions } from './actions/shortUrl.js';
 
-import app, { State as AppState } from './reducers/app';
-import { State as ShortUrlState } from './reducers/shortUrl';
+import app, { State as AppState } from './reducers/app.js';
+import { State as ShortUrlState } from './reducers/shortUrl.js';
 
 declare global {
   interface Window {

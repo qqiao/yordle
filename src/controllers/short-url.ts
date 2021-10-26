@@ -17,11 +17,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
+import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller.js';
 
-import { createShortUrl, Status } from '../actions/shortUrl';
-import shortUrl from '../reducers/shortUrl';
-import { RootState, store } from '../store';
+import { createShortUrl, Status } from '../actions/shortUrl.js';
+import shortUrl from '../reducers/shortUrl.js';
+import { RootState, store } from '../store.js';
 
 store.addReducers({ shortUrl });
 

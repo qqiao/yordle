@@ -32,7 +32,6 @@ module.exports = {
   },
   plugins: ['jest', '@typescript-eslint'],
   rules: {
-    'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'implicit-arrow-linebreak': 'off',
     'no-unused-vars': 'off',

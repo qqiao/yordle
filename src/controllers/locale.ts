@@ -17,9 +17,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
-import { updateLocale } from '../actions/app';
-import { RootState, store } from '../store';
+import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller.js';
+
+import { updateLocale } from '../actions/app.js';
+import { RootState, store } from '../store.js';
 
 export const update = (locale: string): void => {
   store.dispatch(updateLocale(locale));

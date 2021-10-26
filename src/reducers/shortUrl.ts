@@ -18,8 +18,8 @@
  */
 
 import { Reducer } from 'redux';
-import { ActionTypes, Status } from '../actions/shortUrl';
-import { RootActions } from '../store';
+import { ActionTypes, Status } from '../actions/shortUrl.js';
+import { RootActions } from '../store.js';
 
 export interface State {
   shortUrl?: string;

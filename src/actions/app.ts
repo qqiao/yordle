@@ -21,8 +21,8 @@ import { configureLocalization } from '@lit/localize';
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { allLocales, sourceLocale, targetLocales } from '../locale-codes';
-import { RootState } from '../store';
+import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
+import { RootState } from '../store.js';
 
 export const enum ActionTypes {
   UPDATE_LOCALE = '[app] Update Language',

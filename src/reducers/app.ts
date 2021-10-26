@@ -18,8 +18,8 @@
  */
 import { Reducer } from 'redux';
 
-import { ActionTypes } from '../actions/app';
-import { RootActions } from '../store';
+import { ActionTypes } from '../actions/app.js';
+import { RootActions } from '../store.js';
 
 export interface State {
   page: string;

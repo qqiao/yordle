@@ -27,10 +27,10 @@ import '@material/mwc-top-app-bar';
 
 import { installRouter } from 'pwa-helpers/router';
 
-import './yordle-home';
+import './yordle-home.js';
 
-import { navigate, NavigationController } from '../controllers/navigation';
-import { LocaleController, update } from '../controllers/locale';
+import { navigate, NavigationController } from '../controllers/navigation.js';
+import { LocaleController, update } from '../controllers/locale.js';
 
 @localized()
 @customElement('yordle-app')
