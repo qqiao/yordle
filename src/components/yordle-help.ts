@@ -20,13 +20,12 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators';
 
-import { localized, msg } from '@lit/localize';
+import { msg } from '@lit/localize';
 
 const BASE_URL = `${document.location.protocol}//${document.location.hostname}${
   document.location.port || ''
 }`;
 
-@localized()
 @customElement('yordle-help')
 export class YordleHelp extends LitElement {
   static override readonly styles = css`

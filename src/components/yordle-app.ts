@@ -19,7 +19,7 @@
 
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { localized, msg } from '@lit/localize';
+import { msg } from '@lit/localize';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
@@ -32,7 +32,6 @@ import './yordle-home.js';
 import { navigate, NavigationController } from '../controllers/navigation.js';
 import { LocaleController, update } from '../controllers/locale.js';
 
-@localized()
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()

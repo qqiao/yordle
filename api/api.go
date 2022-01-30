@@ -25,6 +25,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/qqiao/webapp"
 
@@ -96,6 +97,8 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 
 	// Now we normalize the URL so that we don't have to store duplicates
 	originalURLString = purell.NormalizeURL(originalURL, purell.FlagsSafe)
+	originalURLString = strings.Replace(originalURLString, "\n", "", -1)
+	originalURLString = strings.Replace(originalURLString, "\r", "", -1)
 
 	log.Printf("URL sanitized, attempting to persist...")
 
@@ -108,7 +111,7 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Successfully created short url for '%s', ID: %d",
-		originalURL, shortURL.ID)
+		originalURLString, shortURL.ID)
 	w.Write(output(ctx, StatusSuccess, fmt.Sprintf("https://%s/%s",
 		r.Host, base62.Encode(shortURL.ID)), callback))
 }
