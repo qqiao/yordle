@@ -21,7 +21,7 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
 
-import { localized, msg } from '@lit/localize';
+import { msg } from '@lit/localize';
 
 import '@material/mwc-button';
 // eslint-disable-next-line import/no-duplicates
@@ -41,7 +41,6 @@ import { TextField } from '@material/mwc-textfield';
 
 import { ShortURLController, Status } from '../controllers/short-url';
 
-@localized()
 @customElement('yordle-home')
 export class YordleHome extends LitElement {
   @query('#dialog')
