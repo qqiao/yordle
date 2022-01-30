@@ -17,14 +17,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
+import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller.js';
+import { navigate as n } from '../actions/app.js';
 
-import { RootState, store } from '../store';
+import { RootState, store } from '../store.js';
+
+export const navigate = (path: string): void => {
+  store.dispatch(n(path));
+};
 
 export class NavigationController extends ReduxStateController(store) {
   page?: string;
 
-  override stateChanged(state: RootState) {
+  override stateChanged(state: RootState): void {
     let needsUpdate = false;
     if (state.app?.page !== this.page) {
       this.page = state.app?.page;

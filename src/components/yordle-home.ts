@@ -39,7 +39,7 @@ import '@material/mwc-textfield';
 // eslint-disable-next-line import/no-duplicates
 import { TextField } from '@material/mwc-textfield';
 
-import { ShortURLController, Status } from '../controllers/short-url';
+import { ShortURLController, Status } from '../controllers/short-url.js';
 
 @customElement('yordle-home')
 export class YordleHome extends LitElement {

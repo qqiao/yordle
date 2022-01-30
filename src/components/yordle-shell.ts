@@ -1,6 +1,6 @@
 /**
  * Yordle - A URL shortener for Google App Engine.
- * Copyright (C) 2018 The Yordle Team
+ * Copyright (C) 2022 The Yordle Team
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,10 @@ import '@material/mwc-top-app-bar';
 
 import { installRouter } from 'pwa-helpers/router';
 
-import './yordle-home.js';
-
 import { navigate, NavigationController } from '../controllers/navigation.js';
 import { LocaleController, update } from '../controllers/locale.js';
 
-@customElement('yordle-app')
+@customElement('yordle-shell')
 export class YordleApp extends LitElement {
   @property()
   appName = 'Yordle';
@@ -106,14 +104,7 @@ export class YordleApp extends LitElement {
         </div>
       </mwc-top-app-bar>
 
-      <yordle-home
-        class="page"
-        ?active="${this.#navigationController.page === 'home'}"
-      ></yordle-home>
-      <yordle-help
-        class="page"
-        ?active="${this.#navigationController.page === 'help'}"
-      ></yordle-help>
+      <slot></slot>
 
       <footer>
         ${msg(

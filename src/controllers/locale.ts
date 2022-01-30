@@ -17,13 +17,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller';
-import { RootState, store } from '../store';
+import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller.js';
+
+import { updateLocale } from '../actions/app.js';
+import { RootState, store } from '../store.js';
+
+export const update = (locale: string): void => {
+  store.dispatch(updateLocale(locale));
+};
 
 export class LocaleController extends ReduxStateController(store) {
   locale?: string;
 
-  override stateChanged(state: RootState) {
+  override stateChanged(state: RootState): void {
     let needsUpdate = false;
 
     if (state.app?.locale !== this.locale) {

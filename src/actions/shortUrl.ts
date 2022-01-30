@@ -20,7 +20,7 @@
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { RootState } from '../store';
+import { RootState } from '../store.js';
 
 export const enum ActionTypes {
   CREATION_FAILURE = '[short url] Creation Failure',
