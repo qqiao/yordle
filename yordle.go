@@ -38,6 +38,7 @@ import (
 	_ "github.com/qqiao/yordle/admin" // admin UI
 	_ "github.com/qqiao/yordle/api"   // api stuff
 	"github.com/qqiao/yordle/config"
+	"github.com/qqiao/yordle/runtime"
 	"github.com/qqiao/yordle/shorturl"
 )
 
@@ -84,16 +85,16 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 
 		nodeEnv := "production"
 
-		if webapp.IsDev {
+		if runtime.IsDev {
 			nodeEnv = "development"
 		}
 
 		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)
 
-		tmpl := webapp.GetTemplate("index.html", webapp.IsDev)
+		tmpl := webapp.GetTemplate("index.html", runtime.IsDev)
 		tmpl.Execute(w, map[string]interface{}{
 			"Config":    <-dcCh,
-			"BuildInfo": config.B,
+			"BuildInfo": runtime.BuildInfo,
 			"InitData":  template.HTML(initData),
 		})
 		return
@@ -123,7 +124,7 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 
 func version(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	if err := json.NewEncoder(w).Encode(config.B); nil != err {
+	if err := json.NewEncoder(w).Encode(runtime.BuildInfo); nil != err {
 		log.Printf("Error marshalling build info. Error: %s", err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
