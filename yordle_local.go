@@ -15,6 +15,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+//go:build local
 // +build local
 
 package main
@@ -23,7 +24,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/yordle/api"
 )
 
 var staticFileExtensions = []string{
@@ -39,7 +40,7 @@ var staticFileExtensions = []string{
 var fileServer = http.FileServer(http.Dir("."))
 
 func init() {
-	http.HandleFunc("/", webapp.HSTSHandler(localIndex))
+	http.HandleFunc("/", api.HSTSHandler(localIndex))
 }
 
 func localIndex(w http.ResponseWriter, r *http.Request) {

@@ -31,7 +31,7 @@ import (
 
 	"github.com/PuerkitoBio/purell"
 	"github.com/jcoene/go-base62"
-
+	"github.com/qqiao/yordle/runtime"
 	"github.com/qqiao/yordle/shorturl"
 )
 
@@ -45,7 +45,15 @@ const (
 )
 
 func init() {
-	http.HandleFunc("/v1/api/create", webapp.HSTSHandler(createV1))
+	http.HandleFunc("/v1/api/create", HSTSHandler(createV1))
+}
+
+func HSTSHandler(f http.HandlerFunc) http.HandlerFunc {
+	if runtime.IsDev {
+		return f
+	}
+
+	return webapp.HSTSHandler(f)
 }
 
 // Handler function for creating new short URL.

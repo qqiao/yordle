@@ -1,5 +1,5 @@
 // Yordle - A URL shortener for Google App Engine.
-// Copyright (C) 2014 The Yordle Team
+// Copyright (C) 2022 The Yordle Team
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,25 +15,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Package admin provides UI endpoints for admin functionality of Yordle.
-package admin
+//go:build local
+// +build local
 
-import (
-	"net/http"
-	"path/filepath"
+package runtime
 
-	"github.com/qqiao/webapp"
-	"github.com/qqiao/yordle/api"
-	"github.com/qqiao/yordle/runtime"
-)
-
-func init() {
-	http.HandleFunc("/admin/", api.HSTSHandler(admin))
-}
-
-// Handler function for admin functionalities.
-func admin(w http.ResponseWriter, r *http.Request) {
-	tmpl := webapp.GetTemplate(
-		filepath.Clean(filepath.Join("admin.html")), runtime.IsDev)
-	tmpl.Execute(w, nil)
-}
+var IsDev = true

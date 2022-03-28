@@ -24,12 +24,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-
-	"github.com/qqiao/buildinfo"
 )
-
-// B is the build information instance
-var B buildinfo.BuildInfo
 
 // Locales contains all supported locals
 var Locales []string
@@ -43,7 +38,6 @@ type LitLocalize struct {
 }
 
 func init() {
-	B, _ = buildinfo.Load("build_info.json")
 	ProjectName = os.Getenv("GOOGLE_CLOUD_PROJECT")
 
 	Locales = loadLocalizeConfig()

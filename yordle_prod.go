@@ -15,6 +15,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+//go:build !local
 // +build !local
 
 package main
@@ -22,10 +23,10 @@ package main
 import (
 	"net/http"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/yordle/api"
 )
 
 func init() {
-	http.HandleFunc("/", webapp.HSTSHandler(landingPage))
-	http.HandleFunc("/version", webapp.HSTSHandler(version))
+	http.HandleFunc("/", api.HSTSHandler(landingPage))
+	http.HandleFunc("/version", api.HSTSHandler(version))
 }
