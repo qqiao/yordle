@@ -53,5 +53,6 @@
     "start": "yarn build && concurrently --kill-others \"tsc --watch\" \"rollup -w -c rollup.config.mjs\" \"gulp\"",
     "test": "gulp test"
   },
-  "type": "module"
+  "type": "module",
+  "packageManager": "yarn@3.2.0"
 }
