@@ -20,25 +20,34 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { msg } from '@lit/localize';
-import { navigate, NavigationController } from '../controllers/navigation.js';
 import { localeContext, LocaleProvider } from '../contexts/locale.mjs';
-import { installRouter } from 'pwa-helpers/router';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 import '@material/mwc-top-app-bar';
 import './yordle-home.js';
+import {
+  navigationContext,
+  NavigationProvider,
+} from '../contexts/navigation.mjs';
+import { consume } from '@lit/context';
 
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()
   appName = 'Yordle';
 
+  @consume({ context: navigationContext, subscribe: true })
+  @state()
+  page?: string;
+
   #localeProvider = new LocaleProvider(this, {
     context: localeContext,
   });
 
-  #navigationController = new NavigationController(this);
+  #navigationProvider = new NavigationProvider(this, {
+    context: navigationContext,
+  });
 
   static override readonly styles = css`
     :host {
@@ -92,7 +101,7 @@ export class YordleApp extends LitElement {
   protected override render(): TemplateResult {
     return html` <mwc-top-app-bar>
         <mwc-icon-button
-          ?active="${this.#navigationController.page !== 'home'}"
+          ?active="${this.page !== 'home'}"
           icon="arrow_back"
           slot="navigationIcon"
           @click="${() => {
@@ -105,14 +114,8 @@ export class YordleApp extends LitElement {
         </div>
       </mwc-top-app-bar>
 
-      <yordle-home
-        class="page"
-        ?active="${this.#navigationController.page === 'home'}"
-      ></yordle-home>
-      <yordle-help
-        class="page"
-        ?active="${this.#navigationController.page === 'help'}"
-      ></yordle-help>
+      <yordle-home class="page" ?active="${this.page === 'home'}"></yordle-home>
+      <yordle-help class="page" ?active="${this.page === 'help'}"></yordle-help>
 
       <footer>
         ${msg(
@@ -125,11 +128,5 @@ export class YordleApp extends LitElement {
             >`,
         )}
       </footer>`;
-  }
-
-  protected override firstUpdated(): void {
-    installRouter(location => {
-      navigate(location.hash);
-    });
   }
 }
