@@ -20,10 +20,9 @@
 import { ReduxStateController } from '@qqiao/webapp-scaffold/controllers/redux-state-controller.js';
 
 import { createShortUrl, Status } from '../actions/shortUrl.js';
-import shortUrl from '../reducers/shortUrl.js';
 import { RootState, store } from '../store.js';
 
-store.addReducers({ shortUrl });
+//store.addReducers({ shortUrl });
 
 export class ShortURLController extends ReduxStateController(store) {
   shortURL?: string;

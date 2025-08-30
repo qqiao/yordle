@@ -18,9 +18,9 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { msg } from '@lit/localize';
-import { localeContext, LocaleProvider } from '../contexts/locale.mjs';
+import { LocaleProvider } from '../contexts/locale.mjs';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
@@ -41,13 +41,12 @@ export class YordleApp extends LitElement {
   @state()
   page?: string;
 
-  #localeProvider = new LocaleProvider(this, {
-    context: localeContext,
-  });
+  constructor() {
+    super();
+    new LocaleProvider(this);
 
-  #navigationProvider = new NavigationProvider(this, {
-    context: navigationContext,
-  });
+    new NavigationProvider(this);
+  }
 
   static override readonly styles = css`
     :host {

@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "target": "esnext",
     "lib": [
-      "es2017",
+      "esnext",
       "dom",
       "dom.iterable"
     ],
+    "moduleResolution": "nodenext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -16,7 +16,6 @@
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "outDir": "out-tsc/"
   },
   "include": [
     "src/**/*.mts",

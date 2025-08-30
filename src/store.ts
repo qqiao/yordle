@@ -40,11 +40,10 @@ declare global {
 
 // Overall state extends static states and partials lazy states.
 export interface RootState {
-  app?: AppState;
   shortUrl?: ShortUrlState;
 }
 
-export type RootActions = AppActions | ShortUrlActions;
+export type RootActions = ShortUrlActions;
 
 // Sets up a Chrome extension for time travel debugging.
 // See https://github.com/zalmoxisus/redux-devtools-extension for more information.
@@ -71,8 +70,3 @@ export const store = createStore(
     applyMiddleware(thunk as ThunkMiddleware<RootState, RootActions>),
   ),
 );
-
-// Initially loaded reducers.
-store.addReducers({
-  app,
-});

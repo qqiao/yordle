@@ -17,11 +17,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ContextProvider, createContext } from '@lit/context';
-import { Options } from '@lit/context/lib/controllers/context-provider';
-import { ReactiveControllerHost } from '@lit/reactive-element';
-import { allLocales, sourceLocale, targetLocales } from '../locale-codes';
+import { createContext, ContextProvider } from '@lit/context';
+import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
 import { configureLocalization } from '@lit/localize';
+import { ReactiveControllerHost } from 'lit';
 
 export const localeContext = createContext<string, Symbol>(Symbol('locale'));
 
@@ -32,11 +31,8 @@ const { setLocale } = configureLocalization({
 });
 
 export class LocaleProvider extends ContextProvider<typeof localeContext> {
-  constructor(
-    host: ReactiveControllerHost & HTMLElement,
-    options: Options<typeof localeContext>,
-  ) {
-    super(host, options);
+  constructor(host: ReactiveControllerHost & HTMLElement) {
+    super(host, { context: localeContext });
   }
 
   setValue(value: string) {

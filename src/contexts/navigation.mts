@@ -17,11 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { createContext } from '@lit/context';
-import {
-  ContextProvider,
-  Options,
-} from '@lit/context/lib/controllers/context-provider';
+import { ContextProvider, createContext } from '@lit/context';
 import { ReactiveControllerHost } from 'lit';
 import { installRouter } from 'pwa-helpers';
 
@@ -32,12 +28,8 @@ export const navigationContext = createContext<string, Symbol>(
 export class NavigationProvider extends ContextProvider<
   typeof navigationContext
 > {
-  constructor(
-    host: ReactiveControllerHost & HTMLElement,
-    options: Options<typeof navigationContext>,
-  ) {
-    super(host, options);
-
+  constructor(host: ReactiveControllerHost & HTMLElement) {
+    super(host, { context: navigationContext });
     installRouter(location => {
       this.setValue(location.hash);
     });

@@ -19,7 +19,7 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, query } from 'lit/decorators';
+import { customElement, query } from 'lit/decorators.js';
 
 import { msg } from '@lit/localize';
 
