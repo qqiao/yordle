@@ -18,26 +18,25 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators';
 import { msg } from '@lit/localize';
+import { navigate, NavigationController } from '../controllers/navigation.js';
+import { localeContext, LocaleProvider } from '../contexts/locale.mjs';
+import { installRouter } from 'pwa-helpers/router';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 import '@material/mwc-top-app-bar';
-
-import { installRouter } from 'pwa-helpers/router';
-
 import './yordle-home.js';
-
-import { navigate, NavigationController } from '../controllers/navigation.js';
-import { LocaleController, update } from '../controllers/locale.js';
 
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()
   appName = 'Yordle';
 
-  _localeController = new LocaleController(this);
+  #localeProvider = new LocaleProvider(this, {
+    context: localeContext,
+  });
 
   #navigationController = new NavigationController(this);
 
@@ -123,7 +122,7 @@ export class YordleApp extends LitElement {
               target="_blank"
               rel="noreferrer"
               >Yordle</a
-            >`
+            >`,
         )}
       </footer>`;
   }
@@ -132,6 +131,5 @@ export class YordleApp extends LitElement {
     installRouter(location => {
       navigate(location.hash);
     });
-    update(navigator.language);
   }
 }

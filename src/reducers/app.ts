@@ -18,12 +18,12 @@
  */
 import { Reducer } from 'redux';
 
-import { ActionTypes } from '../actions/app.js';
 import { RootActions } from '../store.js';
+import { ACTION_UPDATE_PAGE } from '../actions/app.js';
 
 export interface State {
-  page: string;
-  locale: string;
+  page?: string;
+  locale?: string;
 }
 
 const DEFAULT_STATE: State = {
@@ -33,18 +33,13 @@ const DEFAULT_STATE: State = {
 
 const app: Reducer<State, RootActions> = (
   state = DEFAULT_STATE,
-  action: RootActions
+  action: RootActions,
 ): State => {
   switch (action.type) {
-    case ActionTypes.UPDATE_PAGE:
+    case ACTION_UPDATE_PAGE:
       return {
         ...state,
         page: action.page,
-      };
-    case ActionTypes.UPDATE_LOCALE:
-      return {
-        ...state,
-        locale: action.locale,
       };
     default:
       return state;

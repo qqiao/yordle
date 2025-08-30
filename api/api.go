@@ -127,7 +127,7 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 // Method to output the payload into the response writer. If the callback
 // method is suplied, it will be outputting in JSONP format, otherwise it will
 // be in JSON.
-func output(ctx context.Context, status Status, payload interface{},
+func output(_ context.Context, status Status, payload interface{},
 	callback string) (output []byte) {
 	output, err := json.Marshal(map[string]interface{}{
 		"status":  status,

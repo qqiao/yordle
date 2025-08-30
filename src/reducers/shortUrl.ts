@@ -18,7 +18,11 @@
  */
 
 import { Reducer } from 'redux';
-import { ActionTypes, Status } from '../actions/shortUrl.js';
+import {
+  ACTION_CREATION_FAILURE,
+  ACTION_CREATION_SUCCESS,
+  Status,
+} from '../actions/shortUrl.js';
 import { RootActions } from '../store.js';
 
 export interface State {
@@ -30,16 +34,16 @@ const INITIAL_STATE: State = {};
 
 const shortUrl: Reducer<State, RootActions> = (
   state = INITIAL_STATE,
-  action: RootActions
+  action: RootActions,
 ) => {
   switch (action.type) {
-    case ActionTypes.CREATION_SUCCESS:
+    case ACTION_CREATION_SUCCESS:
       return {
         ...state,
         shortUrl: action.shortUrl,
         status: Status.SUCCESS,
       };
-    case ActionTypes.CREATION_FAILURE:
+    case ACTION_CREATION_FAILURE:
       return {
         ...state,
         status: Status.FAILURE,

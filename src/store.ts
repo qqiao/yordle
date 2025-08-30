@@ -25,7 +25,7 @@ import {
   Reducer,
   StoreEnhancer,
 } from 'redux';
-import thunk, { ThunkMiddleware } from 'redux-thunk';
+import { thunk, ThunkMiddleware } from 'redux-thunk';
 import { lazyReducerEnhancer } from 'pwa-helpers/lazy-reducer-enhancer';
 
 import { Actions as AppActions } from './actions/app.js';
@@ -51,9 +51,14 @@ export type RootActions = AppActions | ShortUrlActions;
 
 // Sets up a Chrome extension for time travel debugging.
 // See https://github.com/zalmoxisus/redux-devtools-extension for more information.
-const devCompose: <Ext0, Ext1, StateExt0, StateExt1>(
+const devCompose: <
+  Ext0 extends {},
+  Ext1 extends {},
+  StateExt0 extends {},
+  StateExt1 extends {},
+>(
   f1: StoreEnhancer<Ext0, StateExt0>,
-  f2: StoreEnhancer<Ext1, StateExt1>
+  f2: StoreEnhancer<Ext1, StateExt1>,
 ) => StoreEnhancer<Ext0 & Ext1, StateExt0 & StateExt1> =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -66,8 +71,8 @@ export const store = createStore(
   state => state as Reducer<RootState, RootActions>,
   devCompose(
     lazyReducerEnhancer(combineReducers),
-    applyMiddleware(thunk as ThunkMiddleware<RootState, RootActions>)
-  )
+    applyMiddleware(thunk as ThunkMiddleware<RootState, RootActions>),
+  ),
 );
 
 // Initially loaded reducers.

@@ -22,21 +22,23 @@ import { ThunkAction } from 'redux-thunk';
 
 import { RootState } from '../store.js';
 
-export const enum ActionTypes {
-  CREATION_FAILURE = '[short url] Creation Failure',
-  CREATION_SUCCESS = '[short url] Creation Success',
-}
+export const ACTION_CREATION_FAILURE = '[short url] Creation Failure';
+export const ACTION_CREATION_SUCCESS = '[short url] Creation Success';
+
+export type ActionTypes =
+  | typeof ACTION_CREATION_FAILURE
+  | typeof ACTION_CREATION_SUCCESS;
 
 export enum Status {
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
 }
 
-interface ActionCreationFailure extends Action<ActionTypes.CREATION_FAILURE> {
+interface ActionCreationFailure extends Action<typeof ACTION_CREATION_FAILURE> {
   error?: string;
 }
-interface ActionCreationSuccess extends Action<ActionTypes.CREATION_SUCCESS> {
-  shortUrl: string;
+interface ActionCreationSuccess extends Action<typeof ACTION_CREATION_SUCCESS> {
+  shortUrl?: string;
 }
 
 export type Actions = ActionCreationFailure | ActionCreationSuccess;
@@ -59,12 +61,12 @@ export const createShortUrl: ActionCreator<ThunkResult> =
     switch (status) {
       case Status.SUCCESS:
         return dispatch({
-          type: ActionTypes.CREATION_SUCCESS,
+          type: ACTION_CREATION_SUCCESS,
           shortUrl: resp.payload,
         } as ActionCreationSuccess);
       default:
         return dispatch({
-          type: ActionTypes.CREATION_FAILURE,
+          type: ACTION_CREATION_FAILURE,
         } as ActionCreationFailure);
     }
   };

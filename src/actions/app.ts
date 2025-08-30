@@ -17,31 +17,24 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { configureLocalization } from '@lit/localize';
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-
-import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
 import { RootState } from '../store.js';
 
-export const enum ActionTypes {
-  UPDATE_LOCALE = '[app] Update Language',
-  UPDATE_PAGE = '[app] Update Page',
+export const ACTION_UPDATE_PAGE = '[app] Update Page';
+
+export type ActionTypes = typeof ACTION_UPDATE_PAGE;
+
+interface ActionUpdatePage extends Action<typeof ACTION_UPDATE_PAGE> {
+  page?: string;
 }
 
-interface ActionUpdatePage extends Action<ActionTypes.UPDATE_PAGE> {
-  page: string;
-}
-interface ActionUpdateLocale extends Action<ActionTypes.UPDATE_LOCALE> {
-  locale: string;
-}
-
-export type Actions = ActionUpdateLocale | ActionUpdatePage;
+export type Actions = ActionUpdatePage;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, Actions>;
 
 const updatePage: ActionCreator<ActionUpdatePage> = (page: string) => ({
-  type: ActionTypes.UPDATE_PAGE,
+  type: ACTION_UPDATE_PAGE,
   page,
 });
 
@@ -65,40 +58,4 @@ export const navigate: ActionCreator<ThunkResult> =
     // Any other info you might want to extract from the path (like page type),
     // you can do here
     dispatch(loadPage(page));
-  };
-
-const { getLocale, setLocale } = configureLocalization({
-  sourceLocale,
-  targetLocales,
-  loadLocale: locale => import(`../locales/${locale}.js`),
-});
-
-export const updateLocale: ActionCreator<ThunkResult> =
-  (locale?: string) => async (dispatch, getState) => {
-    let targetLoc = locale;
-    // setting non-existent locale would result in system going to default
-    // locale;
-    if (!targetLoc) {
-      targetLoc = sourceLocale;
-    } else {
-      let bestmatch = '';
-      allLocales.forEach(l => {
-        if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
-          bestmatch = l;
-        }
-      });
-      targetLoc = bestmatch ?? sourceLocale;
-    }
-
-    const state = getState();
-
-    if (targetLoc !== getLocale() || !state.app?.locale) {
-      await setLocale(targetLoc);
-      return dispatch({
-        type: ActionTypes.UPDATE_LOCALE,
-        locale: targetLoc,
-      });
-    }
-
-    return undefined;
   };

@@ -2279,6 +2279,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lit/context@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "@lit/context@npm:1.1.6"
+  dependencies:
+    "@lit/reactive-element": "npm:^1.6.2 || ^2.1.0"
+  checksum: 10/2d59b388ced1574467f0217292b577268462248bcac1fe0570017c6b06e71022a190fd7ac66e676e5903bb4dda8489fca6cf38dc4160f3f6d6c09434139038b3
+  languageName: node
+  linkType: hard
+
 "@lit/localize-tools@npm:^0.8.0":
   version: 0.8.0
   resolution: "@lit/localize-tools@npm:0.8.0"
@@ -2316,7 +2325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lit/reactive-element@npm:^2.1.0":
+"@lit/reactive-element@npm:^1.6.2 || ^2.1.0, @lit/reactive-element@npm:^2.1.0":
   version: 2.1.1
   resolution: "@lit/reactive-element@npm:2.1.1"
   dependencies:
@@ -12015,6 +12024,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yordle@workspace:."
   dependencies:
+    "@lit/context": "npm:^1.1.6"
     "@lit/localize": "npm:^0.12.2"
     "@lit/localize-tools": "npm:^0.8.0"
     "@material/mwc-button": "npm:^0.27.0"

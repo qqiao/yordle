@@ -19,7 +19,7 @@
     "outDir": "out-tsc/"
   },
   "include": [
-    "src/**/*.ts",
+    "src/**/*.mts",
   ],
   "exclude": [],
 }

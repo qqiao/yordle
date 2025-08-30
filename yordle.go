@@ -49,7 +49,7 @@ const initDataTemplate = `
 </script>
 `
 
-func preloadedState(ctx context.Context) <-chan string {
+func preloadedState(_ context.Context) <-chan string {
 	output := make(chan string)
 
 	go func() {
