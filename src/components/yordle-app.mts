@@ -20,16 +20,16 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { configureLocalization, msg } from '@lit/localize';
-
-import '@material/mwc-icon';
-import '@material/mwc-icon-button';
-import '@material/mwc-top-app-bar';
-//import './yordle-home.js';
 import { navigationContext } from '../contexts/navigation.mjs';
 import { provide } from '@lit/context';
 import { installRouter } from 'pwa-helpers/router.js';
 import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
 import { localeContext } from '../contexts/locale.mjs';
+
+import '@material/web/iconbutton/icon-button.js';
+import '@material/web/icon/icon.js';
+
+import './yordle-home.js';
 
 const { setLocale } = configureLocalization({
   sourceLocale,
@@ -96,15 +96,29 @@ export class YordleApp extends LitElement {
       --mdc-theme-on-primary: #666;
     }
 
-    :host mwc-icon-button:not([active]) {
+    :host header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+    }
+
+    :host md-icon-button:not([active]) {
       display: none;
     }
 
-    :host mwc-top-app-bar .title {
+    :host #title {
       color: #666;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    :host mwc-top-app-bar .top-navigation a {
+    :host #title-text {
+      font-size: 20px;
+    }
+
+    :host #top-navigation a {
       color: #333;
       margin-left: 20px;
       text-decoration: none;
@@ -138,25 +152,38 @@ export class YordleApp extends LitElement {
   `;
 
   protected override render(): TemplateResult {
-    return html` <mwc-top-app-bar>
-        <mwc-icon-button
-          ?active="${this.page !== 'home'}"
-          icon="arrow_back"
-          slot="navigationIcon"
-          @click="${() => {
-            window.history.go(-1);
-          }}"
-        ></mwc-icon-button>
+    return html` <!-- <mwc-top-app-bar>
+
         <div slot="title" class="title">${this.appName}</div>
         <div slot="actionItems" class="top-navigation">
-          <a href="/#/help">${msg('Help')}</a>
-        </div>
-      </mwc-top-app-bar>
 
-      <div class="page" ?active="${this.page === 'home'}">Home</div>
-      <!-- <yordle-home class="page" ?active="${this.page ===
-      'home'}"></yordle-home> -->
-      <yordle-help class="page" ?active="${this.page === 'help'}"></yordle-help>
+        </div>
+      </mwc-top-app-bar> -->
+      <header>
+        <div id="title">
+          <md-icon-button
+            ?active="${this.page !== 'home'}"
+            @click="${() => {
+              window.history.go(-1);
+            }}"
+          >
+            <md-icon>arrow_back</md-icon>
+          </md-icon-button>
+          <div id="title-text">${this.appName || 'Yordle'}</div>
+        </div>
+        <div id="top-navigation"><a href="/#/help">${msg('Help')}</a></div>
+      </header>
+
+      <main>
+        <yordle-home
+          class="page"
+          ?active="${this.page === 'home'}"
+        ></yordle-home>
+        <yordle-help
+          class="page"
+          ?active="${this.page === 'help'}"
+        ></yordle-help>
+      </main>
 
       <footer>
         ${msg(

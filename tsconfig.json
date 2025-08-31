@@ -8,14 +8,11 @@
       "dom.iterable"
     ],
     "moduleResolution": "nodenext",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "strict": true,
     "sourceMap": true,
-    "skipLibCheck": true,
   },
   "include": [
     "src/**/*.mts",
