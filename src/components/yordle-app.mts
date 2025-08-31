@@ -97,10 +97,11 @@ export class YordleApp extends LitElement {
     }
 
     :host header {
+      align-items: center;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px;
+      height: 64px;
+      padding: 0 16px;
     }
 
     :host md-icon-button:not([active]) {
