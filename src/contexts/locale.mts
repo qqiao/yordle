@@ -17,45 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { createContext, ContextProvider } from '@lit/context';
-import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
-import { configureLocalization } from '@lit/localize';
-import { ReactiveControllerHost } from 'lit';
+import { createContext } from '@lit/context';
 
-export const localeContext = createContext<string, Symbol>(Symbol('locale'));
-
-const { setLocale } = configureLocalization({
-  sourceLocale,
-  targetLocales,
-  loadLocale: locale => import(`../locales/${locale}.js`),
-});
-
-export class LocaleProvider extends ContextProvider<typeof localeContext> {
-  constructor(host: ReactiveControllerHost & HTMLElement) {
-    super(host, { context: localeContext });
-  }
-
-  setValue(value: string) {
-    value = this.#sanitizeLocale(value);
-    setLocale(value);
-    super.setValue(value);
-  }
-
-  #sanitizeLocale(locale?: string) {
-    let targetLoc = locale;
-    // setting non-existent locale would result in system going to default
-    // locale;
-    if (!targetLoc) {
-      targetLoc = sourceLocale;
-    } else {
-      let bestmatch = '';
-      allLocales.forEach(l => {
-        if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
-          bestmatch = l;
-        }
-      });
-      targetLoc = bestmatch ?? sourceLocale;
-    }
-    return targetLoc;
-  }
-}
+export const localeContext = createContext<string | undefined, Symbol>(
+  Symbol('locale'),
+);

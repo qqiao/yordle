@@ -19,33 +19,73 @@
 
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { msg } from '@lit/localize';
-import { LocaleProvider } from '../contexts/locale.mjs';
+import { configureLocalization, msg } from '@lit/localize';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 import '@material/mwc-top-app-bar';
-import './yordle-home.js';
-import {
-  navigationContext,
-  NavigationProvider,
-} from '../contexts/navigation.mjs';
-import { consume } from '@lit/context';
+//import './yordle-home.js';
+import { navigationContext } from '../contexts/navigation.mjs';
+import { provide } from '@lit/context';
+import { installRouter } from 'pwa-helpers/router.js';
+import { allLocales, sourceLocale, targetLocales } from '../locale-codes.js';
+import { localeContext } from '../contexts/locale.mjs';
+
+const { setLocale } = configureLocalization({
+  sourceLocale,
+  targetLocales,
+  loadLocale: locale => import(`../locales/${locale}.js`),
+});
 
 @customElement('yordle-app')
 export class YordleApp extends LitElement {
   @property()
   appName = 'Yordle';
 
-  @consume({ context: navigationContext, subscribe: true })
+  @provide({ context: localeContext })
+  @state()
+  locale?: string;
+
+  @provide({ context: navigationContext })
   @state()
   page?: string;
 
   constructor() {
     super();
-    new LocaleProvider(this);
+    installRouter(location => {
+      let page = location.hash || '';
+      page = page === '' ? 'home' : page.slice(2);
+      if (this.page === page) {
+        return;
+      }
+      switch (page) {
+        case 'help': {
+          import('../components/yordle-help.js');
+          break;
+        }
+        default:
+          break;
+      }
+      this.page = page;
+      this.requestUpdate();
+    });
 
-    new NavigationProvider(this);
+    let targetLoc = navigator.language;
+    // setting non-existent locale would result in system going to default
+    // locale;
+    if (!targetLoc) {
+      targetLoc = sourceLocale;
+    } else {
+      let bestmatch = '';
+      allLocales.forEach(l => {
+        if (targetLoc?.startsWith(l) && l.length > bestmatch?.length) {
+          bestmatch = l;
+        }
+      });
+      targetLoc = bestmatch ?? sourceLocale;
+    }
+    setLocale(targetLoc);
+    this.locale = targetLoc;
   }
 
   static override readonly styles = css`
@@ -113,7 +153,9 @@ export class YordleApp extends LitElement {
         </div>
       </mwc-top-app-bar>
 
-      <yordle-home class="page" ?active="${this.page === 'home'}"></yordle-home>
+      <div class="page" ?active="${this.page === 'home'}">Home</div>
+      <!-- <yordle-home class="page" ?active="${this.page ===
+      'home'}"></yordle-home> -->
       <yordle-help class="page" ?active="${this.page === 'help'}"></yordle-help>
 
       <footer>

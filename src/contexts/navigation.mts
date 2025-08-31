@@ -17,40 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { ContextProvider, createContext } from '@lit/context';
-import { ReactiveControllerHost } from 'lit';
-import { installRouter } from 'pwa-helpers';
+import { createContext } from '@lit/context';
 
-export const navigationContext = createContext<string, Symbol>(
+export const navigationContext = createContext<string | undefined>(
   Symbol('navigation'),
 );
-
-export class NavigationProvider extends ContextProvider<
-  typeof navigationContext
-> {
-  constructor(host: ReactiveControllerHost & HTMLElement) {
-    super(host, { context: navigationContext });
-    installRouter(location => {
-      this.setValue(location.hash);
-    });
-  }
-
-  setValue(path?: string) {
-    let page = path || '';
-    page = page === '' ? 'home' : page.slice(2);
-    if (this.value === page) {
-      return;
-    }
-
-    switch (page) {
-      case 'help': {
-        import('../components/yordle-help.js');
-        break;
-      }
-      default:
-        break;
-    }
-
-    super.setValue(page);
-  }
-}
