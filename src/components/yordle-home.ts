@@ -48,10 +48,21 @@ export class YordleHome extends LitElement {
       --md-sys-color-on-primary: #59f;
     }
 
+    :host #inputs,
     :host #points {
       flex: 1;
       max-width: 900px;
       padding: 30px;
+    }
+
+    :host #inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    :host #inputs md-outlined-text-field {
+      width: 100%;
     }
 
     :host #points {
@@ -84,7 +95,7 @@ export class YordleHome extends LitElement {
 
   protected override render(): TemplateResult {
     return html`<div id="inputs-container">
-        <div class="inputs">
+        <div id="inputs">
           <h1>${msg('Shorten your links')}</h1>
           <div>
             <md-outlined-text-field
