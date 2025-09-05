@@ -20,11 +20,9 @@
 package main // import "github.com/qqiao/yordle"
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"html"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -42,60 +40,23 @@ import (
 	"github.com/qqiao/yordle/shorturl"
 )
 
-const initDataTemplate = `
-<script>
-	window.__PRELOADED_STATE__ = %s;
-	window.process = { env: { NODE_ENV: '%s' } };
-</script>
-`
-
-func preloadedState(_ context.Context) <-chan string {
-	output := make(chan string)
-
-	go func() {
-		defer close(output)
-
-		str, err := json.Marshal(map[string]interface{}{
-			"languages": config.Locales,
-		})
-
-		if nil != err {
-			log.Printf("Unable to marshall preloaded state. Error: %v",
-				err)
-		}
-		output <- string(str)
-	}()
-
-	return output
-}
-
 func landingPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	idStr := r.URL.Path[1:]
-	idStr = strings.Replace(idStr, "\n", "", -1)
-	idStr = strings.Replace(idStr, "\r", "", -1)
+	idStr = strings.ReplaceAll(idStr, "\n", "")
+	idStr = strings.ReplaceAll(idStr, "\r", "")
 
 	// When we don't have an idStr or it contains any path elements, we would
 	// serve the landing page
 	if len(idStr) < 1 || strings.Contains(idStr, "/") ||
 		strings.HasSuffix(idStr, "index.html") {
 		dcCh := config.MustGetAsync(ctx)
-		psCh := preloadedState(ctx)
-
-		nodeEnv := "production"
-
-		if runtime.IsDev {
-			nodeEnv = "development"
-		}
-
-		initData := fmt.Sprintf(initDataTemplate, <-psCh, nodeEnv)
 
 		tmpl := webapp.GetTemplate("index.html", runtime.IsDev)
 		tmpl.Execute(w, map[string]interface{}{
 			"Config":    <-dcCh,
 			"BuildInfo": runtime.BuildInfo,
-			"InitData":  template.HTML(initData),
 		})
 		return
 	}
