@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -67,14 +67,12 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 
 	shortURL, err := shorturl.ByID(ctx, id)
 	if err == datastore.ErrNoSuchEntity {
-		log.Printf("Unable to load short url %s. Decoded key: %d",
-			idStr, id)
+		slog.Warn("Unable to load short url", "id", idStr, "decoded_key", id)
 		http.Error(w, fmt.Sprintf("Short URL %s cannot be found !!11one",
 			idStr), http.StatusNotFound)
 		return
 	} else if err != nil {
-		log.Printf("Error loading short URL '%s': %s", idStr,
-			err.Error())
+		slog.Error("Error loading short URL", "id", idStr, "error", err.Error())
 		http.Error(w, "Internal Server Error",
 			http.StatusInternalServerError)
 		return
@@ -86,7 +84,7 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 func version(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if err := json.NewEncoder(w).Encode(runtime.BuildInfo); nil != err {
-		log.Printf("Error marshalling build info. Error: %s", err.Error())
+		slog.Error("Error marshalling build info", "error", err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
@@ -95,9 +93,9 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+		slog.Info("Defaulting to port", "port", port)
 	}
 
-	log.Printf("Listening on port %s", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+	slog.Info("Listening on port", "port", port)
+	slog.Error("Server failed", "error", http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }

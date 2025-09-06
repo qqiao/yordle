@@ -18,7 +18,8 @@
 package runtime
 
 import (
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/qqiao/buildinfo"
 )
@@ -30,7 +31,8 @@ func init() {
 
 	select {
 	case err := <-errCh:
-		log.Fatalf("Error loading build information: %v", err)
+		slog.Error("Error loading build information", "error", err)
+		os.Exit(1)
 
 	case bi := <-biCh:
 		BuildInfo = bi

@@ -22,15 +22,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strings"
 
-	"github.com/qqiao/webapp"
-
 	"github.com/PuerkitoBio/purell"
 	"github.com/jcoene/go-base62"
+	"github.com/qqiao/webapp"
 	"github.com/qqiao/yordle/runtime"
 	"github.com/qqiao/yordle/shorturl"
 )
@@ -46,6 +45,7 @@ const (
 
 func init() {
 	http.HandleFunc("/v1/api/create", HSTSHandler(createV1))
+	http.HandleFunc("/api/v1/create", HSTSHandler(createV1))
 }
 
 func HSTSHandler(f http.HandlerFunc) http.HandlerFunc {
@@ -108,18 +108,16 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 	originalURLString = strings.Replace(originalURLString, "\n", "", -1)
 	originalURLString = strings.Replace(originalURLString, "\r", "", -1)
 
-	log.Printf("URL sanitized, attempting to persist...")
+	slog.Info("URL sanitized, attempting to persist...")
 
 	shortURL, err := shorturl.Persist(ctx, originalURLString)
 	if err != nil {
-		log.Printf("Error persisting %s. Error: %s",
-			originalURLString, err.Error())
+		slog.Error("Error persisting URL", "url", originalURLString, "error", err.Error())
 		w.Write(output(ctx, StatusFailure, "Error Persisting URL", callback))
 		return
 	}
 
-	log.Printf("Successfully created short url for '%s', ID: %d",
-		originalURLString, shortURL.ID)
+	slog.Info("Successfully created short url", "url", originalURLString, "id", shortURL.ID)
 	w.Write(output(ctx, StatusSuccess, fmt.Sprintf("https://%s/%s",
 		r.Host, base62.Encode(shortURL.ID)), callback))
 }
@@ -134,8 +132,7 @@ func output(_ context.Context, status Status, payload interface{},
 		"payload": payload,
 	})
 	if err != nil {
-		log.Printf("Unable to marshall JSON response, error: %s",
-			err.Error())
+		slog.Error("Unable to marshall JSON response", "error", err.Error())
 		return []byte("")
 	}
 

@@ -25,7 +25,7 @@ import (
 	"crypto/sha512"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 
 	"cloud.google.com/go/datastore"
 
@@ -77,7 +77,7 @@ var (
 func ByID(ctx context.Context, id int64) (*ShortURL, error) {
 	client, err := datastore.NewClient(ctx, config.ProjectName)
 	if nil != err {
-		log.Printf("Unable to create datastore client. Error: %s", err)
+		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
@@ -99,7 +99,7 @@ func ByURL(ctx context.Context, url string) (*ShortURL, error) {
 
 	client, err := datastore.NewClient(ctx, config.ProjectName)
 	if nil != err {
-		log.Printf("Unable to create datastore client. Error: %s", err)
+		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
@@ -144,7 +144,7 @@ func Persist(ctx context.Context, originalURL string) (*ShortURL, error) {
 	var client *datastore.Client
 	var err error
 	if client, err = datastore.NewClient(ctx, config.ProjectName); nil != err {
-		log.Printf("Unable to create datastore client. Error: %s", err)
+		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
@@ -156,41 +156,40 @@ func Persist(ctx context.Context, originalURL string) (*ShortURL, error) {
 
 	if commit, err = client.RunInTransaction(ctx,
 		func(tx *datastore.Transaction) error {
-			log.Printf("Persisting ShortURL for '%s'...", originalURL)
+			slog.Info("Persisting ShortURL", "url", originalURL)
 			var uk UniqueKey
 			err = tx.Get(uniqueKey, &uk)
 			if nil == err {
-				log.Printf("ShortURL for '%s' already exists, loading...",
-					originalURL)
+				slog.Info("ShortURL already exists, loading", "url", originalURL)
 				shortURL, err = ByURL(ctx, originalURL)
-				log.Printf("ShortURL loaded: %v", shortURL)
+				slog.Info("ShortURL loaded", "shortURL", shortURL)
 				return err
 			}
 
 			if nil != err {
 				if datastore.ErrNoSuchEntity != err {
-					log.Printf("Error checking uniqueness: %v", err)
+					slog.Error("Error checking uniqueness", "error", err)
 					return err
 				}
 
-				log.Println("No unique key found, proceeding with persistence")
+				slog.Info("No unique key found, proceeding with persistence")
 			}
 
-			log.Printf("Storing actual ShortURL Object for '%s'", originalURL)
+			slog.Info("Storing actual ShortURL Object", "url", originalURL)
 			shortURL.Hash = hash
 			shortURL.OriginalURL = originalURL
 
 			var err error
 			if sk, err = tx.Put(objectKey, shortURL); nil != err {
-				log.Printf("Error storing ShortURL Object: %v", err)
+				slog.Error("Error storing ShortURL Object", "error", err)
 				return err
 			}
 
-			log.Printf("Done storing ShortURL for '%s'.", originalURL)
+			slog.Info("Done storing ShortURL", "url", originalURL)
 
-			log.Printf("Storing UniqueKey for '%s'.", originalURL)
+			slog.Info("Storing UniqueKey", "url", originalURL)
 			if _, err = tx.Put(uniqueKey, &UniqueKey{}); nil != err {
-				log.Printf("Error storing ShortURL Unique Key: %v", err)
+				slog.Error("Error storing ShortURL Unique Key", "error", err)
 				return err
 			}
 
