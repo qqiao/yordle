@@ -44,6 +44,19 @@ export class YordleHome extends LitElement {
       color: #fff;
     }
 
+    :host #inputs-container md-outlined-text-field {
+      --md-outlined-field-content-color: #fff;
+      --md-outlined-field-focus-content-color: #fff;
+      --md-outlined-field-hover-content-color: #fff;
+      --md-outlined-field-hover-label-text-color: #fff;
+
+      --md-outlined-text-field-hover-outline-color: #fff;
+      --md-outlined-text-field-hover-text-color: #fff;
+      --md-outlined-field-label-text-color: #fff;
+      --md-outlined-text-field-input-text-color: #fff;
+      --md-outlined-text-field-input-text-placeholder-color: #fff;
+    }
+
     :host #inputs-container md-filled-button {
       --md-sys-color-on-primary: #59f;
     }
