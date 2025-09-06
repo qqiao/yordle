@@ -29,7 +29,7 @@ import { localeContext } from '../contexts/locale.mjs';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/icon/icon.js';
 
-import './yordle-home.js';
+import './yordle-home.mjs';
 
 const { setLocale } = configureLocalization({
   sourceLocale,
@@ -60,7 +60,7 @@ export class YordleApp extends LitElement {
       }
       switch (page) {
         case 'help': {
-          import('../components/yordle-help.js');
+          import('./yordle-help.mjs');
           break;
         }
         default:
