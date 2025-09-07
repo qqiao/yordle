@@ -24,6 +24,8 @@ import { localized, msg } from '@lit/localize';
 import '@material/web/icon/icon.js';
 import '@material/web/textfield/outlined-text-field.js';
 import '@material/web/button/filled-button.js';
+import { Task } from '@lit/task';
+import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
 
 @customElement('yordle-home')
 @localized()
@@ -106,22 +108,36 @@ export class YordleHome extends LitElement {
     }
   `;
 
+  #createTask = new Task(this, {
+    task: async () => {
+      const input = this.shadowRoot?.querySelector(
+        '#input',
+      ) as MdOutlinedTextField;
+      const url = input?.value;
+      return url;
+    },
+  });
+
   protected override render(): TemplateResult {
     return html`<div id="inputs-container">
         <div id="inputs">
           <h1>${msg('Shorten your links')}</h1>
-          <div>
-            <md-outlined-text-field
-              outlined
-              id="input"
-              label="${msg('Your original URL here')}"
-              type="url"
-              error-message="${msg('URL invalid')}"
-            ></md-outlined-text-field>
-          </div>
-          <div>
-            <md-filled-button>${msg('Shorten URL')} </md-filled-button>
-          </div>
+          ${this.#createTask.render({
+            initial: () => {
+              return html` <div>
+                  <md-outlined-text-field
+                    outlined
+                    id="input"
+                    label="${msg('Your original URL here')}"
+                    type="url"
+                    error-message="${msg('URL invalid')}"
+                  ></md-outlined-text-field>
+                </div>
+                <div>
+                  <md-filled-button>${msg('Shorten URL')} </md-filled-button>
+                </div>`;
+            },
+          })}
         </div>
       </div>
       <div>
