@@ -25,13 +25,12 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
-	"strings"
 
-	"github.com/PuerkitoBio/purell"
 	"github.com/jcoene/go-base62"
 	"github.com/qqiao/webapp"
 	"github.com/qqiao/yordle/runtime"
 	"github.com/qqiao/yordle/shorturl"
+	"github.com/qqiao/yordle/urlutil"
 )
 
 // Status represents the server execution status.
@@ -76,38 +75,28 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/javascript; charset=UTF-8")
 	}
 
-	// The sequence of checks to ensure that the original URL makes sense.
-	// 1. If it is given.
-	if originalURLString == "" {
-		w.Write(output(ctx, StatusFailure, "Missing URL to be shortened", callback))
-		return
-	}
-
-	// 2. If the URL parses properly
-	originalURL, err := url.Parse(originalURLString)
+	// Sanitize and validate the URL
+	sanitizedURL, err := urlutil.SanitizeURL(originalURLString)
 	if err != nil {
-		w.Write(output(ctx, StatusFailure, "URL cannot be parsed", callback))
+		w.Write(output(ctx, StatusFailure, err.Error(), callback))
 		return
 	}
 
-	// 3. If the URL is absolute
-	if !originalURL.IsAbs() {
-		w.Write(output(ctx, StatusFailure, "URL is not absolute", callback))
+	// Parse the sanitized URL to check if it's the same as current host
+	originalURL, err := url.Parse(sanitizedURL)
+	if err != nil {
+		w.Write(output(ctx, StatusFailure, "URL cannot be parsed after sanitization", callback))
 		return
 	}
 
-	// 4. If the URL's domain is already the same as the current Yordle
-	// instace, we just return the exact same URL
+	// If the URL's domain is already the same as the current Yordle
+	// instance, we just return the exact same URL
 	if originalURL.Host == r.Host {
-		w.Write(output(ctx, StatusSuccess, originalURLString, callback))
+		w.Write(output(ctx, StatusSuccess, sanitizedURL, callback))
 		return
 	}
 
-	// Now we normalize the URL so that we don't have to store duplicates
-	originalURLString = purell.NormalizeURL(originalURL, purell.FlagsSafe)
-	originalURLString = strings.Replace(originalURLString, "\n", "", -1)
-	originalURLString = strings.Replace(originalURLString, "\r", "", -1)
-
+	originalURLString = sanitizedURL
 	slog.Info("URL sanitized, attempting to persist...")
 
 	shortURL, err := shorturl.Persist(ctx, originalURLString)
