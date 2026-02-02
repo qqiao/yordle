@@ -33,7 +33,7 @@ const DEFAULT_STATE: State = {
 
 const app: Reducer<State, RootActions> = (
   state = DEFAULT_STATE,
-  action: RootActions
+  action: RootActions,
 ): State => {
   switch (action.type) {
     case ActionTypes.UPDATE_PAGE:

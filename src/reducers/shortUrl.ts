@@ -30,7 +30,7 @@ const INITIAL_STATE: State = {};
 
 const shortUrl: Reducer<State, RootActions> = (
   state = INITIAL_STATE,
-  action: RootActions
+  action: RootActions,
 ) => {
   switch (action.type) {
     case ActionTypes.CREATION_SUCCESS:

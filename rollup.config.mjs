@@ -41,18 +41,18 @@ const createBaseConfig = () =>
           preventAssignment: true,
           values: {
             'process.env.NODE_ENV': JSON.stringify(
-              production ? 'production' : 'development'
+              production ? 'production' : 'development',
             ),
             'process.env.BUILD_TYPE': JSON.stringify(buildType),
           },
         }),
-        dynamicImportVars.default(),
+        dynamicImportVars(),
       ],
-    }
+    },
   );
 
 export default ENTRY_POINTS.map(entryPoint =>
   merge(createBaseConfig(), {
     input: entryPoint,
-  })
+  }),
 );
