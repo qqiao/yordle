@@ -1,4 +1,3 @@
-/* eslint-disable import/no-duplicates */
 /**
  * Yordle - A URL shortener for Google App Engine.
  * Copyright (C) 2017 The Yordle Team
@@ -19,24 +18,22 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, query } from 'lit/decorators';
+import { customElement, query } from 'lit/decorators.js';
 
 import { msg } from '@lit/localize';
 
 import '@material/mwc-button';
-// eslint-disable-next-line import/no-duplicates
+
 import '@material/mwc-dialog';
 import '@material/mwc-icon';
-// eslint-disable-next-line import/no-duplicates
+
 import '@material/mwc-snackbar';
 
-// eslint-disable-next-line import/no-duplicates
 import { Dialog } from '@material/mwc-dialog';
 import { Snackbar } from '@material/mwc-snackbar';
 
-// eslint-disable-next-line import/no-duplicates
 import '@material/mwc-textfield';
-// eslint-disable-next-line import/no-duplicates
+
 import { TextField } from '@material/mwc-textfield';
 
 import { ShortURLController, Status } from '../controllers/short-url.js';

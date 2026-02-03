@@ -18,7 +18,7 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { msg } from '@lit/localize';
 
 import '@material/mwc-icon';
@@ -114,7 +114,7 @@ export class YordleApp extends LitElement {
               target="_blank"
               rel="noreferrer"
               >Yordle</a
-            >`
+            >`,
         )}
       </footer>`;
   }
