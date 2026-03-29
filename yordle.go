@@ -51,25 +51,25 @@ const initDataTemplate = `
 `
 
 var (
-	cachedLocales     string
-	cachedLocalesOnce sync.Once
+	cachedPreloadedState     string
+	cachedPreloadedStateOnce sync.Once
 )
 
 func preloadedState(ctx context.Context) <-chan string {
 	output := make(chan string, 1)
 
-	cachedLocalesOnce.Do(func() {
+	cachedPreloadedStateOnce.Do(func() {
 		str, err := json.Marshal(map[string]interface{}{
 			"languages": config.Locales,
 		})
 		if nil != err {
-			log.Printf("Unable to marshall preloaded state. Error: %v",
+			log.Printf("Unable to marshal preloaded state. Error: %v",
 				err)
 		}
-		cachedLocales = string(str)
+		cachedPreloadedState = string(str)
 	})
 
-	output <- cachedLocales
+	output <- cachedPreloadedState
 	close(output)
 
 	return output

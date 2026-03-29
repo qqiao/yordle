@@ -21,7 +21,7 @@ func preloadedStateCurrent(ctx context.Context) <-chan string {
 		})
 
 		if nil != err {
-			fmt.Printf("Unable to marshall preloaded state. Error: %v\n", err)
+			fmt.Printf("Unable to marshal preloaded state. Error: %v\n", err)
 		}
 		output <- string(str)
 	}()
@@ -42,7 +42,7 @@ func preloadedStateOptimized(ctx context.Context) <-chan string {
 			"languages": configLocales,
 		})
 		if err != nil {
-			fmt.Printf("Unable to marshall preloaded state. Error: %v\n", err)
+			fmt.Printf("Unable to marshal preloaded state. Error: %v\n", err)
 		}
 		cachedPreloadedState = string(str)
 	})
