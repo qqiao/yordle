@@ -29,6 +29,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 
 	"cloud.google.com/go/datastore"
 
@@ -49,22 +50,27 @@ const initDataTemplate = `
 </script>
 `
 
+var (
+	cachedLocales     string
+	cachedLocalesOnce sync.Once
+)
+
 func preloadedState(ctx context.Context) <-chan string {
-	output := make(chan string)
+	output := make(chan string, 1)
 
-	go func() {
-		defer close(output)
-
+	cachedLocalesOnce.Do(func() {
 		str, err := json.Marshal(map[string]interface{}{
 			"languages": config.Locales,
 		})
-
-		if nil != err {
+		if err != nil {
 			log.Printf("Unable to marshall preloaded state. Error: %v",
 				err)
 		}
-		output <- string(str)
-	}()
+		cachedLocales = string(str)
+	})
+
+	output <- cachedLocales
+	close(output)
 
 	return output
 }
