@@ -17,7 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* eslint import/no-extraneous-dependencies: "off" */
+/* eslint import-x/no-extraneous-dependencies: "off" */
 /* eslint camelcase: "off" */
 /* eslint no-console: "off" */
 import { exec } from 'child_process';
@@ -58,17 +58,19 @@ export const copy = gulp.series(buildInfo, () =>
         'build_info.json',
         'go.sum',
         'go.mod',
+        'favicon.ico',
         'lit-localize.json',
         'manifest.json',
         'robots.txt',
+        'images/**',
         '*.go',
         '**/*.go',
         '!dist/**',
         '!**/*_test.go',
       ],
-      { base: '.' }
+      { base: '.' },
     )
-    .pipe(gulp.dest(BUILD_DIR))
+    .pipe(gulp.dest(BUILD_DIR)),
 );
 
 export const datastoreEmulator = cb => {

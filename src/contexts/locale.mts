@@ -19,6 +19,6 @@
 
 import { createContext } from '@lit/context';
 
-export const localeContext = createContext<string | undefined, Symbol>(
+export const localeContext = createContext<string | undefined, symbol>(
   Symbol('locale'),
 );

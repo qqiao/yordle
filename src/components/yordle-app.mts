@@ -153,14 +153,7 @@ export class YordleApp extends LitElement {
   `;
 
   protected override render(): TemplateResult {
-    return html` <!-- <mwc-top-app-bar>
-
-        <div slot="title" class="title">${this.appName}</div>
-        <div slot="actionItems" class="top-navigation">
-
-        </div>
-      </mwc-top-app-bar> -->
-      <header>
+    return html`<header>
         <div id="title">
           <md-icon-button
             ?active="${this.page !== 'home'}"

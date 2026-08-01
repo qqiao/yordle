@@ -1,4 +1,3 @@
-/* eslint-disable import/no-duplicates */
 /**
  * Yordle - A URL shortener for Google App Engine.
  * Copyright (C) 2017 The Yordle Team
@@ -22,7 +21,6 @@ import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import '@material/web/icon/icon.js';
-import '@material/web/textfield/outlined-text-field.js';
 import '@material/web/button/filled-button.js';
 import { Task } from '@lit/task';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
