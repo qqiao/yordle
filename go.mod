@@ -1,6 +1,8 @@
 module github.com/qqiao/yordle
 
-go 1.25.0
+go 1.26.0
+
+toolchain go1.26.5
 
 require (
 	cloud.google.com/go/datastore v1.26.0

@@ -30,6 +30,8 @@
     "i18n:extract": "lit-localize extract",
     "i18n:build": "lit-localize build",
     "format": "eslint . --fix && prettier \"**/*.(cjs|mjs|ts|mts)\" --write",
+    "lint": "eslint . && prettier \"**/*.(cjs|mjs|ts|mts)\" --check",
+    "typecheck": "tsc --noEmit",
     "build": "yarn clean && yarn i18n:build && vite build && gulp copy",
     "clean": "rimraf dist/ out-tsc/",
     "deploy": "yarn build && gulp deploy",
