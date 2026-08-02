@@ -21,6 +21,19 @@ https://go.dev for information on the Go programming language.
 The user interface of Yordle is written in
 [TypeScript](https://www.typescriptlang.org/).
 
+TypeScript naming conventions
+-----------------------------
+TypeScript filenames use lowercase kebab-case, with dot-separated conventional
+suffixes when needed. For example:
+
+- Source file: `short-url.mts`
+- Web component: `yordle-admin.mts`
+- Test file: `short-url.test.mts`
+- Declaration file: `global.d.ts`
+
+Classes and types continue to use PascalCase, while functions and variables use
+camelCase. The filename convention is enforced by `yarn lint`.
+
 Other Readings
 --------------
 - [Lit](https://lit.dev): Yordle's user interface framework.

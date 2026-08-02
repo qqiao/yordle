@@ -30,14 +30,16 @@
     "i18n:extract": "lit-localize extract",
     "i18n:build": "lit-localize build",
     "format": "eslint . --fix && prettier \"**/*.(cjs|mjs|ts|mts)\" --write",
-    "lint": "eslint . && prettier \"**/*.(cjs|mjs|ts|mts)\" --check",
+    "lint": "yarn lint:filenames && eslint . && prettier \"**/*.(cjs|mjs|ts|mts)\" --check",
+    "lint:filenames": "node scripts/check-typescript-filenames.mjs src test",
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && yarn i18n:build && vite build && gulp copy",
     "clean": "rimraf dist/ out-tsc/",
     "deploy": "yarn build && gulp deploy",
     "start": "yarn build && gulp",
-    "test": "yarn test:frontend && gulp test",
-    "test:frontend": "node --test test/frontend/short-url.test.mts"
+    "test": "yarn test:frontend && yarn test:tooling && gulp test",
+    "test:frontend": "node --test test/frontend/short-url.test.mts",
+    "test:tooling": "node --test test/tooling/check-typescript-filenames.test.mts"
   },
   "packageManager": "yarn@4.18.0",
   "resolutions": {
