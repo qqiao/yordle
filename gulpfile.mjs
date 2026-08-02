@@ -20,7 +20,7 @@
 /* eslint import-x/no-extraneous-dependencies: "off" */
 /* eslint camelcase: "off" */
 /* eslint no-console: "off" */
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import gulp from 'gulp';
 
 const BUILD_DIR = 'dist/';
@@ -31,6 +31,7 @@ const CLOUDSDK_CORE_PROJECT =
     process.exit(1);
   })();
 const DATASTORE_PORT = 23333;
+const DATASTORE_HOST = `localhost:${DATASTORE_PORT}`;
 
 const execCommand = (command, cb, options) => {
   const cli = exec(command, options, (err, stdout, stderr) => {
@@ -82,6 +83,83 @@ export const datastoreEmulator = cb => {
   return execCommand(cmd, cb);
 };
 
+const delay = milliseconds =>
+  new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+
+const waitForDatastore = async emulator => {
+  const deadline = Date.now() + 30_000;
+
+  while (Date.now() < deadline) {
+    if (emulator.exitCode !== null || emulator.signalCode !== null) {
+      throw new Error('Datastore emulator exited before becoming ready');
+    }
+
+    try {
+      const response = await fetch(`http://${DATASTORE_HOST}/`, {
+        signal: AbortSignal.timeout(1_000),
+      });
+      if (response.ok) return;
+    } catch {
+      // The emulator refuses connections until its HTTP server is ready.
+    }
+
+    await delay(250);
+  }
+
+  throw new Error('Timed out waiting for the Datastore emulator');
+};
+
+const runCommand = (command, args, options = {}) =>
+  new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      ...options,
+      stdio: 'inherit',
+    });
+    child.once('error', reject);
+    child.once('exit', (code, signal) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+      reject(
+        new Error(
+          `${command} exited with ${signal ? `signal ${signal}` : `code ${code}`}`,
+        ),
+      );
+    });
+  });
+
+const stopProcessGroup = async child => {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+
+  const exited = new Promise(resolve => child.once('exit', resolve));
+  const sendSignal = signal => {
+    if (process.platform === 'win32') {
+      child.kill(signal);
+      return;
+    }
+    process.kill(-child.pid, signal);
+  };
+
+  try {
+    sendSignal('SIGTERM');
+  } catch (error) {
+    if (error.code !== 'ESRCH') throw error;
+  }
+
+  await Promise.race([exited, delay(5_000)]);
+  if (child.exitCode === null && child.signalCode === null) {
+    try {
+      sendSignal('SIGKILL');
+    } catch (error) {
+      if (error.code !== 'ESRCH') throw error;
+    }
+    await exited;
+  }
+};
+
 const go = cb => {
   const cmd = [
     `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
@@ -91,16 +169,43 @@ const go = cb => {
   return execCommand(cmd, cb, { cwd: BUILD_DIR });
 };
 
-export const test = gulp.parallel(datastoreEmulator, cb => {
-  const cmd = [
-    `DATASTORE_EMULATOR_HOST=localhost:${DATASTORE_PORT}`,
-    `DATASTORE_PROJECT_ID=${CLOUDSDK_CORE_PROJECT}`,
-    'go test ./...',
-  ].join(' ');
-  return execCommand(cmd, cb, {
-    cwd: '.',
-  });
-});
+export const test = async () => {
+  const datastoreEnvironment = {
+    ...process.env,
+    CLOUDSDK_CORE_PROJECT,
+    DATASTORE_EMULATOR_HOST: DATASTORE_HOST,
+    DATASTORE_PROJECT_ID: CLOUDSDK_CORE_PROJECT,
+    GOOGLE_CLOUD_PROJECT: CLOUDSDK_CORE_PROJECT,
+  };
+  const emulator = spawn(
+    'gcloud',
+    [
+      'beta',
+      'emulators',
+      'datastore',
+      'start',
+      '--no-store-on-disk',
+      '--use-firestore-in-datastore-mode',
+      `--host-port=${DATASTORE_HOST}`,
+      `--project=${CLOUDSDK_CORE_PROJECT}`,
+    ],
+    {
+      detached: process.platform !== 'win32',
+      env: datastoreEnvironment,
+      stdio: 'inherit',
+    },
+  );
+
+  try {
+    await waitForDatastore(emulator);
+    await runCommand('go', ['test', '-count=1', './...'], {
+      cwd: '.',
+      env: datastoreEnvironment,
+    });
+  } finally {
+    await stopProcessGroup(emulator);
+  }
+};
 
 export const deploy = cb => {
   const cmd = [
