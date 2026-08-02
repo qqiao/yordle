@@ -18,16 +18,34 @@
  */
 
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, query, state } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import '@material/web/icon/icon.js';
 import '@material/web/button/filled-button.js';
-import { Task } from '@lit/task';
-import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
+import '@material/web/button/text-button.js';
+import '@material/web/dialog/dialog.js';
+import '@material/web/progress/circular-progress.js';
+import '@material/web/textfield/outlined-text-field.js';
+import { Task, TaskStatus } from '@lit/task';
+import type { MdDialog } from '@material/web/dialog/dialog.js';
+import type { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
+import { createShortURL } from '../api/short-url.mjs';
 
 @customElement('yordle-home')
 @localized()
 export class YordleHome extends LitElement {
+  @query('#input')
+  private input?: MdOutlinedTextField;
+
+  @query('#result')
+  private result?: MdOutlinedTextField;
+
+  @query('#result-dialog')
+  private resultDialog?: MdDialog;
+
+  @state()
+  private copyStatus = '';
+
   static override readonly styles = css`
     :host {
       display: block;
@@ -68,6 +86,28 @@ export class YordleHome extends LitElement {
       padding: 30px;
     }
 
+    :host #task-status {
+      min-height: 24px;
+    }
+
+    :host #task-status p {
+      margin: 0;
+    }
+
+    :host #task-status .error {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    :host #result {
+      width: min(520px, 80vw);
+    }
+
+    :host #copy-status {
+      min-height: 24px;
+      margin-top: 8px;
+    }
+
     :host #inputs {
       display: flex;
       flex-direction: column;
@@ -104,15 +144,23 @@ export class YordleHome extends LitElement {
       margin-right: 5px;
       padding: 10px;
     }
+
+    @media (max-width: 600px) {
+      :host #points {
+        flex-direction: column;
+      }
+    }
   `;
 
-  #createTask = new Task(this, {
-    task: async () => {
-      const input = this.shadowRoot?.querySelector(
-        '#input',
-      ) as MdOutlinedTextField;
-      const url = input?.value;
-      return url;
+  #createTask = new Task<[string], string>(this, {
+    autoRun: false,
+    task: ([originalURL], { signal }) =>
+      createShortURL(originalURL, fetch, signal),
+    onComplete: () => {
+      this.copyStatus = '';
+      void this.#showResult().catch(error => {
+        console.error('Unable to show shortened URL', error);
+      });
     },
   });
 
@@ -120,22 +168,41 @@ export class YordleHome extends LitElement {
     return html`<div id="inputs-container">
         <div id="inputs">
           <h1>${msg('Shorten your links')}</h1>
-          ${this.#createTask.render({
-            initial: () => {
-              return html` <div>
-                  <md-outlined-text-field
-                    outlined
-                    id="input"
-                    label="${msg('Your original URL here')}"
-                    type="url"
-                    error-message="${msg('URL invalid')}"
-                  ></md-outlined-text-field>
-                </div>
-                <div>
-                  <md-filled-button>${msg('Shorten URL')} </md-filled-button>
-                </div>`;
-            },
-          })}
+          <div>
+            <md-outlined-text-field
+              required
+              id="input"
+              label="${msg('Your original URL here')}"
+              type="url"
+              error-message="${msg('URL invalid')}"
+              @keydown="${(event: KeyboardEvent) => {
+                if (event.key === 'Enter') this.#onShortenTap();
+              }}"
+            ></md-outlined-text-field>
+          </div>
+          <div>
+            <md-filled-button
+              ?disabled="${this.#createTask.status === TaskStatus.PENDING}"
+              @click="${this.#onShortenTap}"
+              >${msg('Shorten URL')}</md-filled-button
+            >
+          </div>
+          <div id="task-status" role="status" aria-live="polite">
+            ${this.#createTask.render({
+              pending: () => html`
+                <md-circular-progress indeterminate></md-circular-progress>
+                ${msg('Shortening URL…')}
+              `,
+              error: error =>
+                html`<p class="error">
+                  ${
+                    error instanceof Error
+                      ? error.message
+                      : msg('Unable to shorten this URL')
+                  }
+                </p>`,
+            })}
+          </div>
         </div>
       </div>
       <div>
@@ -162,6 +229,64 @@ export class YordleHome extends LitElement {
             ${msg('Understand and visualize your audience')}
           </div>
         </div>
-      </div>`;
+      </div>
+
+      <md-dialog id="result-dialog" aria-label="${msg('Shortened URL')}">
+        <div slot="headline">${msg('Your shortened URL')}</div>
+        <div slot="content">
+          <md-outlined-text-field
+            id="result"
+            readonly
+            .value="${this.#createTask.value ?? ''}"
+          ></md-outlined-text-field>
+          <div id="copy-status" role="status" aria-live="polite">
+            ${this.copyStatus}
+          </div>
+        </div>
+        <div slot="actions">
+          <md-text-button @click="${this.#onCopyTap}"
+            >${msg('Copy')}</md-text-button
+          >
+          <md-text-button
+            @click="${() => {
+              void this.resultDialog?.close();
+            }}"
+            >${msg('Done')}</md-text-button
+          >
+        </div>
+      </md-dialog>`;
   }
+
+  #onShortenTap = (): void => {
+    if (!this.input?.reportValidity()) return;
+
+    const originalURL = this.input.value.trim();
+    if (originalURL.length === 0) return;
+
+    void this.#createTask.run([originalURL]);
+  };
+
+  #showResult = async (): Promise<void> => {
+    await this.updateComplete;
+    await this.resultDialog?.show();
+  };
+
+  #onCopyTap = async (): Promise<void> => {
+    const shortURL = this.#createTask.value;
+    if (!shortURL) return;
+
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shortURL);
+      } else {
+        this.result?.select();
+        if (!document.execCommand('copy')) {
+          throw new Error('Copy command failed');
+        }
+      }
+      this.copyStatus = msg('Short URL copied to clipboard');
+    } catch {
+      this.copyStatus = msg('Unable to copy the short URL');
+    }
+  };
 }

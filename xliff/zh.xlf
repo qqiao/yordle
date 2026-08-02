@@ -31,6 +31,12 @@
               can be shortened to
               <x id="3" equiv-text="&lt;a href=&quot;/PmYUlTPea&quot; target=&quot;_blank&quot; rel=&quot;noreferrer&quot;&gt;${BASE_URL}"/>/PmYUlTPea<x id="4" equiv-text="&lt;/a&gt;"/>, which can be shared more easily.
             <x id="5" equiv-text="&lt;/p&gt;"/></source>
+  <target><x id="0" equiv-text="&lt;p&gt;"/>
+              Yordle 可以缩短网址，让您更轻松地与他人分享。例如，以下网址
+              <x id="1" equiv-text="&lt;a href=&quot;https://www.youtube.com/watch?v=dQw4w9WgXcQ&quot; target=&quot;_blank&quot; rel=&quot;noreferrer&quot;&gt;"/>https://www.youtube.com/watch?v=dQw4w9WgXcQ<x id="2" equiv-text="&lt;/a&gt;"/>
+              可以缩短为
+              <x id="3" equiv-text="&lt;a href=&quot;/PmYUlTPea&quot; target=&quot;_blank&quot; rel=&quot;noreferrer&quot;&gt;${BASE_URL}"/>/PmYUlTPea<x id="4" equiv-text="&lt;/a&gt;"/>，从而更方便地分享。
+            <x id="5" equiv-text="&lt;/p&gt;"/></target>
 </trans-unit>
 <trans-unit id="h8664bdefaa3edc21">
   <source><x id="0" equiv-text="&lt;p&gt;"/>
@@ -42,6 +48,83 @@
                 the 'Copy' button to copy it to your clipboard so that it can be
                 shared, emailed or tweeted.
               <x id="2" equiv-text="&lt;/p&gt;"/></source>
+  <target><x id="0" equiv-text="&lt;p&gt;"/>
+                要缩短链接，请将长网址粘贴到标有“在此输入原始网址”的文本框中，然后点击“缩短网址”按钮。
+              <x id="1" equiv-text="&lt;/p&gt;&#10;              &lt;p&gt;"/>
+                随后会弹出一个显示短网址的新对话框。点击“复制”按钮将其复制到剪贴板，即可分享、发送邮件或发布推文。
+              <x id="2" equiv-text="&lt;/p&gt;"/></target>
+</trans-unit>
+<trans-unit id="s8012815c243dcab4">
+  <source>Shorten your links</source>
+  <target>缩短您的链接</target>
+</trans-unit>
+<trans-unit id="sbfcdf066c279c6f6">
+  <source>Your original URL here</source>
+  <target>在此输入原始网址</target>
+</trans-unit>
+<trans-unit id="sf425fd947217e471">
+  <source>URL invalid</source>
+  <target>网址无效</target>
+</trans-unit>
+<trans-unit id="s3500976a032c4e7f">
+  <source>Shorten URL</source>
+  <target>缩短网址</target>
+</trans-unit>
+<trans-unit id="s55d4b4e7af409967">
+  <source>Shortening URL…</source>
+  <target>正在缩短网址…</target>
+</trans-unit>
+<trans-unit id="sc275a7930b165bb3">
+  <source>Unable to shorten this URL</source>
+  <target>无法缩短此网址</target>
+</trans-unit>
+<trans-unit id="s4b4da3e72a08fcfa">
+  <source>Shorten</source>
+  <target>缩短</target>
+</trans-unit>
+<trans-unit id="s1d64d29c847603b0">
+  <source>Shorten your URL so its ready to be shared everywhere</source>
+  <target>缩短网址，以便随时随地轻松分享</target>
+</trans-unit>
+<trans-unit id="s9e85800d3700e31c">
+  <source>Track</source>
+  <target>追踪</target>
+</trans-unit>
+<trans-unit id="s86a3121c2add6304">
+  <source>Analytics help you know where your clicks are coming from</source>
+  <target>分析数据可帮助您了解点击来自哪里</target>
+</trans-unit>
+<trans-unit id="s19b10d1a8593ca55">
+  <source>Learn</source>
+  <target>了解</target>
+</trans-unit>
+<trans-unit id="s2eb8a092a50abb0b">
+  <source>Understand and visualize your audience</source>
+  <target>了解并可视化您的受众</target>
+</trans-unit>
+<trans-unit id="s9e81630fca9e5382">
+  <source>Shortened URL</source>
+  <target>已缩短的网址</target>
+</trans-unit>
+<trans-unit id="s24a1587c17f5708f">
+  <source>Your shortened URL</source>
+  <target>您的短网址</target>
+</trans-unit>
+<trans-unit id="s3687049d1af562c4">
+  <source>Copy</source>
+  <target>复制</target>
+</trans-unit>
+<trans-unit id="s0379fc73608ab971">
+  <source>Done</source>
+  <target>完成</target>
+</trans-unit>
+<trans-unit id="s2aef9c356025fbbf">
+  <source>Short URL copied to clipboard</source>
+  <target>短网址已复制到剪贴板</target>
+</trans-unit>
+<trans-unit id="s110a9da3d3c34d38">
+  <source>Unable to copy the short URL</source>
+  <target>无法复制短网址</target>
 </trans-unit>
 </body>
 </file>

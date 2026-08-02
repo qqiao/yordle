@@ -173,8 +173,9 @@ func TestSanitizeURL(t *testing.T) {
 		{
 			name:        "URL with only scheme",
 			input:       "https://",
-			expectedURL: "https://",
-			expectError: false,
+			expectedURL: "",
+			expectError: true,
+			errorMsg:    "URL host is required",
 		},
 		{
 			name:        "URL with special characters in path",
@@ -191,8 +192,9 @@ func TestSanitizeURL(t *testing.T) {
 		{
 			name:        "URL with user info",
 			input:       "https://user:pass@www.example.com/path",
-			expectedURL: "https://user:pass@www.example.com/path",
-			expectError: false,
+			expectedURL: "",
+			expectError: true,
+			errorMsg:    "URL must not contain user information",
 		},
 		{
 			name:        "URL with IPv4 address",

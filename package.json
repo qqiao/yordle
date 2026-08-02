@@ -24,9 +24,7 @@
     "@lit/task": "^1.0.3",
     "@material/web": "^2.5.0",
     "lit": "^3.3.3",
-    "pwa-helpers": "^0.9.1",
-    "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "pwa-helpers": "^0.9.1"
   },
   "scripts": {
     "i18n:extract": "lit-localize extract",
@@ -36,7 +34,8 @@
     "clean": "rimraf dist/ out-tsc/",
     "deploy": "yarn build && gulp deploy",
     "start": "yarn build && gulp",
-    "test": "gulp test"
+    "test": "yarn test:frontend && gulp test",
+    "test:frontend": "node --test test/frontend/short-url.test.mts"
   },
   "packageManager": "yarn@4.18.0",
   "resolutions": {

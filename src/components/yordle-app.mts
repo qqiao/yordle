@@ -50,6 +50,9 @@ export class YordleApp extends LitElement {
   @state()
   page?: string;
 
+  @state()
+  private localeReady = false;
+
   constructor() {
     super();
     installRouter(location => {
@@ -82,10 +85,9 @@ export class YordleApp extends LitElement {
           bestmatch = l;
         }
       });
-      targetLoc = bestmatch ?? sourceLocale;
+      targetLoc = bestmatch || sourceLocale;
     }
-    setLocale(targetLoc);
-    this.locale = targetLoc;
+    void this.#initializeLocale(targetLoc);
   }
 
   static override readonly styles = css`
@@ -153,6 +155,10 @@ export class YordleApp extends LitElement {
   `;
 
   protected override render(): TemplateResult {
+    if (!this.localeReady) {
+      return html`<p role="status">Loading…</p>`;
+    }
+
     return html`<header>
         <div id="title">
           <md-icon-button
@@ -191,4 +197,16 @@ export class YordleApp extends LitElement {
         )}
       </footer>`;
   }
+
+  #initializeLocale = async (targetLocale: string): Promise<void> => {
+    try {
+      await setLocale(targetLocale);
+      this.locale = targetLocale;
+    } catch (error) {
+      console.error('Unable to load locale; using source locale', error);
+      this.locale = sourceLocale;
+    } finally {
+      this.localeReady = true;
+    }
+  };
 }

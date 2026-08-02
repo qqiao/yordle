@@ -59,6 +59,12 @@ func SanitizeURL(urlString string) (string, error) {
 	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
 		return "", fmt.Errorf("URL scheme must be http or https, got: %s", parsedURL.Scheme)
 	}
+	if parsedURL.Hostname() == "" {
+		return "", fmt.Errorf("URL host is required")
+	}
+	if parsedURL.User != nil {
+		return "", fmt.Errorf("URL must not contain user information")
+	}
 
 	// Normalize the URL using purell
 	normalizedURL := purell.NormalizeURL(parsedURL, purell.FlagsSafe)

@@ -101,3 +101,4 @@ func main() {
 		slog.Error("Server failed", "error", err)
 		os.Exit(1)
 	}
+}
