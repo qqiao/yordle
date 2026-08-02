@@ -97,5 +97,7 @@ func main() {
 	}
 
 	slog.Info("Listening on port", "port", port)
-	slog.Error("Server failed", "error", http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
-}
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
+		slog.Error("Server failed", "error", err)
+		os.Exit(1)
+	}
