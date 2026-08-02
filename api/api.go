@@ -95,12 +95,12 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 
 	shortURL, err := shorturl.Persist(ctx, originalURLString)
 	if err != nil {
-		slog.Error("Error persisting URL", "url", originalURLString, "error", err.Error())
+		slog.Error("Error persisting URL", "error", err.Error())
 		w.Write(output(ctx, StatusFailure, "Error Persisting URL"))
 		return
 	}
 
-	slog.Info("Successfully created short url", "url", originalURLString, "id", shortURL.ID)
+	slog.Info("Successfully created short URL", "id", shortURL.ID)
 	w.Write(output(ctx, StatusSuccess, fmt.Sprintf("https://%s/%s",
 		r.Host, base62.Encode(shortURL.ID))))
 }

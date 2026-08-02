@@ -55,14 +55,14 @@ type GoogleAnalyticsConfig struct {
 func Get(ctx context.Context) (*DynamicConfig, error) {
 	slog.Info("Loading DynamicConfig from datastore...")
 
-	client, err := datastore.NewClient(ctx, ProjectName)
+	client, err := DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 	key := datastore.NameKey(KindName, InstanceKey, nil)
 
-	var cfg DynamicConfig
+	cfg := DefaultInstance
 
 	if err := client.Get(ctx, key, &cfg); nil != err {
 		if datastore.ErrNoSuchEntity != err {
@@ -107,7 +107,7 @@ func MustGetAsync(ctx context.Context) <-chan *DynamicConfig {
 func Save(ctx context.Context, cfg *DynamicConfig) error {
 	slog.Info("Saving DynamicConfig instance into datastore...")
 
-	client, err := datastore.NewClient(ctx, "")
+	client, err := DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return err
@@ -116,7 +116,7 @@ func Save(ctx context.Context, cfg *DynamicConfig) error {
 
 	// First we need to save it to the datastore. If we can't even store,
 	// we must error out
-	if _, err := client.Put(ctx, key, &cfg); nil != err {
+	if _, err := client.Put(ctx, key, cfg); nil != err {
 		return err
 	}
 

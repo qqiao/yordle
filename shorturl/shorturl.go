@@ -75,12 +75,16 @@ var (
 
 // ByID loads the short URL by its ID.
 func ByID(ctx context.Context, id int64) (*ShortURL, error) {
-	client, err := datastore.NewClient(ctx, config.ProjectName)
+	client, err := config.DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
+	return byID(ctx, client, id)
+}
+
+func byID(ctx context.Context, client *datastore.Client, id int64) (*ShortURL, error) {
 	var shortURL ShortURL
 
 	if err := client.Get(ctx,
@@ -95,14 +99,17 @@ func ByID(ctx context.Context, id int64) (*ShortURL, error) {
 
 // ByURL finds the short URL by its original long URL.
 func ByURL(ctx context.Context, url string) (*ShortURL, error) {
-	hash := hash(url)
-
-	client, err := datastore.NewClient(ctx, config.ProjectName)
+	client, err := config.DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
+	return byURL(ctx, client, url)
+}
+
+func byURL(ctx context.Context, client *datastore.Client, url string) (*ShortURL, error) {
+	hash := hash(url)
 	var results []*ShortURL
 
 	q := datastore.NewQuery(KindName).
@@ -134,74 +141,78 @@ func hash(originalURL string) string {
 
 func keys(originalURL string) (*datastore.Key, *datastore.Key, string) {
 	hash := hash(originalURL)
-	uniqueKey := datastore.NameKey("Unique", originalURL, nil)
+	uniqueKey := datastore.NameKey("Unique", hash, nil)
 	objectKey := datastore.IncompleteKey(KindName, nil)
 	return objectKey, uniqueKey, hash
 }
 
 // Persist persists the long URL by creating necessary objects.
 func Persist(ctx context.Context, originalURL string) (*ShortURL, error) {
-	var client *datastore.Client
-	var err error
-	if client, err = datastore.NewClient(ctx, config.ProjectName); nil != err {
+	client, err := config.DatastoreClient(ctx)
+	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 
-	objectKey, uniqueKey, hash := keys(originalURL)
+	objectKey, uniqueKey, urlHash := keys(originalURL)
+	allocatedKeys, err := client.AllocateIDs(ctx, []*datastore.Key{objectKey})
+	if err != nil {
+		return nil, err
+	}
+	objectKey = allocatedKeys[0]
 
-	var sk *datastore.PendingKey
+	// Older releases keyed Unique entities by the full URL and did not store
+	// the ShortURL ID. Query once before the transaction so existing data can
+	// be backfilled into the new bounded, strongly-consistent mapping.
+	legacyShortURL, legacyErr := byURL(ctx, client, originalURL)
+	if legacyErr != nil && !errors.Is(legacyErr, ErrNotFound) {
+		return nil, legacyErr
+	}
+
 	shortURL := &ShortURL{}
-	var commit *datastore.Commit
+	_, err = client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
+		var unique UniqueKey
+		if err := tx.Get(uniqueKey, &unique); err == nil {
+			if unique.ID == 0 {
+				return ErrDatastoreInconsistent
+			}
 
-	if commit, err = client.RunInTransaction(ctx,
-		func(tx *datastore.Transaction) error {
-			slog.Info("Persisting ShortURL", "url", originalURL)
-			var uk UniqueKey
-			err = tx.Get(uniqueKey, &uk)
-			if nil == err {
-				slog.Info("ShortURL already exists, loading", "url", originalURL)
-				shortURL, err = ByURL(ctx, originalURL)
-				slog.Info("ShortURL loaded", "shortURL", shortURL)
+			var existing ShortURL
+			if err := tx.Get(datastore.IDKey(KindName, unique.ID, nil), &existing); err != nil {
 				return err
 			}
-
-			if nil != err {
-				if datastore.ErrNoSuchEntity != err {
-					slog.Error("Error checking uniqueness", "error", err)
-					return err
-				}
-
-				slog.Info("No unique key found, proceeding with persistence")
-			}
-
-			slog.Info("Storing actual ShortURL Object", "url", originalURL)
-			shortURL.Hash = hash
-			shortURL.OriginalURL = originalURL
-
-			var err error
-			if sk, err = tx.Put(objectKey, shortURL); nil != err {
-				slog.Error("Error storing ShortURL Object", "error", err)
-				return err
-			}
-
-			slog.Info("Done storing ShortURL", "url", originalURL)
-
-			slog.Info("Storing UniqueKey", "url", originalURL)
-			if _, err = tx.Put(uniqueKey, &UniqueKey{}); nil != err {
-				slog.Error("Error storing ShortURL Unique Key", "error", err)
-				return err
-			}
-
+			existing.ID = unique.ID
+			*shortURL = existing
 			return nil
-		}); nil != err {
+		} else if err != datastore.ErrNoSuchEntity {
+			return err
+		}
+
+		if legacyShortURL != nil {
+			*shortURL = *legacyShortURL
+			_, err := tx.Put(uniqueKey, &UniqueKey{ID: legacyShortURL.ID})
+			return err
+		}
+
+		*shortURL = ShortURL{
+			ID:          objectKey.ID,
+			Hash:        urlHash,
+			OriginalURL: originalURL,
+		}
+		if _, err := tx.Put(objectKey, shortURL); err != nil {
+			return err
+		}
+		if _, err := tx.Put(uniqueKey, &UniqueKey{ID: objectKey.ID}); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		slog.Error("Unable to persist short URL", "url_hash", urlHash, "error", err)
 		return nil, err
 	}
 
-	if nil != sk {
-		key := commit.Key(sk)
-		shortURL.ID = key.ID
-	}
+	slog.Info("Short URL persisted", "url_hash", urlHash, "id", shortURL.ID)
 
 	return shortURL, nil
 }

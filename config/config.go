@@ -48,13 +48,13 @@ func loadLocalizeConfig() []string {
 
 	jsonFile, err := os.ReadFile("lit-localize.json")
 	if err != nil {
-		slog.Error("Unable to read localization configuration")
-		os.Exit(1)
+		slog.Warn("Unable to read localization configuration, using source locale", "error", err)
+		return []string{"en"}
 	}
 
 	if err = json.Unmarshal(jsonFile, &localizeConfig); err != nil {
-		slog.Error("unable to parse localization configuration")
-		os.Exit(1)
+		slog.Warn("Unable to parse localization configuration, using source locale", "error", err)
+		return []string{"en"}
 	}
 
 	return append([]string{localizeConfig.SourceLocale}, localizeConfig.TargetLocales...)

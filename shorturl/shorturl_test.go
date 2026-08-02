@@ -20,8 +20,9 @@ package shorturl
 import (
 	"context"
 	"reflect"
+	"strings"
+	"sync"
 	"testing"
-	"time"
 )
 
 const testOriginalURL = "https://www.google.com"
@@ -50,6 +51,60 @@ func TestPersistTwice(t *testing.T) {
 
 	if !reflect.DeepEqual(first, second) {
 		t.Errorf("Persit(): first = %v, second = %v", first, second)
+	}
+}
+
+func TestPersistAcceptsURLLongerThanDatastoreKeyLimit(t *testing.T) {
+	originalURL := "https://example.com/" + strings.Repeat("a", 1800)
+
+	got, err := Persist(context.Background(), originalURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.OriginalURL != originalURL {
+		t.Fatalf("Persist().OriginalURL = %q, want original URL", got.OriginalURL)
+	}
+}
+
+func TestPersistConcurrentDuplicatesReturnSameID(t *testing.T) {
+	const workers = 8
+	originalURL := "https://example.com/concurrent-duplicate"
+
+	ids := make(chan int64, workers)
+	errs := make(chan error, workers)
+	var waitGroup sync.WaitGroup
+	for range workers {
+		waitGroup.Add(1)
+		go func() {
+			defer waitGroup.Done()
+			shortURL, err := Persist(context.Background(), originalURL)
+			if err != nil {
+				errs <- err
+				return
+			}
+			ids <- shortURL.ID
+		}()
+	}
+	waitGroup.Wait()
+	close(ids)
+	close(errs)
+
+	for err := range errs {
+		t.Errorf("Persist() error = %v", err)
+	}
+
+	var firstID int64
+	for id := range ids {
+		if id == 0 {
+			t.Error("Persist() returned an incomplete key")
+		}
+		if firstID == 0 {
+			firstID = id
+			continue
+		}
+		if id != firstID {
+			t.Errorf("Persist() ID = %d, want %d", id, firstID)
+		}
 	}
 }
 
@@ -107,9 +162,6 @@ func TestByID(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-
-	// Sleep for 5 seconds to account for eventual consistency.
-	time.Sleep(5 * time.Second)
 
 	type args struct {
 		ctx context.Context

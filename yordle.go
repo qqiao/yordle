@@ -90,6 +90,12 @@ func version(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	defer func() {
+		if err := config.CloseDatastoreClient(); err != nil {
+			slog.Error("Unable to close datastore client", "error", err)
+		}
+	}()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -99,6 +105,5 @@ func main() {
 	slog.Info("Listening on port", "port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
 		slog.Error("Server failed", "error", err)
-		os.Exit(1)
 	}
 }
