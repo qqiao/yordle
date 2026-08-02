@@ -21,8 +21,7 @@ package config
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"log"
+	"log/slog"
 	"os"
 )
 
@@ -41,19 +40,21 @@ func init() {
 	ProjectName = os.Getenv("GOOGLE_CLOUD_PROJECT")
 
 	Locales = loadLocalizeConfig()
-	log.Printf("Available locales: %v", Locales)
+	slog.Info("Available locales", "locales", Locales)
 }
 
 func loadLocalizeConfig() []string {
 	var localizeConfig LitLocalize
 
-	jsonFile, err := ioutil.ReadFile("lit-localize.json")
+	jsonFile, err := os.ReadFile("lit-localize.json")
 	if err != nil {
-		log.Fatalf("Unable to read localization configuration")
+		slog.Error("Unable to read localization configuration")
+		os.Exit(1)
 	}
 
 	if err = json.Unmarshal(jsonFile, &localizeConfig); err != nil {
-		log.Fatalf("unable to parse localization configuration")
+		slog.Error("unable to parse localization configuration")
+		os.Exit(1)
 	}
 
 	return append([]string{localizeConfig.SourceLocale}, localizeConfig.TargetLocales...)

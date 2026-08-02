@@ -1,4 +1,4 @@
-runtime: go115
+runtime: go125
 
 handlers:
   - url: /robots.txt
@@ -6,22 +6,22 @@ handlers:
     upload: robots.txt
     secure: always
     http_headers:
-      Strict-Transport-Security: "max-age=63072000; includeSubDomains; preload"
+      Strict-Transport-Security: 'max-age=63072000; includeSubDomains; preload'
 
   - url: /(.*\.(json|js|map))$
     static_files: \1
     upload: .*\.(json|js|map)$
     secure: always
-    expiration: "0"
-    mime_type: "application/javascript"
+    expiration: '0'
+    mime_type: 'application/javascript'
     http_headers:
-      Strict-Transport-Security: "max-age=63072000; includeSubDomains; preload"
+      Strict-Transport-Security: 'max-age=63072000; includeSubDomains; preload'
 
   - url: /images
     static_dir: images
     secure: always
     http_headers:
-      Strict-Transport-Security: "max-age=63072000; includeSubDomains; preload"
+      Strict-Transport-Security: 'max-age=63072000; includeSubDomains; preload'
 
   - url: /.*
     script: auto

@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import openWc from '@open-wc/eslint-config';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import jestPlugin from 'eslint-plugin-jest';
 export default [
   {
     ignores: [
@@ -22,25 +21,17 @@ export default [
   ...openWc,
   eslintConfigPrettier,
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
+    files: ['**/*.{js,mjs,cjs,ts,mts}'],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
       },
     },
-    plugins: {
-      jest: jestPlugin,
-    },
     rules: {
       'import-x/no-unresolved': 'off',
       'implicit-arrow-linebreak': 'off',
       'no-unused-vars': 'off',
-      'operator-linebreak': [
-        'error',
-        'before',
-        { overrides: { '=': 'after' } },
-      ],
 
       // Fix for gulpfile using devDeps
       'import-x/no-extraneous-dependencies': [
@@ -60,7 +51,7 @@ export default [
     },
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,mts}'],
     rules: {
       'no-shadow': 'off',
       '@typescript-eslint/no-unused-vars': 'off',

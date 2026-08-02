@@ -19,7 +19,7 @@ package config
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	"cloud.google.com/go/datastore"
 )
@@ -53,11 +53,11 @@ type GoogleAnalyticsConfig struct {
 
 // Get returns the instance of the DynamicConfig.
 func Get(ctx context.Context) (*DynamicConfig, error) {
-	log.Println("Loading DynamicConfig from datastore...")
+	slog.Info("Loading DynamicConfig from datastore...")
 
 	client, err := datastore.NewClient(ctx, ProjectName)
 	if nil != err {
-		log.Printf("Unable to create datastore client. Error: %s", err)
+		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 	key := datastore.NameKey(KindName, InstanceKey, nil)
@@ -69,8 +69,7 @@ func Get(ctx context.Context) (*DynamicConfig, error) {
 			return nil, err
 		}
 
-		log.Println(
-			"DynamicConfig instance not found in datastore, creating...")
+		slog.Info("DynamicConfig instance not found in datastore, creating...")
 		if _, err = client.Put(ctx, key, &cfg); nil != err {
 			return nil, err
 		}
@@ -85,9 +84,7 @@ func Get(ctx context.Context) (*DynamicConfig, error) {
 func MustGet(ctx context.Context) *DynamicConfig {
 	cfg, err := Get(ctx)
 	if nil != err {
-		log.Printf(
-			"Unable to load DynamicConfig. Error: %s.\nUsing defaults...",
-			err.Error())
+		slog.Error("Unable to load DynamicConfig, using defaults", "error", err.Error())
 		cfg = &DefaultInstance
 	}
 	return cfg
@@ -108,11 +105,11 @@ func MustGetAsync(ctx context.Context) <-chan *DynamicConfig {
 
 // Save saves the dynamic config into the underlying datastore.
 func Save(ctx context.Context, cfg *DynamicConfig) error {
-	log.Println("Saving DynamicConfig instance into datastore...")
+	slog.Info("Saving DynamicConfig instance into datastore...")
 
 	client, err := datastore.NewClient(ctx, "")
 	if nil != err {
-		log.Printf("Unable to create datastore client. Error: %s", err)
+		slog.Error("Unable to create datastore client", "error", err)
 		return err
 	}
 	key := datastore.NameKey(KindName, InstanceKey, nil)
