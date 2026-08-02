@@ -155,11 +155,15 @@ func Persist(ctx context.Context, originalURL string) (*ShortURL, error) {
 	}
 
 	objectKey, uniqueKey, urlHash := keys(originalURL)
-	allocatedKeys, err := client.AllocateIDs(ctx, []*datastore.Key{objectKey})
-	if err != nil {
+	var unique UniqueKey
+	if err := client.Get(ctx, uniqueKey, &unique); err == nil {
+		if unique.ID == 0 {
+			return nil, ErrDatastoreInconsistent
+		}
+		return byID(ctx, client, unique.ID)
+	} else if err != datastore.ErrNoSuchEntity {
 		return nil, err
 	}
-	objectKey = allocatedKeys[0]
 
 	// Older releases keyed Unique entities by the full URL and did not store
 	// the ShortURL ID. Query once before the transaction so existing data can
@@ -168,10 +172,15 @@ func Persist(ctx context.Context, originalURL string) (*ShortURL, error) {
 	if legacyErr != nil && !errors.Is(legacyErr, ErrNotFound) {
 		return nil, legacyErr
 	}
+	allocatedKeys, err := client.AllocateIDs(ctx, []*datastore.Key{objectKey})
+	if err != nil {
+		return nil, err
+	}
+	objectKey = allocatedKeys[0]
 
 	shortURL := &ShortURL{}
 	_, err = client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
-		var unique UniqueKey
+		unique = UniqueKey{}
 		if err := tx.Get(uniqueKey, &unique); err == nil {
 			if unique.ID == 0 {
 				return ErrDatastoreInconsistent

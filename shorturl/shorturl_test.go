@@ -23,6 +23,10 @@ import (
 	"strings"
 	"sync"
 	"testing"
+
+	"cloud.google.com/go/datastore"
+
+	"github.com/qqiao/yordle/config"
 )
 
 const testOriginalURL = "https://www.google.com"
@@ -105,6 +109,46 @@ func TestPersistConcurrentDuplicatesReturnSameID(t *testing.T) {
 		if id != firstID {
 			t.Errorf("Persist() ID = %d, want %d", id, firstID)
 		}
+	}
+}
+
+func TestPersistBackfillsLegacyURLMapping(t *testing.T) {
+	ctx := context.Background()
+	originalURL := "https://example.com/legacy-url-mapping"
+	client, err := config.DatastoreClient(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	legacy := &ShortURL{Hash: hash(originalURL), OriginalURL: originalURL}
+	legacyKey, err := client.Put(ctx, datastore.IncompleteKey(KindName, nil), legacy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy.ID = legacyKey.ID
+	if _, err := client.Put(
+		ctx,
+		datastore.NameKey("Unique", originalURL, nil),
+		&UniqueKey{},
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	got, err := Persist(ctx, originalURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(got, legacy) {
+		t.Fatalf("Persist() = %+v, want legacy entity %+v", got, legacy)
+	}
+
+	var mapping UniqueKey
+	newMappingKey := datastore.NameKey("Unique", hash(originalURL), nil)
+	if err := client.Get(ctx, newMappingKey, &mapping); err != nil {
+		t.Fatal(err)
+	}
+	if mapping.ID != legacy.ID {
+		t.Fatalf("migrated UniqueKey.ID = %d, want %d", mapping.ID, legacy.ID)
 	}
 }
 

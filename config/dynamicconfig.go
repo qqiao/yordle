@@ -85,7 +85,8 @@ func MustGet(ctx context.Context) *DynamicConfig {
 	cfg, err := Get(ctx)
 	if nil != err {
 		slog.Error("Unable to load DynamicConfig, using defaults", "error", err.Error())
-		cfg = &DefaultInstance
+		defaultConfig := DefaultInstance
+		cfg = &defaultConfig
 	}
 	return cfg
 }

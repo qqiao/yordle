@@ -132,7 +132,12 @@ const runCommand = (command, args, options = {}) =>
   });
 
 const stopProcessGroup = async child => {
-  if (child.exitCode !== null || child.signalCode !== null) return;
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  )
+    return;
 
   const exited = new Promise(resolve => child.once('exit', resolve));
   const sendSignal = signal => {
@@ -195,10 +200,15 @@ export const test = async () => {
       stdio: 'inherit',
     },
   );
+  const emulatorStarted = new Promise((resolve, reject) => {
+    emulator.once('spawn', resolve);
+    emulator.once('error', reject);
+  });
 
   try {
+    await emulatorStarted;
     await waitForDatastore(emulator);
-    await runCommand('go', ['test', '-count=1', './...'], {
+    await runCommand('go', ['test', '-race', '-count=1', './...'], {
       cwd: '.',
       env: datastoreEnvironment,
     });

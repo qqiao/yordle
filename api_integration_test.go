@@ -58,3 +58,18 @@ func TestAdminRejectsUnauthenticatedRequests(t *testing.T) {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusForbidden)
 	}
 }
+
+func TestAdminRendersForAppEngineAdmin(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "https://example.com/admin/", nil)
+	request.Header.Set("X-Appengine-User-Is-Admin", "1")
+	response := httptest.NewRecorder()
+
+	http.DefaultServeMux.ServeHTTP(response, request)
+
+	if response.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusOK)
+	}
+	if !strings.Contains(response.Body.String(), "<yordle-admin") {
+		t.Fatalf("admin response does not contain the admin component")
+	}
+}
