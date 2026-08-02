@@ -26,8 +26,7 @@ export const ACTION_CREATION_FAILURE = '[short url] Creation Failure';
 export const ACTION_CREATION_SUCCESS = '[short url] Creation Success';
 
 export type ActionTypes =
-  | typeof ACTION_CREATION_FAILURE
-  | typeof ACTION_CREATION_SUCCESS;
+  typeof ACTION_CREATION_FAILURE | typeof ACTION_CREATION_SUCCESS;
 
 export enum Status {
   SUCCESS = 'SUCCESS',

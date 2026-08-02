@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import openWc from '@open-wc/eslint-config';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import jestPlugin from 'eslint-plugin-jest';
 export default [
   {
     ignores: [
@@ -29,11 +28,7 @@ export default [
         ...globals.node,
       },
     },
-    plugins: {
-      jest: jestPlugin,
-    },
     rules: {
-      'import/no-unresolved': 'off',
       'import-x/no-unresolved': 'off',
       'implicit-arrow-linebreak': 'off',
       'no-unused-vars': 'off',
