@@ -47,3 +47,14 @@ func TestCreateAPIAlwaysReturnsJSON(t *testing.T) {
 		t.Fatalf("unexpected response: %+v", body)
 	}
 }
+
+func TestAdminRejectsUnauthenticatedRequests(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "https://example.com/admin/", nil)
+	response := httptest.NewRecorder()
+
+	http.DefaultServeMux.ServeHTTP(response, request)
+
+	if response.Code != http.StatusForbidden {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusForbidden)
+	}
+}

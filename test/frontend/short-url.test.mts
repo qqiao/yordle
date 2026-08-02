@@ -2,6 +2,14 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { createShortURL } from '../../src/api/short-url.mts';
+import { locationOrigin } from '../../src/api/location-origin.mts';
+
+test('locationOrigin preserves a non-default port', () => {
+  assert.equal(
+    locationOrigin({ origin: 'http://localhost:8080' }),
+    'http://localhost:8080',
+  );
+});
 
 test('createShortURL returns a successful short URL', async () => {
   const fetcher: typeof fetch = async (_input, init) => {
