@@ -26,9 +26,9 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/jcoene/go-base62"
 	"github.com/qqiao/webapp"
 	"github.com/qqiao/yordle/runtime"
+	"github.com/qqiao/yordle/shortcode"
 	"github.com/qqiao/yordle/shorturl"
 	"github.com/qqiao/yordle/urlutil"
 )
@@ -100,9 +100,16 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	code, err := shortcode.Encode(shortURL.ID)
+	if err != nil {
+		slog.Error("Unable to encode short URL ID", "id", shortURL.ID, "error", err)
+		w.Write(output(ctx, StatusFailure, "Error Persisting URL"))
+		return
+	}
+
 	slog.Info("Successfully created short URL", "id", shortURL.ID)
 	w.Write(output(ctx, StatusSuccess, fmt.Sprintf("https://%s/%s",
-		r.Host, base62.Encode(shortURL.ID))))
+		r.Host, code)))
 }
 
 // Method to output the payload as JSON.

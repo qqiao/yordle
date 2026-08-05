@@ -48,6 +48,17 @@ func TestCreateAPIAlwaysReturnsJSON(t *testing.T) {
 	}
 }
 
+func TestLandingPageRejectsMalformedShortCodes(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "https://example.com/1-", nil)
+	response := httptest.NewRecorder()
+
+	landingPage(response, request)
+
+	if response.Code != http.StatusNotFound {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
+	}
+}
+
 func TestAdminRejectsUnauthenticatedRequests(t *testing.T) {
 	request := httptest.NewRequest(http.MethodGet, "https://example.com/admin/", nil)
 	response := httptest.NewRecorder()

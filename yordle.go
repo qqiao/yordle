@@ -21,8 +21,8 @@ package main // import "github.com/qqiao/yordle"
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"html"
 	"log/slog"
 	"net/http"
 	"os"
@@ -30,13 +30,12 @@ import (
 
 	"cloud.google.com/go/datastore"
 
-	base62 "github.com/jcoene/go-base62"
-
 	"github.com/qqiao/webapp"
 	_ "github.com/qqiao/yordle/admin" // admin UI
 	_ "github.com/qqiao/yordle/api"   // api stuff
 	"github.com/qqiao/yordle/config"
 	"github.com/qqiao/yordle/runtime"
+	"github.com/qqiao/yordle/shortcode"
 	"github.com/qqiao/yordle/shorturl"
 )
 
@@ -61,15 +60,17 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := base62.Decode(idStr)
-
-	idStr = html.EscapeString(idStr)
+	id, err := shortcode.Decode(idStr)
+	if err != nil {
+		slog.Warn("Invalid short URL code", "code", idStr)
+		http.NotFound(w, r)
+		return
+	}
 
 	shortURL, err := shorturl.ByID(ctx, id)
-	if err == datastore.ErrNoSuchEntity {
+	if errors.Is(err, datastore.ErrNoSuchEntity) {
 		slog.Warn("Unable to load short url", "id", idStr, "decoded_key", id)
-		http.Error(w, fmt.Sprintf("Short URL %s cannot be found !!11one",
-			idStr), http.StatusNotFound)
+		http.NotFound(w, r)
 		return
 	} else if err != nil {
 		slog.Error("Error loading short URL", "id", idStr, "error", err.Error())

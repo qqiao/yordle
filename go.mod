@@ -4,10 +4,14 @@ go 1.26.0
 
 toolchain go1.26.5
 
+ignore (
+	./dist
+	./node_modules
+)
+
 require (
 	cloud.google.com/go/datastore v1.26.0
 	github.com/PuerkitoBio/purell v1.2.2
-	github.com/jcoene/go-base62 v0.0.0-20170519195839-4f4155803613
 	github.com/qqiao/buildinfo v1.1.1
 	github.com/qqiao/webapp v1.8.3
 )
