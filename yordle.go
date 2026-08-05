@@ -90,7 +90,11 @@ func version(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
+func run() error {
+	if err := runtime.LoadBuildInfo("./build_info.json"); err != nil {
+		return err
+	}
+
 	defer func() {
 		if err := config.CloseDatastoreClient(); err != nil {
 			slog.Error("Unable to close datastore client", "error", err)
@@ -105,6 +109,14 @@ func main() {
 
 	slog.Info("Listening on port", "port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
-		slog.Error("Server failed", "error", err)
+		return fmt.Errorf("serve HTTP: %w", err)
+	}
+	return nil
+}
+
+func main() {
+	if err := run(); err != nil {
+		slog.Error("Application failed", "error", err)
+		os.Exit(1)
 	}
 }

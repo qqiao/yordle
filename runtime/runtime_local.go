@@ -20,4 +20,4 @@
 
 package runtime
 
-var IsDev = true
+const IsDev = true
