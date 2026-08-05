@@ -20,9 +20,11 @@
 package main // import "github.com/qqiao/yordle"
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"log/slog"
 	"net/http"
 	"os"
@@ -50,13 +52,19 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	// serve the landing page
 	if len(idStr) < 1 || strings.Contains(idStr, "/") ||
 		strings.HasSuffix(idStr, "index.html") {
-		dcCh := config.MustGetAsync(ctx)
-
 		tmpl := webapp.GetTemplate("index.html", runtime.IsDev)
-		tmpl.Execute(w, map[string]interface{}{
-			"Config":    <-dcCh,
+		output, err := renderTemplate(tmpl, map[string]any{
+			"Config":    config.MustGet(ctx),
 			"BuildInfo": runtime.BuildInfo,
 		})
+		if err != nil {
+			slog.Error("Unable to render landing page", "error", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		if _, err := w.Write(output); err != nil {
+			slog.Error("Unable to write landing page", "error", err)
+		}
 		return
 	}
 
@@ -80,6 +88,14 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, shortURL.OriginalURL, http.StatusMovedPermanently)
+}
+
+func renderTemplate(tmpl *template.Template, data any) ([]byte, error) {
+	var output bytes.Buffer
+	if err := tmpl.Execute(&output, data); err != nil {
+		return nil, fmt.Errorf("execute template: %w", err)
+	}
+	return output.Bytes(), nil
 }
 
 func version(w http.ResponseWriter, r *http.Request) {

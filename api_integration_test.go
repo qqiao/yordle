@@ -10,6 +10,7 @@ package main
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -56,6 +57,19 @@ func TestLandingPageRejectsMalformedShortCodes(t *testing.T) {
 
 	if response.Code != http.StatusNotFound {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
+	}
+}
+
+func TestRenderTemplateReturnsNoPartialOutputOnError(t *testing.T) {
+	tmpl := template.Must(template.New("broken").Option("missingkey=error").Parse("before {{.Missing}}"))
+
+	output, err := renderTemplate(tmpl, map[string]string{})
+
+	if err == nil {
+		t.Fatal("renderTemplate() returned nil error")
+	}
+	if output != nil {
+		t.Fatalf("renderTemplate() output = %q, want nil", output)
 	}
 }
 
