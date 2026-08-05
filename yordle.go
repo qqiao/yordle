@@ -45,8 +45,6 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	idStr := r.URL.Path[1:]
-	idStr = strings.ReplaceAll(idStr, "\n", "")
-	idStr = strings.ReplaceAll(idStr, "\r", "")
 
 	// When we don't have an idStr or it contains any path elements, we would
 	// serve the landing page

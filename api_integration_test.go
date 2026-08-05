@@ -50,13 +50,15 @@ func TestCreateAPIAlwaysReturnsJSON(t *testing.T) {
 }
 
 func TestLandingPageRejectsMalformedShortCodes(t *testing.T) {
-	request := httptest.NewRequest(http.MethodGet, "https://example.com/1-", nil)
-	response := httptest.NewRecorder()
+	for _, path := range []string{"/1-", "/1%0A", "/0"} {
+		request := httptest.NewRequest(http.MethodGet, "https://example.com"+path, nil)
+		response := httptest.NewRecorder()
 
-	landingPage(response, request)
+		landingPage(response, request)
 
-	if response.Code != http.StatusNotFound {
-		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
+		if response.Code != http.StatusNotFound {
+			t.Errorf("path %q status = %d, want %d", path, response.Code, http.StatusNotFound)
+		}
 	}
 }
 
