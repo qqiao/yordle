@@ -66,8 +66,6 @@ var (
 	// stored but the actual instance cannot be found.
 	ErrDatastoreInconsistent = errors.New("Datastore Inconsistent")
 
-	ErrDatastoreWriteDisabled = errors.New("Datastore write disabled")
-
 	// ErrNotFound is the error to be raised when the short URL matching the
 	// search criteria cannot be found
 	ErrNotFound = errors.New("Short URL not found")
@@ -127,11 +125,6 @@ func byURL(ctx context.Context, client *datastore.Client, url string) (*ShortURL
 	shortURL := results[0]
 	shortURL.ID = keys[0].ID
 	return shortURL, nil
-}
-
-// List lists all short URLs shorted by the their IDs.
-func List(ctx context.Context, start int64, count int) ([]ShortURL, error) {
-	return nil, nil
 }
 
 func hash(originalURL string) string {

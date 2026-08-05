@@ -91,19 +91,6 @@ func MustGet(ctx context.Context) *DynamicConfig {
 	return cfg
 }
 
-// MustGetAsync is the same as MustGet except it returns a channel. This
-// allows this method to be more easily ultilized asynchronously.
-func MustGetAsync(ctx context.Context) <-chan *DynamicConfig {
-	ch := make(chan *DynamicConfig, 1)
-
-	go func() {
-		defer close(ch)
-
-		ch <- MustGet(ctx)
-	}()
-	return ch
-}
-
 // Save saves the dynamic config into the underlying datastore.
 func Save(ctx context.Context, cfg *DynamicConfig) error {
 	slog.Info("Saving DynamicConfig instance into datastore...")
