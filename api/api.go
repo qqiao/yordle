@@ -19,10 +19,11 @@
 package api
 
 import (
-	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
+	"mime"
 	"net/http"
 	"net/url"
 
@@ -42,6 +43,16 @@ const (
 	StatusSuccess Status = "SUCCESS"
 )
 
+const (
+	maxCreateBodyBytes  = 256 * 1024
+	maxOriginalURLBytes = 64 * 1024
+)
+
+type response struct {
+	Status  Status `json:"status"`
+	Payload string `json:"payload"`
+}
+
 func init() {
 	http.HandleFunc("/v1/api/create", HSTSHandler(createV1))
 	http.HandleFunc("/api/v1/create", HSTSHandler(createV1))
@@ -60,33 +71,58 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 	// We only allow POST requests because of the fact that URLs can be way too
 	// long for gets. Thus for anything that's not POST, we error out.
 	if "POST" != r.Method {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		w.Header().Set("Allow", http.MethodPost)
+		writeResponse(w, http.StatusMethodNotAllowed, StatusFailure, "Method Not Allowed")
 		return
 	}
 
 	ctx := r.Context()
 
-	originalURLString := r.PostFormValue("OriginalUrl")
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	r.Body = http.MaxBytesReader(w, r.Body, maxCreateBodyBytes)
+	parseErr := parseCreateForm(r)
+	if r.MultipartForm != nil {
+		defer func() {
+			if err := r.MultipartForm.RemoveAll(); err != nil {
+				slog.Warn("Unable to remove multipart form files", "error", err)
+			}
+		}()
+	}
+	if parseErr != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(parseErr, &maxBytesError) {
+			writeResponse(w, http.StatusRequestEntityTooLarge, StatusFailure, "Request body is too large")
+			return
+		}
+
+		writeResponse(w, http.StatusBadRequest, StatusFailure, "Invalid form data")
+		return
+	}
+
+	originalURLString := r.PostForm.Get("OriginalUrl")
+	if len(originalURLString) > maxOriginalURLBytes {
+		writeResponse(w, http.StatusRequestEntityTooLarge, StatusFailure, "URL is too long")
+		return
+	}
 
 	// Sanitize and validate the URL
 	sanitizedURL, err := urlutil.SanitizeURL(originalURLString)
 	if err != nil {
-		w.Write(output(ctx, StatusFailure, err.Error()))
+		writeResponse(w, http.StatusBadRequest, StatusFailure, err.Error())
 		return
 	}
 
 	// Parse the sanitized URL to check if it's the same as current host
 	originalURL, err := url.Parse(sanitizedURL)
 	if err != nil {
-		w.Write(output(ctx, StatusFailure, "URL cannot be parsed after sanitization"))
+		slog.Error("Unable to parse sanitized URL", "error", err)
+		writeResponse(w, http.StatusInternalServerError, StatusFailure, "Internal Server Error")
 		return
 	}
 
 	// If the URL's domain is already the same as the current Yordle
 	// instance, we just return the exact same URL
 	if originalURL.Host == r.Host {
-		w.Write(output(ctx, StatusSuccess, sanitizedURL))
+		writeResponse(w, http.StatusOK, StatusSuccess, sanitizedURL)
 		return
 	}
 
@@ -96,31 +132,49 @@ func createV1(w http.ResponseWriter, r *http.Request) {
 	shortURL, err := shorturl.Persist(ctx, originalURLString)
 	if err != nil {
 		slog.Error("Error persisting URL", "error", err.Error())
-		w.Write(output(ctx, StatusFailure, "Error Persisting URL"))
+		writeResponse(w, http.StatusInternalServerError, StatusFailure, "Error Persisting URL")
 		return
 	}
 
 	code, err := shortcode.Encode(shortURL.ID)
 	if err != nil {
 		slog.Error("Unable to encode short URL ID", "id", shortURL.ID, "error", err)
-		w.Write(output(ctx, StatusFailure, "Error Persisting URL"))
+		writeResponse(w, http.StatusInternalServerError, StatusFailure, "Error Persisting URL")
 		return
 	}
 
 	slog.Info("Successfully created short URL", "id", shortURL.ID)
-	w.Write(output(ctx, StatusSuccess, fmt.Sprintf("https://%s/%s",
-		r.Host, code)))
+	writeResponse(w, http.StatusOK, StatusSuccess, formatShortURL(r.Host, code, runtime.IsDev))
 }
 
-// Method to output the payload as JSON.
-func output(_ context.Context, status Status, payload interface{}) (output []byte) {
-	output, err := json.Marshal(map[string]interface{}{
-		"status":  status,
-		"payload": payload,
-	})
+func parseCreateForm(r *http.Request) error {
+	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
-		slog.Error("Unable to marshall JSON response", "error", err.Error())
-		return []byte("")
+		return fmt.Errorf("parse content type: %w", err)
 	}
-	return
+
+	switch mediaType {
+	case "application/x-www-form-urlencoded":
+		return r.ParseForm()
+	case "multipart/form-data":
+		return r.ParseMultipartForm(maxCreateBodyBytes)
+	default:
+		return fmt.Errorf("unsupported content type %q", mediaType)
+	}
+}
+
+func formatShortURL(host, code string, development bool) string {
+	scheme := "https"
+	if development {
+		scheme = "http"
+	}
+	return fmt.Sprintf("%s://%s/%s", scheme, host, code)
+}
+
+func writeResponse(w http.ResponseWriter, statusCode int, status Status, payload string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(statusCode)
+	if err := json.NewEncoder(w).Encode(response{Status: status, Payload: payload}); err != nil {
+		slog.Error("Unable to write JSON response", "error", err)
+	}
 }

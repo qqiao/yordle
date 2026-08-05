@@ -34,12 +34,12 @@ test('createShortURL rejects API failures', async () => {
     new Response(
       JSON.stringify({ status: 'FAILURE', payload: 'Invalid URL' }),
       {
-        status: 200,
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       },
     );
 
-  await assert.rejects(createShortURL('not-a-url', fetcher), /Invalid URL/);
+  await assert.rejects(createShortURL('not-a-url', fetcher), /\(400\)/);
 });
 
 test('createShortURL rejects malformed success payloads', async () => {
