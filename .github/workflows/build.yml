@@ -45,6 +45,12 @@ jobs:
       - name: Install build metadata tool
         run: go install github.com/qqiao/app-tools@v1.0.0
 
+      - name: Vet Go code
+        run: go vet ./...
+
+      - name: Run Staticcheck
+        run: GOTOOLCHAIN=go1.26.5 go run honnef.co/go/tools/cmd/staticcheck@2026.1 ./...
+
       - name: Lint frontend
         run: yarn lint
 

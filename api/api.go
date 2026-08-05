@@ -70,7 +70,7 @@ func HSTSHandler(f http.HandlerFunc) http.HandlerFunc {
 func createV1(w http.ResponseWriter, r *http.Request) {
 	// We only allow POST requests because of the fact that URLs can be way too
 	// long for gets. Thus for anything that's not POST, we error out.
-	if "POST" != r.Method {
+	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
 		writeResponse(w, http.StatusMethodNotAllowed, StatusFailure, "Method Not Allowed")
 		return

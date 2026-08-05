@@ -61,14 +61,13 @@ type UniqueKey struct {
 // Error values
 var (
 	// ErrDatastoreInconsistent is returned when the datastore is in an
-	// Inconsistent state. Typical example would be when the memcache
-	// indicates that there should've been an instance of the short URL
-	// stored but the actual instance cannot be found.
-	ErrDatastoreInconsistent = errors.New("Datastore Inconsistent")
+	// inconsistent state. For example, the uniqueness mapping may reference
+	// a short URL that does not exist.
+	ErrDatastoreInconsistent = errors.New("datastore inconsistent")
 
 	// ErrNotFound is the error to be raised when the short URL matching the
 	// search criteria cannot be found
-	ErrNotFound = errors.New("Short URL not found")
+	ErrNotFound = errors.New("short URL not found")
 )
 
 // ByID loads the short URL by its ID.
@@ -112,7 +111,7 @@ func byURL(ctx context.Context, client *datastore.Client, url string) (*ShortURL
 
 	q := datastore.NewQuery(KindName).
 		//	Ancestor(uniqueKey).
-		Filter("Hash = ", hash).
+		FilterField("Hash", "=", hash).
 		Limit(1)
 
 	keys, err := client.GetAll(ctx, q, &results)
