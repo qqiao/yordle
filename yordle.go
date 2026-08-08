@@ -32,7 +32,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/webapp/v2"
 	_ "github.com/qqiao/yordle/admin" // admin UI
 	_ "github.com/qqiao/yordle/api"   // api stuff
 	"github.com/qqiao/yordle/config"

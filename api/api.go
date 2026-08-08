@@ -27,7 +27,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/webapp/v2"
 	"github.com/qqiao/yordle/runtime"
 	"github.com/qqiao/yordle/shortcode"
 	"github.com/qqiao/yordle/shorturl"

@@ -24,7 +24,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/webapp/v2"
 	"github.com/qqiao/yordle/api"
 	"github.com/qqiao/yordle/config"
 	"github.com/qqiao/yordle/runtime"
