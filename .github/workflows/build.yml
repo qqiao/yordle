@@ -31,6 +31,12 @@ jobs:
         with:
           node-version: 24
 
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: Set up Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v3
         with:
