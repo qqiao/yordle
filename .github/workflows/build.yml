@@ -34,7 +34,7 @@ jobs:
       - name: Set up Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v3
         with:
-          install_components: cloud-datastore-emulator
+          install_components: beta,cloud-datastore-emulator
 
       - name: Enable Corepack
         run: corepack enable
