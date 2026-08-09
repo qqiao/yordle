@@ -18,23 +18,20 @@
 package runtime
 
 import (
-	"log/slog"
-	"os"
+	"fmt"
 
 	"github.com/qqiao/buildinfo"
 )
 
 var BuildInfo *buildinfo.BuildInfo
 
-func init() {
-	biCh, errCh := buildinfo.LoadAsync("./build_info.json")
-
-	select {
-	case err := <-errCh:
-		slog.Error("Error loading build information", "error", err)
-		os.Exit(1)
-
-	case bi := <-biCh:
-		BuildInfo = bi
+// LoadBuildInfo loads build metadata during application startup.
+func LoadBuildInfo(path string) error {
+	info, err := buildinfo.Load(path)
+	if err != nil {
+		return fmt.Errorf("load build information: %w", err)
 	}
+
+	BuildInfo = info
+	return nil
 }

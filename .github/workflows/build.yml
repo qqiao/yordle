@@ -1,16 +1,76 @@
 name: build
 
-on: [push]
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: qqiao/dev-env:latest
-      options: --user root
+    timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v2
-      - run: go install github.com/qqiao/app-tools@latest
-      - run: yarn install
-      - run: CLOUDSDK_CORE_PROJECT=local-test yarn build
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          install_components: beta,cloud-datastore-emulator
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install frontend dependencies
+        run: yarn install --immutable
+
+      - name: Install build metadata tool
+        run: go install github.com/qqiao/app-tools@v1.0.0
+
+      - name: Vet Go code
+        run: go vet ./...
+
+      - name: Run Staticcheck
+        run: GOTOOLCHAIN=go1.26.5 go run honnef.co/go/tools/cmd/staticcheck@2026.1 ./...
+
+      - name: Lint frontend
+        run: yarn lint
+
+      - name: Type-check frontend
+        run: yarn typecheck
+
+      - name: Run tests
+        run: CLOUDSDK_CORE_PROJECT=local-test yarn test
+
+      - name: Build production bundle
+        run: CLOUDSDK_CORE_PROJECT=local-test yarn build
+
+      - name: Audit frontend dependencies
+        run: yarn npm audit --all --recursive --severity high
+
+      - name: Scan Go dependencies
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...

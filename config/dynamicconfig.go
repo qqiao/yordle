@@ -55,14 +55,14 @@ type GoogleAnalyticsConfig struct {
 func Get(ctx context.Context) (*DynamicConfig, error) {
 	slog.Info("Loading DynamicConfig from datastore...")
 
-	client, err := datastore.NewClient(ctx, ProjectName)
+	client, err := DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return nil, err
 	}
 	key := datastore.NameKey(KindName, InstanceKey, nil)
 
-	var cfg DynamicConfig
+	cfg := DefaultInstance
 
 	if err := client.Get(ctx, key, &cfg); nil != err {
 		if datastore.ErrNoSuchEntity != err {
@@ -85,29 +85,17 @@ func MustGet(ctx context.Context) *DynamicConfig {
 	cfg, err := Get(ctx)
 	if nil != err {
 		slog.Error("Unable to load DynamicConfig, using defaults", "error", err.Error())
-		cfg = &DefaultInstance
+		defaultConfig := DefaultInstance
+		cfg = &defaultConfig
 	}
 	return cfg
-}
-
-// MustGetAsync is the same as MustGet except it returns a channel. This
-// allows this method to be more easily ultilized asynchronously.
-func MustGetAsync(ctx context.Context) <-chan *DynamicConfig {
-	ch := make(chan *DynamicConfig, 1)
-
-	go func() {
-		defer close(ch)
-
-		ch <- MustGet(ctx)
-	}()
-	return ch
 }
 
 // Save saves the dynamic config into the underlying datastore.
 func Save(ctx context.Context, cfg *DynamicConfig) error {
 	slog.Info("Saving DynamicConfig instance into datastore...")
 
-	client, err := datastore.NewClient(ctx, "")
+	client, err := DatastoreClient(ctx)
 	if nil != err {
 		slog.Error("Unable to create datastore client", "error", err)
 		return err
@@ -116,7 +104,7 @@ func Save(ctx context.Context, cfg *DynamicConfig) error {
 
 	// First we need to save it to the datastore. If we can't even store,
 	// we must error out
-	if _, err := client.Put(ctx, key, &cfg); nil != err {
+	if _, err := client.Put(ctx, key, cfg); nil != err {
 		return err
 	}
 

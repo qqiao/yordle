@@ -19,11 +19,14 @@
 package admin
 
 import (
+	"bytes"
+	"log/slog"
 	"net/http"
 	"path/filepath"
 
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/webapp/v2"
 	"github.com/qqiao/yordle/api"
+	"github.com/qqiao/yordle/config"
 	"github.com/qqiao/yordle/runtime"
 )
 
@@ -33,7 +36,21 @@ func init() {
 
 // Handler function for admin functionalities.
 func admin(w http.ResponseWriter, r *http.Request) {
+	if !runtime.IsDev && r.Header.Get("X-Appengine-User-Is-Admin") != "1" {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
 	tmpl := webapp.GetTemplate(
 		filepath.Clean(filepath.Join("admin.html")), runtime.IsDev)
-	tmpl.Execute(w, nil)
+	var output bytes.Buffer
+	if err := tmpl.Execute(&output, map[string]interface{}{
+		"Config": config.MustGet(r.Context()),
+	}); err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	if _, err := output.WriteTo(w); err != nil {
+		slog.Error("Unable to write admin response", "error", err)
+	}
 }

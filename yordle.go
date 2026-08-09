@@ -20,9 +20,11 @@
 package main // import "github.com/qqiao/yordle"
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"html"
+	"html/template"
 	"log/slog"
 	"net/http"
 	"os"
@@ -30,13 +32,12 @@ import (
 
 	"cloud.google.com/go/datastore"
 
-	base62 "github.com/jcoene/go-base62"
-
-	"github.com/qqiao/webapp"
+	"github.com/qqiao/webapp/v2"
 	_ "github.com/qqiao/yordle/admin" // admin UI
 	_ "github.com/qqiao/yordle/api"   // api stuff
 	"github.com/qqiao/yordle/config"
 	"github.com/qqiao/yordle/runtime"
+	"github.com/qqiao/yordle/shortcode"
 	"github.com/qqiao/yordle/shorturl"
 )
 
@@ -44,32 +45,38 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	idStr := r.URL.Path[1:]
-	idStr = strings.ReplaceAll(idStr, "\n", "")
-	idStr = strings.ReplaceAll(idStr, "\r", "")
 
 	// When we don't have an idStr or it contains any path elements, we would
 	// serve the landing page
 	if len(idStr) < 1 || strings.Contains(idStr, "/") ||
 		strings.HasSuffix(idStr, "index.html") {
-		dcCh := config.MustGetAsync(ctx)
-
 		tmpl := webapp.GetTemplate("index.html", runtime.IsDev)
-		tmpl.Execute(w, map[string]interface{}{
-			"Config":    <-dcCh,
+		output, err := renderTemplate(tmpl, map[string]any{
+			"Config":    config.MustGet(ctx),
 			"BuildInfo": runtime.BuildInfo,
 		})
+		if err != nil {
+			slog.Error("Unable to render landing page", "error", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		if _, err := w.Write(output); err != nil {
+			slog.Error("Unable to write landing page", "error", err)
+		}
 		return
 	}
 
-	id := base62.Decode(idStr)
-
-	idStr = html.EscapeString(idStr)
+	id, err := shortcode.Decode(idStr)
+	if err != nil {
+		slog.Warn("Invalid short URL code", "code", idStr)
+		http.NotFound(w, r)
+		return
+	}
 
 	shortURL, err := shorturl.ByID(ctx, id)
-	if err == datastore.ErrNoSuchEntity {
+	if errors.Is(err, datastore.ErrNoSuchEntity) {
 		slog.Warn("Unable to load short url", "id", idStr, "decoded_key", id)
-		http.Error(w, fmt.Sprintf("Short URL %s cannot be found !!11one",
-			idStr), http.StatusNotFound)
+		http.NotFound(w, r)
 		return
 	} else if err != nil {
 		slog.Error("Error loading short URL", "id", idStr, "error", err.Error())
@@ -81,6 +88,14 @@ func landingPage(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, shortURL.OriginalURL, http.StatusMovedPermanently)
 }
 
+func renderTemplate(tmpl *template.Template, data any) ([]byte, error) {
+	var output bytes.Buffer
+	if err := tmpl.Execute(&output, data); err != nil {
+		return nil, fmt.Errorf("execute template: %w", err)
+	}
+	return output.Bytes(), nil
+}
+
 func version(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if err := json.NewEncoder(w).Encode(runtime.BuildInfo); nil != err {
@@ -89,7 +104,17 @@ func version(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
+func run() error {
+	if err := runtime.LoadBuildInfo("./build_info.json"); err != nil {
+		return err
+	}
+
+	defer func() {
+		if err := config.CloseDatastoreClient(); err != nil {
+			slog.Error("Unable to close datastore client", "error", err)
+		}
+	}()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -98,7 +123,14 @@ func main() {
 
 	slog.Info("Listening on port", "port", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
-		slog.Error("Server failed", "error", err)
+		return fmt.Errorf("serve HTTP: %w", err)
+	}
+	return nil
+}
+
+func main() {
+	if err := run(); err != nil {
+		slog.Error("Application failed", "error", err)
 		os.Exit(1)
 	}
 }

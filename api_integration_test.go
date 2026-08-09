@@ -10,6 +10,7 @@ package main
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -45,5 +46,57 @@ func TestCreateAPIAlwaysReturnsJSON(t *testing.T) {
 	}
 	if body.Status != "SUCCESS" || body.Payload != "https://example.com/already-short" {
 		t.Fatalf("unexpected response: %+v", body)
+	}
+}
+
+func TestLandingPageRejectsMalformedShortCodes(t *testing.T) {
+	for _, path := range []string{"/1-", "/1%0A", "/0"} {
+		request := httptest.NewRequest(http.MethodGet, "https://example.com"+path, nil)
+		response := httptest.NewRecorder()
+
+		landingPage(response, request)
+
+		if response.Code != http.StatusNotFound {
+			t.Errorf("path %q status = %d, want %d", path, response.Code, http.StatusNotFound)
+		}
+	}
+}
+
+func TestRenderTemplateReturnsNoPartialOutputOnError(t *testing.T) {
+	tmpl := template.Must(template.New("broken").Option("missingkey=error").Parse("before {{.Missing}}"))
+
+	output, err := renderTemplate(tmpl, map[string]string{})
+
+	if err == nil {
+		t.Fatal("renderTemplate() returned nil error")
+	}
+	if output != nil {
+		t.Fatalf("renderTemplate() output = %q, want nil", output)
+	}
+}
+
+func TestAdminRejectsUnauthenticatedRequests(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "https://example.com/admin/", nil)
+	response := httptest.NewRecorder()
+
+	http.DefaultServeMux.ServeHTTP(response, request)
+
+	if response.Code != http.StatusForbidden {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusForbidden)
+	}
+}
+
+func TestAdminRendersForAppEngineAdmin(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "https://example.com/admin/", nil)
+	request.Header.Set("X-Appengine-User-Is-Admin", "1")
+	response := httptest.NewRecorder()
+
+	http.DefaultServeMux.ServeHTTP(response, request)
+
+	if response.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusOK)
+	}
+	if !strings.Contains(response.Body.String(), "<yordle-admin") {
+		t.Fatalf("admin response does not contain the admin component")
 	}
 }

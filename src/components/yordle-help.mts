@@ -21,10 +21,9 @@ import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import { msg } from '@lit/localize';
+import { locationOrigin } from '../api/location-origin.mjs';
 
-const BASE_URL = `${document.location.protocol}//${document.location.hostname}${
-  document.location.port || ''
-}`;
+const BASE_URL = locationOrigin();
 
 @customElement('yordle-help')
 export class YordleHelp extends LitElement {

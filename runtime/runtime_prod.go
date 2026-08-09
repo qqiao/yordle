@@ -20,5 +20,5 @@
 
 package runtime
 
-// IsDew is true when the application is running under development mode.
-var IsDev = false
+// IsDev is true when the application is running under development mode.
+const IsDev = false

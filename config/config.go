@@ -20,42 +20,8 @@
 package config
 
 import (
-	"encoding/json"
-	"log/slog"
 	"os"
 )
 
-// Locales contains all supported locals
-var Locales []string
-
 // ProjectName is used for identifying of the project to the runtime.
-var ProjectName string
-
-type LitLocalize struct {
-	SourceLocale  string   `json:"sourceLocale"`
-	TargetLocales []string `json:"targetLocales"`
-}
-
-func init() {
-	ProjectName = os.Getenv("GOOGLE_CLOUD_PROJECT")
-
-	Locales = loadLocalizeConfig()
-	slog.Info("Available locales", "locales", Locales)
-}
-
-func loadLocalizeConfig() []string {
-	var localizeConfig LitLocalize
-
-	jsonFile, err := os.ReadFile("lit-localize.json")
-	if err != nil {
-		slog.Error("Unable to read localization configuration")
-		os.Exit(1)
-	}
-
-	if err = json.Unmarshal(jsonFile, &localizeConfig); err != nil {
-		slog.Error("unable to parse localization configuration")
-		os.Exit(1)
-	}
-
-	return append([]string{localizeConfig.SourceLocale}, localizeConfig.TargetLocales...)
-}
+var ProjectName = os.Getenv("GOOGLE_CLOUD_PROJECT")
