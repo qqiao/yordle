@@ -6,7 +6,7 @@ Prerequisites
 To install Yordle, please make sure you have the following prerequisites:
 
 1. A registered Google Cloud Platform project.
-2. Go 1.26.5. The repository pins this version in `go.mod` and `.go-version`.
+2. Go 1.26.6. The repository pins this version in `go.mod` and `.go-version`.
 3. The most recent Google Cloud CLI with the App Engine and Cloud Datastore
    emulator components. Installation instructions can be found
    [here](https://cloud.google.com/sdk/docs/install).

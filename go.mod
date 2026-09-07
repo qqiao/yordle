@@ -2,7 +2,7 @@ module github.com/qqiao/yordle
 
 go 1.26.0
 
-toolchain go1.26.5
+toolchain go1.26.6
 
 ignore (
 	./dist
