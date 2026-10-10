@@ -6,6 +6,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 export default [
   {
     ignores: [
+      '.dev/',
       'src/locale-codes.ts',
       'src/locales/',
       'dist/',

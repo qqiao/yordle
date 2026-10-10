@@ -16,3 +16,5 @@ src/locales/
 
 .yarn/
 .pnp.*
+
+.dev/

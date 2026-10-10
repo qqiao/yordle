@@ -20,3 +20,6 @@ src/locales/
 !.yarn/sdks
 !.yarn/version
 .pnp.*
+
+# Reproducible local toolchains and isolated emulator configuration
+.dev/
