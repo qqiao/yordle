@@ -34,7 +34,7 @@ export default [
       'implicit-arrow-linebreak': 'off',
       'no-unused-vars': 'off',
 
-      // Fix for gulpfile using devDeps
+      // Tooling fixtures may import development dependencies
       'import-x/no-extraneous-dependencies': [
         'error',
         {
@@ -45,7 +45,6 @@ export default [
             '**/*.config.{html,js,mjs,ts,cjs}',
             '**/*.conf.{html,js,mjs,ts,cjs}',
             '**/.storybook/*.{html,js,mjs,cjs,ts}',
-            'gulpfile.mjs', // Added gulpfile
           ],
         },
       ],

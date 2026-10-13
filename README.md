@@ -97,6 +97,28 @@ http://localhost:8080.
 Source changes require stopping the running processes and restarting the local
 command so the production bundle is rebuilt.
 
+#### Development task helpers
+
+Yarn scripts orchestrate the existing tools directly. `scripts/project-tasks.mjs`
+uses Node built-ins for application-file copying and child-process management;
+Gulp is no longer required. Public `yarn build`, `yarn test`, `yarn start`, and
+`yarn deploy` entry points retain their purposes.
+
+Tests and local start wait for the Datastore emulator health endpoint before
+starting Go. On Linux/macOS, failures, Ctrl-C, and SIGTERM clean up owned process
+groups (including `go run` and emulator descendants). An occupied emulator port
+fails rather than using an unrelated running service. Direct helper invocation
+also requires `CLOUDSDK_CORE_PROJECT`.
+
+The copy step preserves source-relative paths under `dist/`, excludes Go test
+files, hidden directories, `node_modules/`, and generated output directories,
+and keeps the Vite bundle intact. Deployment still uses `--no-promote`; automated
+regression tests replace `gcloud` with a local stub and do not deploy.
+
+This migration removes Gulp's dependency paths. `@lit/localize-tools` still
+requires `fast-glob` → `micromatch` → `braces`; the existing dependency audit
+remains enabled, with no advisory exceptions.
+
 #### Verification
 
 After setup (and sourcing `.dev/env.sh` when using the Linux bootstrap), run
