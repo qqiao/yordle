@@ -2,7 +2,7 @@
 
 ## Start here
 
-- Read `README.md`, `package.json`, `go.mod`, `gulpfile.mjs`, and
+- Read `README.md`, `package.json`, `go.mod`, `scripts/project-tasks.mjs`, and
   `.github/workflows/build.yml` before changing workflows or dependencies.
 - Discover relevant repository skills under `.agents/skills/`; start with
   `using-agent-skills/SKILL.md` and read only the task-relevant skills.
